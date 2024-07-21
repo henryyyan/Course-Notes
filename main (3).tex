@@ -1,0 +1,427 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{relsize}
+\usepackage{titlesec}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{titling}
+\usepackage{changepage}
+\usepackage{biblatex}
+\usepackage{float}
+\usepackage{soul,color,xcolor}
+\usepackage{esvect}
+
+\usepackage[margin=1.0in]{geometry}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{defin}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+\DeclareMathOperator{\Berno}{Bernoulli}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\HyperG}{Hypergeometric}
+\DeclareMathOperator{\Geo}{Geometric}
+\DeclareMathOperator{\Pois}{Poisson}
+\DeclareMathOperator{\Binomial}{Binomial}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\Dist}{dist}
+\DeclareMathOperator{\Inf}{inf}
+\DeclareMathOperator{\Sup}{sup}
+\DeclareMathOperator{\Dom}{dom}
+\DeclareMathOperator{\Mesh}{mesh}
+
+\title{Math 104 Notes}
+\author{Henry Yan}
+\date{June 2023}
+
+\newlist{NList}{enumerate}{1}
+\setlist[NList, 1]{label = {N\arabic*.}, labelwidth = {40pt}, leftmargin = 0.5in}
+
+\newlist{OList}{enumerate}{1}
+\setlist[OList, 1]{label = {O\arabic*.}, labelwidth = {40pt}, leftmargin = 0.5in}
+
+\begin{document}
+
+\maketitle
+
+\section*{Random}
+$\max(f, g) = \frac{1}{2} (f + g) + \frac{1}{2}|f - g|.$ 
+\section*{Introduction}
+In this book, $\mathbb{N}$ denotes the set of all positive integers. \\ \\
+The \textbf{successor} of a positive integer $n$ is $n + 1$. \\ \\
+Peano Axioms/Postulates of $\mathbb{N}$: \begin{NList}
+    \item 1 belongs to $\mathbb{N}$.
+    \item If $n$ belongs to $\mathbb{N}$, then its successor $n + 1$ belongs to $\mathbb{N}$.
+    \item 1 is not the successor of any element in $\mathbb{N}$.
+    \item If $n$ and $m$ in $\mathbb{N}$ have the same successor, then $n = m$.
+    \item A subset of $\mathbb{N}$ which contains 1, and which contains $n + 1$ whenever it contains $n$, must equal $\mathbb{N}$.
+\end{NList} $ $ \\
+A number is called an \textbf{algebraic number} if it satisfies a polynomial equation $$c_nx^n + c_{n - 1}x^{n - 1} + \dots + c_1x + c_0 = 0,$$ where the coefficients $c_0, c_1, \dots, c_n$ are integers, $c_n \neq 0$ and $n \geq 1$. \\ \\
+Algebraic numbers are all numbers containing any combination of any radical forms ($\sqrt{\hspace{2mm}}, \sqrt[3]{\hspace{2mm}},$ etc). \\ \\
+\textbf{SOLVING***} How to show that a number $x$ is not rational: find the polynomial equation $x$ is a solution to and use the \textbf{Rational Zeros Theorem}(roots) to find all the possible rational roots, and test that each of these do not work. \\ \\
+Algebraic properties in $\mathbb{Q}$:
+\begin{adjustwidth}{2.5em}{0pt} A1. $a + (b + c)=(a + b) + c$ for all $a, b, c$. \\
+A2. $a + b = b + a$ for all $a, b$. \\
+A3. $a + 0 = a$ for all $a$. \\
+A4. For each $a$, there is an element $-a$ such that $a + (-a) = 0$. \\
+M1. $a(bc)=(ab)c$ for all $a, b, c$. \\
+M2. $ab = ba$ for all $a, b$. \\
+M3. $a \cdot 1 = a$ for all $a$. \\
+M4. For each $a = 0$, there is an element $a^{-1}$ such that $aa^{-1} = 1$. \\
+DL. $a(b + c) = ab + ac$ for all $a, b, c$. \\
+\end{adjustwidth}
+A system that has more than one element and satisfies these nine properties is called a \textbf{field}. \\ \\
+Order structure of $\mathbb{Q}$: \begin{OList}
+    \item Given $a$ and $b$, either $a \leq b$ or $b \leq a$.
+    \item If $a \leq b$ and $b \leq a$, then $a = b$.
+    \item If $a \leq b$ and $b \leq c$, then $a \leq c$.
+    \item If $a \leq b$, then $a + c \leq b + c$.
+    \item If $a \leq b$ and $0 \leq c$, then $ac \leq bc$.
+\end{OList}
+\noindent Property O3 is called the \textbf{transitive law}. This is the characteristic property of an ordering. A field with an ordering satisfying properties O1 through O5 is called an \textbf{ordered field}. \\ \\
+\textbf{Theorem 3.1}: The following are consequences of the field properties \begin{enumerate}
+    \item $a + c = b + c$ implies $a = b$;
+    \item $a \cdot 0 = 0$ for all $a$;
+    \item $(-a)b = -ab$ for all $a, b$;
+    \item $(-a)(-b) = ab$ for all $a, b$;
+    \item $ac = bc$ and $c \neq 0$ imply $a = b$;
+    \item $ab = 0$ implies either $a = 0$ or $b = 0$; \\
+for $a, b, c \in \mathbb{R}$.
+\end{enumerate}
+\textbf{Theorem 3.2}: The following are consequences of the properties of an ordered field \begin{enumerate}
+    \item If $a \leq b$, then $-b \leq -a$;
+    \item If $a \leq b$ and $c \leq 0$, then $bc \leq ac$;
+    \item If $0 \leq a$ and $0 \leq b$, then $0 \leq ab$;
+    \item $0 \leq a^2$ for all $a$;
+    \item $0 < 1$;
+    \item If $0 < a$, then $0 < a - 1$;
+    \item If $0 < a < b$, then $0 < b - 1 < a - 1$; \\
+    for $a, b, c \in \mathbb{R}$.
+\end{enumerate} $ $ \\
+Note $a < b$ means $a \leq b$ and $a \neq b$. \\ \\
+\textbf{Theorem 3.5}: Basic properties of the absolute value \begin{enumerate}
+    \item $|a| \geq 0;$
+    \item $|ab| = |a| \cdot |b|;$
+    \item \textbf{Theorem 3.7} - (\textit{triangle inequality}): $|a + b| \leq |a| + |b|;$ \\
+    for all $a, b \in \mathbb{R}$.
+\end{enumerate} $ $ \\
+\textbf{Corollary 3.6}: $\Dist(a, c) \leq \Dist(a, b) + \Dist(b, c)$, for all $a, b, c \in \mathbb{R}$. \\ \\
+\textbf{Definition 4.1}: Let $S$ be a nonempty subset of $\mathbb{R}$. \begin{enumerate}
+    \item If $S$ contains a largest element $s_0$ [that is, $s_0$ belongs to $S$ and $s \leq s_0$ for all $s \in S$], then we call $s_0$ the \textbf{maximum} of S and write $s_0 = \max{S}$.
+    \item If $S$ contains a smallest element, then we call the smallest element the \textbf{minimum} of $S$ and write it as $\min{S}$.
+\end{enumerate}
+\textbf{Definition 4.2}: Let $S$ be a nonempty subset of $\mathbb{R}$. \begin{enumerate}
+    \item If a real number $M$ satisfies $s \leq M$ for all $s \in S$, then $M$ is called an \textbf{upper bound} of $S$ and the set $S$ is said to be \textbf{bounded above}.
+    \item If a real number $m$ satisfies $m \leq s$ for all $s \in S$, then $m$ is called a \textbf{lower bound} of $S$ and the set $S$ is said to be \textbf{bounded below}.
+    \item The set $S$ is said to be \textbf{bounded} if it is bounded above and bounded below. Thus, $S$ is bounded if there exist real numbers $m$ and $M$ such that $S \subseteq [m,M]$.
+\end{enumerate} $ $ \\
+\textbf{Definition 4.3}: Let $S$ be a nonempty subset of $\mathbb{R}$. \begin{enumerate}
+    \item If $S$ is bounded above and $S$ has a least upper bound, then we will call it the \textbf{supremum}, or \textit{least upper bound}, of $S$ and denote it by $\sup{S}$.
+    \item If $S$ is bounded below and $S$ has a greatest lower bound, then we will call it the \textbf{infimum}, or \textit{greatest lower bound}, of $S$ and denote it by $\inf{S}$.
+\end{enumerate} $ $ \\
+\textbf{4.4} - (\textit{Completeness Axiom}): Every nonempty subset $S$ of $\mathbb{R}$ that is bounded above has a least upper bound. In other words, $\sup{S}$ exists and is a real number. \\ \\
+\textbf{Corollary 4.5}: Every nonempty subset $S$ of $\mathbb{R}$ that is bounded below has a greatest lower bound $\inf{S}$. \\ \\
+\textbf{4.6} - (\textit{Archimedean Property}): If $a > 0$ and $b > 0$, then for some positive integer $n$, we have $na > b$. \\
+Setting $a = 1$ and $b = 1$ separately gives very useful conclusions. \\ \\
+\textbf{4.7} - (\textit{Denseness of} $\mathbb{Q}$): If $a, b \in \mathbb{R}$ and $a < b$, then there is a rational $r \in \mathbb{Q}$ such that $a < r < b$. \\ \\
+$[a, \infty)$ and $(-\infty, b]$ are called \textbf{closed intervals} or \textbf{unbounded closed intervals}, while $(a, \infty)$ and $(-\infty, b)$ are called \textbf{open intervals} or \textbf{unbounded open intervals}. \\ \\
+We define $\Sup{S} = +\infty$ if $S$ is not bounded above and $\Sup{S} = -\infty$ if $S$ is not bounded below. \\ \\
+\textbf{***NOTATION} We agree that $-\infty \leq a \leq +\infty$ for all $a \in R \cup \{-\infty, \infty\}$. (page 28)
+\section*{Sequences}
+Let $(s_n)_{n = m}^\infty$ denote $(s_m, s_{m + 1}, \dots)$. \\ \\
+\textbf{Definition 7.1}: A sequence $(s_n)$ of real numbers is said to \textbf{converge} to the real number $s$ provided that for each $\epsilon > 0$, there exists a number $N$ such that $n > N$ implies $|s_n - s| < \epsilon$. \\ \\
+If $(s_n)$ converges to $s$, we write $\lim_{n \rightarrow \infty}s_n = s$, or $s_n \rightarrow s$. \\ \\
+We say a limit \textbf{exists} if it converges or diverges to $+\infty$ or $-\infty$. \\ \\
+\textbf{Theorem 9.1}: Convergent sequences are bounded. \\ \\
+\textbf{Theorem 9.2}: If the sequence $(s_n)$ converges to $s$ and $k$ is in $\mathbb{R}$, then the sequence $(ks_n)$ converges to $ks$. That is, $\lim(ks_n) = k · \lim{s_n}$. \\ \\
+\textbf{Theorem 9.3}: If $(s_n)$ converges to $s$ and $(t_n)$ converges to $t$, then $(s_n + t_n)$ converges to $s + t$. That is, $\lim(s_n + t_n) = \lim{s_n} + \lim{t_n}$. \\ \\
+\textbf{Theorem 9.4}: If $(s_n)$ converges to $s$ and $(t_n)$ converges to $t$, then $(s_nt_n)$ converges to $st$. \\ \\
+\textbf{Lemma 9.5}: If $(s_n)$ converges to $s$, if $s_n \neq 0$ for all $n$, and if $s \neq 0$, then $(1/s_n)$ converges to $1/s$. \\ \\
+\textbf{Theorem 9.6}: Suppose $(s_n)$ converges to $s$ and $(t_n)$ converges to $t$. If $s \neq 0$ and $s_n \neq 0$ for all $n$, then $(t_n/s_n)$ converges to $t/s$. \\ \\
+\textbf{Theorem 9.7}: \begin{enumerate}
+    \item $\lim_{n \rightarrow \infty}(\frac{1}{n^p}) = 0$ for $p > 0$.
+    \item $\lim_{n \rightarrow \infty} a^n = 0$ if $|a| < 1$.
+    \item $\lim_{n \rightarrow \infty}(n^{1/n}) = 1$.
+    \item $\lim_{n \rightarrow \infty}(a^{1/n}) = 1$ for $a > 0$.
+\end{enumerate} $ $ \\
+\textbf{*** Definition 9.8}: For a sequence $(s_n)$, we write $\lim s_n = +\infty$ provided for each $M > 0$ there is a number $N$ such that $n > N$ implies $s_n > M$. In this case we say the sequence diverges to $+\infty$. \\
+Similarly, we write $\lim s_n = -\infty$ provided
+for each $M < 0$ there is a number $N$ such that
+$n > N$ implies $s_n < M$. \\ \\
+\textbf{Theorem 9.9}: Let $(s_n)$ and $(t_n)$ be sequences such that $\lim s_n = +\infty$ and $\lim t_n > 0$ [$\lim t_n$ can be finite or $+\infty$]. Then $\lim s_nt_n = +\infty$. \\ \\
+\textbf{Theorem 9.10}: For a sequence $(s_n)$ of positive real numbers, we have $\lim s_n = +\infty$ if and only if $\lim(1/s_n) = 0$. \\ \\
+\textbf{Definition 10.1}: A sequence $(s_n)$ of real numbers is called an \textbf{increasing sequence} if $s_n \leq s_{n + 1}$ for all $n$, and $(s_n)$ is called a \textbf{decreasing sequence} if $s_n \geq s_{n + 1}$ for all $n$. Note that if $(s_n)$ is increasing, then $s_n \leq s_m$ whenever $n < m$. A sequence that is increasing or decreasing will be called a \textbf{monotone/monotonic sequence}. \\ \\
+\textbf{Theorem 10.2}: All bounded monotone sequences converge. \\ \\
+\textbf{Theorem 10.4}: \begin{enumerate}
+    \item If $(s_n)$ is an unbounded increasing sequence, then $\lim s_n = +\infty$.
+    \item If $(s_n)$ is an unbounded decreasing sequence, then $\lim s_n = \infty$.
+\end{enumerate} $ $ \\
+\textbf{Theorem 10.5}: If $(s_n)$ is a monotone sequence, then the sequence either converges, diverges to $+\infty$, or diverges to $-\infty$. Thus $\lim s_n$ is always meaningful for monotone sequences. \\ \\
+\textbf{Definition 10.6}: Let $(s_n)$ be a sequence in $\mathbb{R}$. We define $$\lim{\Sup{s_n}} = \lim_{N \rightarrow \infty}{\Sup\{s_n : n > N\}}$$ and $$\lim{\Inf{s_n}} = \lim_{N \rightarrow \infty}{\Inf\{s_n : n > N\}}.$$ If $(s_n)$ is not bounded above, we say $\Sup\{s_n : n > N\} = \infty$. If $(s_n)$ is not bounded below, we say $\Inf\{s_n : n > N\} = -\infty$. \\ \\
+In non-math terms, $\lim{\Sup{s_n}}$ is the largest value that infinitely many $s_n$’s can get close to. \\ \\
+\textbf{Theorem 10.7}: Let $(s_n)$ be a sequence in $\mathbb{R}$. \begin{enumerate}
+    \item If $\lim s_n$ is defined [as a real number, $+\infty$ or $-\infty$], then $\lim{\Inf{s_n}} = \lim s_n = \lim{\Sup{s_n}}$.
+    \item If $\lim{\Inf{s_n}} = \lim{\Sup{s_n}}$, then $\lim s_n$ is defined and $\lim s_n = \lim{\Inf{s_n}} = \lim{\Sup{s_n}}$.
+\end{enumerate} $ $ \\
+\textbf{***NOTATION} Let $u_N = \Inf\{s_n : n > N\}$ and $v_N = \Sup\{s_n : n > N\}$. \\ \\
+\textbf{Definition 10.8}: A sequence $(s_n)$ of real numbers is called a \textbf{Cauchy sequence} if for each $\epsilon > 0$ there exists a number $N$ such that $m, n > N$ implies $|s_n - s_m| < \epsilon$. \\ \\
+\textbf{Lemma 10.9}: Convergent sequences are Cauchy sequences. \\ \\
+\textbf{Lemma 10.10}: Cauchy sequences are bounded. \\ \\
+\textbf{Theorem 10.11}: A sequence is a convergent sequence if and only if it is a Cauchy sequence. \\ \\
+\textbf{Definition 11.1}: Suppose $(s_n)_{n \in \mathbb{N}}$ is a sequence. A \textbf{subsequence} of this sequence is a sequence of the form $(t_k)_{k \in \mathbb{N}}$ where for each $k$ there is a positive
+integer $n_k$ such that $$n_1 < n_2 < \dots < n_k < n_{k + 1} < \dots$$
+and $t_k = s_{n_k}$. Thus $(t_k)$ is just a selection of some [possibly all] of the $s_n$’s taken in order. \\ \\
+An alternate definition of a subsequence is $$t_k = t(k) = s \circ \sigma(k) = s(\sigma(k)) = s(n_k) = s_{n_k}, k \in \mathbb{N}.$$ \\
+\textbf{Theorem 11.2}: Let $(s_n)$ be a sequence. \begin{enumerate}
+    \item If $t \in \mathbb{R}$, then there is a subsequence of $(s_n)$ converging to $t$ iff the set $\{n \in \mathbb{N} : |s_n - t| < \epsilon \}$ is infinite for all $\epsilon > 0$.
+    \item If the sequence $(s_n)$ is unbounded above, it has a subsequence with limit $+\infty$.
+    \item Similarly, if $(s_n)$ is unbounded below, a subsequence has limit $-\infty$.
+\end{enumerate}
+In each case, the subsequence can be taken to be monotonic. \\ \\
+\textbf{Theorem 11.3}: If the sequence $(s_n)$ converges, then every subsequence converges to the same limit. \\ \\
+\textbf{Theorem 11.4}: Every sequence $(s_n)$ has a monotonic subsequence. \\ \\
+\textbf{Theorem 11.5 - (Bolzano-Weierstrass Theorem)}: Every bounded sequence has a convergent subsequence. \\ \\
+Let $(s_n)$ be a sequence in $\mathbb{R}$. A \textbf{subsequential limit} is any real number or symbol $+\infty$ or $-\infty$ that is the limit of some subsequence of $(s_n)$. \\ \\
+\textbf{Theorem 11.7}: Let $(s_n)$ be any sequence. There exists a monotonic subsequence whose limit is $\lim\Sup s_n$, and there exists a monotonic subsequence whose limit is $\lim \Inf s_n$. \\ \\
+\textbf{Theorem 11.8}: Let $(s_n)$ be any sequence in $\mathbb{R}$, and let $S$ denote the set of subsequential limits of $(s_n)$. \begin{enumerate}
+    \item $S$ is nonempty.
+    \item $\Sup S = \lim \Sup s_n$ and $\Inf S = \lim \Inf s_n$.
+    \item $\lim s_n$ exists if and only if $S$ has exactly one element, namely $\lim s_n$.
+\end{enumerate} $ $ \\
+\textbf{Theorem 11.9}: Let $S$ denote the set of subsequential limits of a sequence $(s_n)$. Suppose $(t_n)$ is a sequence in $S \cap \mathbb{R}$ and that $t = \lim t_n$. Then $t$ belongs to $S$. \\ \\
+\textbf{Exercise 11.8}: $\lim \Inf s_n = -\lim \Sup(-s_n)$ for every sequence $(s_n)$. \\ \\
+\textbf{Theorem 12.1}: If $(s_n)$ converges to a positive real number $s$ and $(t_n)$ is any sequence, then $$\lim \Sup s_nt_n = s \cdot \lim \Sup t_n.$$ Here we allow the conventions $s \cdot (+\infty) = +\infty$ and $s \cdot (-\infty) = -\infty$ for $s > 0$. \\ \\
+\textbf{Theorem 12.2}: Let $(s_n)$ be any sequence of nonzero real numbers. Then we have $$\lim \Inf \left|\frac{s_{n + 1}}{s_n} \right| \leq \lim \Inf \left|s_n \right|^{\frac{1}{n}} \leq \lim \Sup \left|s_n \right|^{\frac{1}{n}} \leq \lim \Sup \left|\frac{s_{n + 1}}{s_n}\right|.$$ \\
+\textbf{Corollary 12.3}: If $\mathlarger{\lim \left|\frac{s_{n+1}}{s_n}\right|}$ exists [and equals $L$], then $\lim |s_n|^{1/n}$ exists [and equals $L$]. \\ \\
+To assign meaning to $\sum_{n = m}^\infty a_n$, we consider the sequences $(s_n)_{n = m}^\infty$ of \textbf{partial sums}: $$s_n = a_m + \dots + a_n = \sum_{k = m}^n a_k.$$ \\
+An infinite series is said to \textbf{converge} if it's partial sums converge to some real number $S$. In this case, we say any of the following $$\sum_{k = m}^\infty a_k = \lim s_n = \lim_{n \rightarrow \infty} (\sum_{k = m}^n a_k) = S$$ \\
+Consider an empty sum (no starting or ending bounds) to be an infinite series. \\ \\
+The series $\sum a_n$ is said to \textbf{converge absolutely} or to be \textbf{absolutely convergent} if $\sum |a_n|$ converges. \\ \\
+\textbf{Definition 14.3}: We say a series $\sum a_n$ satisfies the \textbf{Cauchy criterion} if its sequence $(s_n)$ of partial sums is a Cauchy sequence. That is, for each $\epsilon > 0$ there exists a number $N$ such that $$m, n > N \rightarrow |s_n - s_m| < \epsilon.$$ \\
+\textbf{Theorem 14.4}: A series converges if and only if it satisfies the Cauchy criterion. \\ \\
+\textbf{Corollary 14.5}: If a series $\sum a_n$ converges, then $\lim a_n = 0$. \\ \\
+\textbf{14.6 - (Comparison Test)}: Let $\sum a_n$ be a series where $a_n \geq 0$ for all $n$. \begin{enumerate}
+    \item If $\sum a_n$ converges and $|b_n| \leq a_n$ for all $n$, then $\sum b_n$ converges.
+    \item If $\sum a_n = +\infty$ and $b_n \geq a_n$ for all $n$, then $\sum b_n = +\infty$.
+\end{enumerate} $ $ \\
+\textbf{Corollary 14.7}: Absolutely convergent series are convergent. \\ \\
+\textbf{14.8 - (Ratio Test)}: A series $\sum a_n$ of nonzero terms \begin{enumerate}
+    \item converges absolutely if $\lim \Sup |\frac{a_{n+1}}{a_n}| < 1$,
+    \item diverges if $\lim \Inf |\frac{a_{n+1}}{a_n}| > 1$.
+    \item Otherwise $\lim \Inf |\frac{a_{n+1}}{a_n}| \leq 1 \leq \lim \Sup |\frac{a_{n+1}}{a_n}|$ and the test gives no information.
+\end{enumerate} $ $ \\
+\textbf{14.9 - (Root Test)}: Let $\sum a_n$ be a series and let $\alpha = \lim \Sup |a_n|^{1/n}$. The series $\sum a_n$ \begin{enumerate}
+    \item converges absolutely if $\alpha < 1$,
+    \item diverges if $\alpha > 1$.
+    \item Otherwise $\alpha = 1$ and the test gives no information.
+\end{enumerate} $ $ \\
+\textbf{Theorem 15.1}: $\sum 1/n^p$ converges if and only if $p > 1$. \\ \\
+\textbf{15.2 - (Integral Tests)}: Use integral tests when: \begin{enumerate}
+    \item The tests in §14 do not seem to apply.
+    \item The terms an of the series $\sum a_n$ are nonnegative.
+    \item There is a nice decreasing function $f$ on $[1, \infty)$ such that $f(n) = a_n$ for all $n$ [$f$ is decreasing if $x < y$ implies $f(x) \geq f(y)$].
+    \item The integral of $f$ is easy to calculate or estimate.
+\end{enumerate} The series $(a_n)$ converges if the integral is $< \infty$, diverges otherwise. \\ \\
+\textbf{15.3 - (Alternating Series Theorem)}: If $a_1 \geq a_2 \geq \dots \geq a_n \geq \dots \geq 0$ and $\lim a_n = 0$, then the alternating series $\sum (-1)^{n + 1}a_n$ converges. Moreover, the partial sums $s_n = \sum_{k = 1}^n (-1)^{k + 1}a_k$ satisfy $|s - s_n| \leq a_n$ for all $n$.
+\section*{Continuous Functions}
+\textbf{Natural domain} is the largest subset of $\mathbb{R}$ on which the function is a well-defined real-valued function. \\ \\
+\textbf{Defintion 17.1}: Let $f$ be a real-valued function whose domain is a subset of $\mathbb{R}$. The function $f$ is \textbf{continuous} at $x_0$ in $\Dom(f)$ if, for every sequence $(x_n)$ in $\Dom(f)$ converging to $x_0$, we have $\lim_n f(x_n) = f(x_0)$. \\ \\
+If $f$ is continuous at each point of a set $S \subseteq \Dom(f)$, then $f$ is said to be \textbf{continuous on $S$}. The function $f$ is said to be continuous if it is continuous on $\Dom(f)$. \\ \\
+\textbf{Theorem 17.2}: Let $f$ be a real-valued function whose domain is a subset of $\mathbb{R}$. Then $f$ is continuous at $x_0$ in $\Dom(f)$ if and only if for each $\epsilon > 0$, there exists $\delta > 0$ such that $x \in \Dom(f)$ and $|x - x_0| < \delta$ imply $|f(x) - f(x_0)| < \epsilon$. \\ \\
+\textbf{Theorem 17.3}: Let $f$ be a real-valued function with $\Dom(f) \subseteq \mathbb{R}$. If $f$ is continuous at $x_0$ in $\Dom(f)$, then $|f|$ and $kf, k \in \mathbb{R}$, are continuous at $x_0$. \\ \\
+\textbf{Theorem 17.4}: Let $f$ and $g$ be real-valued functions that are continuous at $x_0$ in $\mathbb{R}$. Then \begin{enumerate}
+    \item $f + g$ is continuous $x_0$;
+    \item $fg$ is continuous at $x_0$;
+    \item $f/g$ is continuous at $x_0$ is $g(x_0) \neq 0$.
+\end{enumerate} $ $ \\
+\textbf{Theorem 17.5}: If $f$ is continuous at $x_0$ and $g$ is continuous at $f(x_0)$, then the composite function $g \circ f$ is continuous at $x_0$. \\ \\
+A real-valued function $f$ is said to be \textbf{bounded} if $\{f(x) : x \in \Dom(f)\}$ is a bounded set, i.e., if there exists a real number $M$ such that $|f(x)| \leq M$ for all $x \in \Dom(f)$. \\ \\
+\textbf{Theorem 18.1}: Let $f$ be a continuous real-valued function on a closed interval $[a, b]$. Then $f$ is a bounded function. Moreover, $f$ assumes its maximum and minimum values on $[a, b]$; that is, there exist $x_0$, $y_0$ in $[a, b]$ such that $f(x_0) \leq f(x) \leq f(y_0)$ for all $x \in [a, b]$. \\ \\
+\textbf{18.2 - (Intermediate Value Theorem)}: If $f$ is a continuous real-valued function on an interval $I$, then $f$ has the \textbf{intermediate value property} on $I$: Whenever $a, b \in I, a < b$ and $y$ lies between $f(a)$ and $f(b)$ [i.e., $f(a) < y < f(b)$ or $f(b) < y < f(a)$], there exists at least one $x$ in $(a, b)$ such that $f(x) = y$. \\ \\
+\textbf{Corollary 18.3}: If $f$ is a continuous real-valued function on an interval $I$, then the set $f(I) = \{f(x) : x \in I\}$ is also an interval or a single point. \\ \\
+\textbf{Theorem 18.4}: Let $f$ be a continuous strictly increasing function on some interval $I$. Then $f(I)$ is an interval $J$ by Corollary 18.3 and $f^{-1}$ represents a function with domain $J$. The function $f^{-1}$ is a continuous strictly increasing function on $J$. \\ \\
+\textbf{Theorem 18.5}: Let $g$ be a strictly increasing function on an interval $J$ such that $g(J)$ is an interval $I$. Then $g$ is continuous on $J$. \\ \\
+\textbf{Theorem 18.6}: Let $f$ be a one-to-one continuous function on an interval $I$. Then $f$ is strictly increasing $[x_1 < x_2$ implies $f(x_1) < f(x_2)]$ or strictly decreasing $[x_1 < x_2$ implies $f(x_1) > f(x_2)]$. \\ \\
+\textbf{Definition 19.1}: Let $f$ be a real-valued function defined on a set $S \subseteq \mathbb{R}$. Then $f$ is \textbf{uniformly continuous} on $S$ if for every $\epsilon > 0$, there exists $\delta > 0$ such that $x, y \in S$ and $|x - y| < \delta$ imply $|f(x) - f(y)| < \epsilon.$ \\ \\
+\textbf{Theorem 19.2}: If $f$ is continuous on a closed interval $[a, b]$, then $f$ is uniformly continuous on $[a, b]$. \\ \\
+We call $S = [a, b]$ a \textbf{closed set} if any convergent sequence in $[a, b]$ converges to an element in $S$. \\ \\
+*** Generalization of theorem 19.2; If $f$ is continuous on a closed and bounded set $S$, then $f$ is uniformly continuous on $S$. \\ \\
+\textbf{Theorem 19.4}: If $f$ is uniformly continuous on a set $S$ and $(s_n)$ is a Cauchy sequence in $S$, then $(f(s_n))$ is a Cauchy sequence. \\ \\
+We say a function $\stackrel{\sim}{f}$ is an \textbf{extension} of a function $f$ if $\Dom{f} \subseteq \Dom{\stackrel{\sim}{f}}$ and $f(x) = \stackrel{\sim}{f}(x)$ for all $x \in \Dom{f}$. \\ \\
+\textbf{Theorem 19.5}: A real-valued function $f$ on $(a, b)$ is uniformly continuous on $(a, b)$ if and only if it can be extended to a continuous function $\stackrel{\sim}{f}$ on $[a, b]$. \\ \\
+\textbf{Theorem 19.6}: Let $f$ be a continuous function on an interval $I$ [$I$ may be bounded or unbounded]. Let $I^\circ$ be the interval obtained by removing from $I$ any endpoints that happen to be in $I$. If $f$ is differentiable on $I^\circ$ and if $f'$ is bounded on $I^\circ$, then $f$ is uniformly continuous on $I$. \\ \\
+\textbf{Definition 20.1}: Let $S$ be a subset of $\mathbb{R}$, let $a$ be a real number or symbol $+\infty$ or $-\infty$ that is the limit of some sequence in $S$, and let $L$ be a real number or symbol $+\infty$ or $-\infty$. We write $\lim_{x \rightarrow a^S} f(x) = L$ if $f$ is a function defined on $S$ and for every sequence $(x_n)$ in $S$ with limit $a$, we have $\lim_{n \rightarrow \infty} f(x_n) = L$. \\ \\ 
+The expression $\lim_{x \rightarrow a^S} f(x) = L$ is read ``limit, as $x$ tends to $a$ along $S$, of $f(x)$.'' \\ \\
+\textbf{Remarks 20.2}: \begin{enumerate}
+    \item From defintion 17.1, we see that a function $f$ is continuous at $a$ in $\Dom(f) = S$ if and only if $\lim_{x \rightarrow a^S} f(x) = L$. 
+    \item Observe that limits, when they exist, are unique. This follows from the fact that limits of sequences are unique.
+\end{enumerate} $ $ \\
+\textbf{Definition 20.3}: \begin{enumerate}
+    \item For $a \in \mathbb{R}$ and a function $f$ we write $\lim_{x \rightarrow a} f(x) = L$ provided $\lim_{x \rightarrow a^S} f(x) = L$ for some set $S = J \backslash \{a\}$, where $J$ is an open interval containing $a$. $\lim_{x \rightarrow a} f(x) = L$ is called the \textbf{two-sided limit of $f$ at $a$}. Note $f$ not need to be defined at $a$ and, even if $f$ is defined at $a$, the value $f(a)$ need not equal $\lim_{x \rightarrow a} f(x) = L$. In fact, $f(a) = \lim_{x \rightarrow a} f(x) = L$ if and only if $f$ is defined on an open interval containing $a$ and $f$ is continuous at $a$.
+    \item For $a \in \mathbb{R}$ and a function $f$ we write $\lim_{x \rightarrow a^+} f(x) = L$ provided $\lim_{x \rightarrow a^S} f(x) = L$ for some open interval $S = (a, b)$. $\lim_{x \rightarrow a^+} f(x)$ is the \textbf{right-handed limit of $f$ at $a$}. Again $f$ need not be defined at $a$.
+    \item For $a \in \mathbb{R}$ and a function $f$ we write $\lim_{x \rightarrow a^-} f(x) = L$ provided $\lim_{x \rightarrow a^S} f(x) = L$ for some open interval $S = (c, a)$. $\lim_{x \rightarrow a^-} f(x)$ is the \textbf{left-handed limit of $f$ at $a$}. Again $f$ need not be defined at $a$.
+    \item For a function $f$ we write $\lim_{x \rightarrow \infty} f(x) = L$ provided $\lim_{x \rightarrow \infty^S} f(x) = L$ for some interval $S = (c, \infty)$. Likewise, we write $\lim_{x \rightarrow -\infty} f(x) = L$ provided $\lim_{x \rightarrow -\infty^S} f(x) = L$ for some interval $S = (-\infty, b)$.
+\end{enumerate} $ $ \\
+\textbf{Theorem 20.4}: Let $f_1$ and $f_2$ be functions for which the limits $L_1 = \lim_{x \rightarrow a^S} f_1(x)$ and $L_2 = \lim_{x \rightarrow a^S} f_2(x)$ exist and are finite. Then \begin{enumerate}
+    \item $\lim_{x \rightarrow a^S} (f_1 + f_2)(x)$ exists and equals $L_1 + L_2$.
+    \item $\lim_{x \rightarrow a^S} (f_1f_2)(x)$ exists and equals $L_1L_2$.
+    \item $\lim_{x \rightarrow a^S} (f_1/f_2)(x)$ exists and equals $L_1/L_2$ provided $L_2 \neq 0$ and $f_2(x) \neq 0, \forall x \in S$.
+\end{enumerate} $ $ \\
+\textbf{Theorem 20.5}: Let $f$ be a function for which the limit $L = \lim_{x \rightarrow a^S} f(x)$ exists and is finite. If $g$ is a function defined on $\{f(x) : x \in S\} \cup \{L\}$ that is continuous at $L$, then $\lim_{x \rightarrow a^S} g \circ f(x)$ exists and equals $g(L)$. \\ \\
+\textbf{Theorem 20.6}: Let $f$ be a function defined on a subset $S$ of $\mathbb{R}$, let $a$ be a real number that is the limit of some sequence in $S$, and let $L$ be a real number. Then $\lim_{x \rightarrow a^S} f(x) = L$ if and only if for each $\epsilon > 0$, there exists $\delta > 0$ such that $x \in S$ and $|x - a| < \delta$ imply $|f(x) - L| < \epsilon.$ \\ \\
+\textbf{Corollary 20.7}: Let $f$ be a function defined on $J \backslash \{a\}$ for some open interval $J$ containing $a$, and let $L$ be a real number. Then $\lim_{x \rightarrow a} f(x) = L$ if and only if for each $\epsilon > 0$, there exists $\delta > 0$ such that $0 < |x - a| < \delta$ implies $|f(x) - L| < \epsilon$. \\ \\
+\textbf{Corollary 20.8}: Let $f$ be a function defined on some interval $(a, b)$, and let $L$ be a real number. Then $\lim_{x \rightarrow a^+} f(x) = L$ if and only if for each $\epsilon > 0$ there exists $\delta > 0$ such that $0 < x < a + \delta$ implies $|f(x) - L| < \epsilon$. \\ \\
+\textbf{Theorem 20.10}: Let $f$ be a function defined on $J \backslash \{a\}$ for some open interval $J$ containing $a$. Then $\lim_{x \rightarrow a} f(x)$ exists if and only if the limits $\lim_{x \rightarrow a^+} f(x) = L$ and $\lim_{x \rightarrow a^-} f(x) = L$ both exist and are equal, in which case all three limits are equal.
+\section*{Differentiation}
+\textbf{Definition 28.1}: Let $f$ be a real-valued function defined on an open interval containing a point $a$. We say \textbf{$f$ is differentiable at $a$}, or \textbf{$f$ has a derivative at $a$}, if the limit $$\lim_{x \rightarrow a} \frac{f(x) - f(a)}{x - a}$$ exists and is finite. If it exists and is finite, $$f'(a) = \lim_{x \rightarrow a} \frac{f(x) - f(a)}{x - a}.$$ \\
+Since $f'$ exists whenever $f$ is differentiable, $\Dom{f'} \subseteq \Dom{f}$. \\ \\
+\textbf{Theorem 28.2}: If $f$ is differentiable at a point $a$, then $f$ is continuous at $a$. \\ \\
+\textbf{Theorem 28.3}: Let $f$ and $g$ be functions that are differentiable at the point $a$. Each of the functions $cf$ [$c$ is a constant], $f + g, fg$ and $f / g$ is also differentiable at $a$, except $f /g$ if $g(a) = 0$ since $f / g$ is not defined at $a$ in this case. The formulas are \begin{enumerate}
+    \item $(cf)'(a) = c \cdot f'(a)$;
+    \item $(f + g)'(a) = f'(a) + g'(a)$;
+    \item (product rule) $(fg)'(a) = f(a)g'(a) + f'(a)g(a)$;
+    \item (quotient rule) $(f/g)'(a) = [f'(a)g(a) - f(a)g'(a)]/g^2(a)$
+\end{enumerate} $ $ \\
+\textbf{Theorem 28.4 - (Chain Rule)}: If $f$ is differentiable at $a$ and $g$ is differentiable at $f(a)$, then the composite function $g \circ f$ is differentiable at $a$ and we have $(g \circ f)'(a) = g'(f(a)) \cdot f'(a)$. \\ \\
+Read full proof of theorem 28.4 (Chain Rule) in the book. \\ \\
+\textbf{Theorem 29.1}: If $f$ is defined on an open interval containing $x_0$, if $f$ assumes its maximum or minimum at $x_0$, and if $f$ is differentiable at $x_0$, then $f'(x_0) = 0$. \\ \\
+\textbf{Theorem 29.2 - Rolle's Theorem}: Let $f$ be a continuous function on $[a, b]$ that is differentiable on $(a, b)$
+and satisfies $f(a) = f(b)$. There exists [at least one] $x$ in $(a, b)$ such that $f'(x) = 0$. \\ \\
+\textbf{Theorem 29.3 - Mean Value Theorem}: Let $f$ be a continuous function on $[a, b]$ that is differentiable on $(a, b)$. Then there exists [at least one] $x$ in $(a, b)$ such that $$f'(x) = \frac{f(b) - f(a)}{b - a}.$$ \\
+\textbf{Corollary 29.4}: Let $f$ be a differentiable function on $(a, b)$ such that $f'(x) = 0$ for all $x \in (a, b)$. Then $f$ is a constant function on $(a, b)$. \\ \\
+\textbf{Corollary 29.5}: Let $f$ and $g$ be differentiable functions on $(a, b)$ such that $f' = g'$ on $(a, b)$. Then there exists a constant $c$ such that $f(x) = g(x) + c$ for all $x \in (a, b)$. \\ \\
+We make distinctions between \textbf{strictly increasing} and \textbf{increasing}, and \textbf{strictly decreasing} and \textbf{decreasing} when talking about a function over an interval $I$. \\ \\
+\textbf{Corollary 29.7}: Let $f$ be a differentiable function on an interval $(a, b)$. Then \begin{enumerate}
+    \item $f$ is \textbf{strictly increasing} if $f'(x) > 0, \forall x \in (a, b)$;
+    \item $f$ is \textbf{strictly decreasing} if $f'(x) < 0, \forall x \in (a, b)$;
+    \item $f$ is \textbf{increasing} if $f'(x) \geq 0, \forall x \in (a, b)$;
+    \item $f$ is \textbf{decreasing} if $f'(x) \geq 0, \forall x \in (a, b)$.
+\end{enumerate} $ $ \\
+\textbf{Theorem 29.8 - Intermediate Value Theorem for Derivatives}: Let $f$ be a differentiable function on $(a, b)$. If $a < x_1 < x_2 < b$, and if $c$ lies between $f'(x_1)$ and $f'(x_2)$, there exists [at least one] $x$ in $(x_1, x_2)$ such that $f'(x) = c$. \\ \\
+\textbf{Theorem 29.9}: Let $f$ be a one-to-one continuous function on an open interval $I$, and let $J = f(I)$. If $f$ is differentiable at $x_0 \in I$ and if $f'(x_0) \neq 0$, then $f^{-1}$ is differentiable at $y_0 = f(x_0)$ and $$(f^{-1})'(y_0) = \frac{1}{f'(x_0)}.$$ \\
+\textbf{Theorem 30.1 - Generalized Mean Value Theorem}: Let $f$ and $g$ be continuous functions on $[a, b]$ that are differentiable
+on $(a, b)$. Then there exists [at least one] $x$ in $(a, b)$ such that $$f'(x)[g(b) - g(a)] = g'(x)[f(b) - f(a)].$$ \\
+\textbf{Theorem 30.2 - L’Hospital’s Rule}: Let $s$ signify $a, a^+, a^-, \infty$ or $-\infty$ where $a \in \mathbb{R}$, and suppose $f$ and $g$ are differentiable functions for which $\lim_{x \rightarrow s} \frac{f'(x)}{g'(x)} = L$. If $$\lim_{x \rightarrow s} f(x) = \lim_{x \rightarrow s} g(x) = 0$$ or if $$\lim_{x \rightarrow s} |g(x)| = +\infty,$$ then $\lim_{x \rightarrow s} \frac{f(x)}{g(x)} = L.$ \\ \\
+\subsection*{Topological Concepts in Metric Spaces}
+\textbf{Definition 13.1}: Let $S$ be a set, and suppose $d$ is a function defined for all pairs $(x, y)$ of elements from $S$ satisfying \begin{enumerate}
+    \item[D1.] $d(x, x) = 0$ for all $x \in S$ and $d(x, y) > 0$ for distinct $x, y \in S$.
+    \item[D2.] $d(x, y) = d(y, x)$ for all $x, y \in S$.
+    \item[D3.] $d(x, z) \leq d(x, y) + d(y, z)$ for all $x, y, z \in S$.
+\end{enumerate}
+Such a function $d$ is called a \textbf{distance function} or a \textbf{metric} on $S$. A metric space $S$ is a set $S$ together with a metric on it. Properly speaking, the \textbf{metric space} is the pair $(S, d)$ since a set $S$ may well have more than one metric on it. \\ \\
+\textbf{Definition 13.2}: A sequence $(s_n)$ in a metric space $(S, d)$ \textbf{converges} to $s$ in $S$ if $\lim_{n \rightarrow \infty} d(s_n, s) = 0$. A sequence $(s_n)$ in $S$ is a \textbf{Cauchy sequence} if for each $\epsilon > 0$ there exists an $N$ such that $m, n > N$ implies $d(s_m, s_n) < \epsilon$. \\ 
+The metric space $(S, d)$ is said to be \textbf{complete} if every Cauchy sequence in $S$ converges to some element in $S$. \\ \\
+\textbf{*** Notation} We will write $(x^{(n)})$ for a sequence of $(x_j)$. \\ \\
+\textbf{Lemma 13.3}: A sequence $(x^{(n)})$ in $\mathbb{R}^k$ converges if and only if for each $j = 1, 2, \dots, k$, the sequence $(x^{(n)}_j)$ converges in $\mathbb{R}$. A sequence $(x^{(n)})$ in $\mathbb{R}^k$ is a Cauchy sequence if and only if each sequence $(x^{(n)}_j)$ is a Cauchy sequence in $\mathbb{R}$. \\ \\
+\textbf{Theorem 13.4}: Euclidean $k-$space $\mathbb{R}^k$ is complete. \\ \\
+\textbf{Theorem 13.5 - Bolzano-Weierstrass Theorem}: Every bounded sequence in $\mathbb{R}^k$ has a convergent subsequence. \\ \\
+\textbf{Definition 13.6}: Let $(S, d)$ be a metric space. Let $E$ be a subset of $S$. An element $s_0 \in E$ is \textbf{interior} to $E$ if for some $r > 0$ we have $$\{s \in S: d(s, s_0) < r\} \subseteq E.$$ We write $E \circ$ for the set of points in $E$ that are interior to $E$. The set $E$ is \textbf{open in} $S$ if every point in $E$ is interior to $E$, i.e., if $E = E \circ$. \\ \\
+A point is interior to $E$ if it is just some point that is not along the edge (an endpoint) of $E$. \\ \\
+\textbf{Discussion 13.7}: For some metric space $(S, d)$, \begin{enumerate}
+    \item[(i)] $S$ is open in $S$.
+    \item[(ii)] The empty set $\emptyset$ is open in $S$.
+    \item[(iii)] The union of any collection of open sets is open.
+    \item[(iv)] The intersection of finitely many open sets is again an open set.
+\end{enumerate} $ $ \\
+\textbf{Definition 13.8}: Let $(S, d)$ be a metric space. A subset $E$ of $S$ is \textbf{closed} if its complement $S \backslash E$ is an open set. In other words, $E$ is closed if $E = S \backslash U,$ where $U$ is an open set. \\ \\
+The \textbf{closure} $E^-$ of a set $E$ is the intersection of all closed sets containing $E$. The \textbf{boundary} of $E$ is the set $E^- \backslash E \circ$; points in this set are called \textbf{boundary points} of $E$. \\ \\
+\textbf{Proposition 13.9}: Let $E$ be a subset of a metric space $(S, d)$. \begin{enumerate}
+    \item[(a)] The set $E$ is closed if and only if $E = E^-$.
+    \item[(b)] The set $E$ is closed if and only if it contains the limit of every convergent sequence of points in $E$.
+    \item[(c)] An element is in $E^-$ if and only if it is the limit of some sequence of points in $E$.
+    \item[(d)] A point is in the boundary of $E$ if and only if it belongs to the closure of both $E$ and its complement.
+\end{enumerate} $ $ \\
+\textbf{Theorem 13.10}: Let $(F_n)$ be a decreasing sequence [i.e., $F1 \supseteq F2 \supseteq \dots$] of closed bounded nonempty sets in $\mathbb{R}^k$. Then $F = \cap_{n = 1}^\infty F_n$ is also closed,
+bounded and nonempty. \\ \\
+\textbf{Definition 13.11}: Let $(S, d)$ be a metric space. A family $\mathcal{U}$ of open sets is said to be an \textbf{open cover for a set $E$} if each point of $E$ belongs to at least one set in $\mathcal{U}$, i.e., $$E \subseteq \cup \{U : U \in \mathcal{U}\}.$$ \\
+A \textbf{subcover} of $U$ is any subfamily of $U$ that also covers $E$. A cover or subcover is \textbf{finite} if it contains only finitely many sets; the sets themselves may be infinite. \\ \\
+A set $E$ is \textbf{compact} if every open cover of $E$ has a finite subcover of $E$. \\ \\
+\textbf{Theorem 13.12 - Heine-Borel Theorem}: A subset $E$ of $\mathbb{R}^k$ is compact if and only if it is closed and bounded. \\ \\
+A set $F$ is a \textbf{$k-$cell} if there exist closed intervals $[a_1, b_1], [a_2, b_2], \dots, [a_k, b_k]$ so that \\ $$F = \{x \in \mathbb{R}^k : x_j \in [a_j, b_j], j = 1, 2, \dots, k\}.$$ $F$ is sometimes written as $F = [a_1, b_1] \times [a_2, b_2] \times \dots \times [a_k, b_k]$. \\ \\
+The \textbf{diameter} of $F$ is $$\delta = \left[ \sum_{j = 1}^k (b_j - a_j)^2\right]^{1/2};$$ that is, $\delta = \Sup \{d(x, y) : x, y \in F\}.$ \\ \\
+\textbf{Proposition 13.13}: Every $k-$cell $F$ in $\mathbb{R}^k$ is compact.
+\section*{Sequences and Series of Functions}
+Given a sequence $(a_n)^\infty_{n = 0}$ of real numbers, the series $\sum_{n = 0}^\infty a_nx^n$ is called a \textbf{power series}. \\ \\
+We use the convention that $0^0 = 1$. \\ \\
+It turns out that, given any sequence $(a_n)$, one of the following
+holds for its power series: \begin{enumerate}
+    \item[(a)] The power series converges for all $x \in \mathbb{R}$;
+    \item[(b)] The power series converges only for $x = 0$;
+    \item[(c)] The power series converges for all $x$ in some bounded interval centered at 0; the interval may be open, half-open or closed.
+\end{enumerate} $ $ \\
+\textbf{Theorem 23.1}: For the power series $\sum_{n = 0}^\infty a_nx^n$, let $\beta = \lim \Sup |a_n|^{1/n}$ and $R = \frac{1}{\beta}$. [If $\beta = 0$ we set $R = +\infty$, and if $\beta = +\infty$ we set $R = 0$.] Then \begin{enumerate}
+    \item The power series converges for $|x| < R$;
+    \item The power series diverges for $|x| > R$.
+\end{enumerate} $ $ \\
+$R$ is called the \textbf{radius of convergence} for the power series. \\ \\
+$\lim_{n \rightarrow \infty} \sum_{k = 0}^n a_kx^k$ \textbf{converges uniformly} to $\sum_{k = 0}^\infty a_kx^k$ on sets $[-R_1, R_1]$ such that $0 \leq R_1 < R$. \\ \\
+\textbf{Definition 24.1}: Let $(f_n)$ be a sequence of real-valued functions defined on a set $S \subseteq \mathbb{R}$. The sequence $(f_n)$ \textbf{converges pointwise} [i.e., at each point] to a function $f$ defined on $S$ if $$\lim_{n \rightarrow \infty} f_n(x) = f(x), \forall x \in S.$$ We often write $\lim f_n = f$ pointwise [on $S$] or $f_n \rightarrow f$ pointwise [on $S$]. \\ \\
+\textbf{Definition 24.2}: Let $(f_n)$ be a sequence of real-valued functions defined on a set $S \subseteq \mathbb{R}$. The sequence $(f_n)$ \textbf{converges uniformly} on $S$ to a function $f$ defined on $S$ if for each $\epsilon > 0$ there exists a number $N$ such that $|f_n(x) - f(x)| < \epsilon$ for all $x \in S$ and all $n > N$. \\ \\
+We write $\lim f_n = f$ \textbf{uniformly on $S$} or $f_n \rightarrow f$ \textbf{uniformly on $S$}. \\ \\
+\textbf{Theorem 24.3}: The uniform limit of continuous functions is continuous. More precisely, let $(f_n)$ be a sequence of functions on a set $S \subseteq \mathbb{R}$, suppose $f_n \rightarrow f$ uniformly on $S$, and suppose $S = \Dom(f)$. If each $f_n$ is continuous at $x_0$ in $S$, then $f$ is continuous at $x_0$. [So if each $f_n$ is continuous on $S$, then $f$ is continuous on $S$.] \\ \\
+A generalization of Theorem 24.3 is that limits can be interchanged (order of limits can be changed). \\ \\
+Famous ``$\frac{\epsilon}{3}$ argument'': $$|f(x) - f(x_0)| \leq |f(x) - f_n(x)| + |f_n(x) - f_n(x_0)| + |f_n(x_0) - f(x_0)|.$$ \\
+\textbf{Remark 24.4}: Uniform convergence can be reformulated as follows. A sequence $(f_n)$ of functions on a set $S \subseteq \mathbb{R}$ converges uniformly to a function $f$ on $S$ if and only if $\lim_{n \rightarrow \infty} \Sup\{|f(x) - f_n(x)| : x \in S\} = 0$. \\ \\
+\textbf{Theorem 25.2}: Let $(f_n)$ be a sequence of continuous functions on $[a, b]$, and suppose $f_n \rightarrow f$ uniformly on $[a, b]$. Then $$\lim_{n \rightarrow \infty} \int_a^b f_n(x) dx = \int_a^b f(x)dx.$$ \\
+\textbf{Definition 25.3}: A sequence $(f_n)$ of functions defined on a set $S \subseteq \mathbb{R}$ is \textbf{uniformly
+Cauchy on $S$} if for each $\epsilon > 0$, there exists a number $N$ such that $|f_n(x) - f_m(x)| < \epsilon$ for all $x \in S$ and all $m, n > N$. \\ \\
+\textbf{Theorem 25.4}: Let $(f_n)$ be a sequence of uniformly Cauchy functions defined on a set $S \subseteq \mathbb{R}$. Then there exists a function $f$ on $S$ such that $f_n \rightarrow f$ uniformly on $S$. \\ \\
+If the sequence of partial sums converges uniformly on a set $S$ to $\sum^\infty_{k = 0} g_k$, then we say the \textbf{series is uniformly convergent on $S$}. \\ \\
+\textbf{Theorem 25.5}: Consider a series $\sum^\infty_{k = 0} g_k$ of functions on a set $S \subseteq \mathbb{R}$. Suppose
+each $g_k$ is continuous on $S$ and the series converges uniformly on $S$. Then the series $\sum^\infty_{k = 0} g_k$ represents a continuous function on $S$. \\ \\
+\textbf{Theorem 25.6}: If a series $\sum^\infty_{k = 0} g_k$ of functions satisfies the Cauchy criterion uniformly on a set $S$, then the series converges uniformly on $S$. \\ \\
+\textbf{25.7 - Weierstrass M-Test}: Let $(M_k)$ be a sequence of nonnegative real numbers where $\sum M_k < \infty$. If $|g_k(x)| \leq M_k$ for all $x$ in a set $S$, then $\sum g_k$ converges
+uniformly on $S$.
+\section*{Integration}
+\textbf{Definition 32.1}: Let $f$ be a bounded function on a closed interval $[a, b]$. For $S \subseteq [a, b]$, we adopt the notation $$M(f,S) = \Sup\{f(x) : x \in S\} \text{ and } m(f,S) = \Inf\{f(x) : x \in S\}.$$
+A \textbf{partition} of $[a, b]$ is any finite ordered subset $P$ having the form $$P = \{a = t_0 < t_1 < \dots < t_n = b\}.$$ \\
+The \textbf{upper Darboux sum} $U(f,P)$ of $f$ with respect to $P$ is the sum $$U(f,P) = \sum^n_{k = 1} M(f, [t_{k - 1}, t_k]) \cdot (t_k - t_{k - 1}),$$ and the \textbf{lower Darboux sum} $L(f,P)$ is $$L(f,P) = \sum^n_{k = 1} m(f, [t_{k - 1}, t_k]) \cdot (t_k - t_{k - 1}).$$ \\
+The \textbf{upper Darboux integral} $U(f)$ of $f$ over $[a, b]$ is defined by $$U(f) = \Inf\{U(f, P) : P \text{ is a partition of } [a, b]\},$$ and the \textbf{lower Darboux integral} is defined by $$L(f) = \Sup\{L(f, P) : P \text{ is a partition of } [a, b]\}.$$
+$$\int_a^b f = \int_a^b f(x)dx = L(f) = U(f)$$ is called the \textbf{Darboux integral}. \\ \\
+\textbf{***} If the upper and lower integrals agree, then the function is integrable. \\ \\
+\textbf{Lemma 32.2}: Let $f$ be a bounded function on $[a, b]$. If $P$ and $Q$ are partitions of $[a, b]$ and $P \subseteq Q$, then
+$$L(f,P) \leq L(f,Q) \leq U(f,Q) \leq U(f,P).$$ \\
+\textbf{Lemma 32.3}: If $f$ is a bounded function on $[a, b]$, and if $P$ and $Q$ are partitions of $[a, b]$, then $L(f,P) \leq U(f,Q).$ \\ \\
+$L(f)$ is the supremum (least upper bound) of $\{L(f, P) : P \text{ is a partition of } [a, b]\}$ and $U(f)$ is the infimum of $\{U(f, P) : P \text{ is a partition of } [a, b]\}$. \\ \\
+\textbf{Theorem 32.4}: If $f$ is a bounded function on $[a, b]$, then $L(f) \leq U(f)$. \\ \\
+\textbf{Theorem 32.5}: A bounded function $f$ on $[a, b]$ is integrable if and only if for each $\epsilon > 0$ there exists a partition $P$ of $[a, b]$ such that $U(f,P) - L(f,P) < \epsilon$. \\ \\
+\textbf{Definition 32.6}: The \textbf{mesh} of a partition $P$ is the maximum length of the subintervals comprising $P$. Thus if $P = \{a = t_0 < t_1 < \dots < t_n = b\}$, then $$\Mesh(P) = \max\{t_k - t_{k - 1} : k = 1, 2, \dots, n\}.$$ \\
+\textbf{Theorem 32.7}: A bounded function $f$ on $[a, b]$ is integrable if and only if for each $\epsilon > 0$ there exists a $\delta > 0$ such that $$\Mesh(P) < \delta \rightarrow U(f,P) - L(f,P) < \epsilon,$$ for all partitions $P$ of $[a, b]$. \\ \\
+\textbf{Definition 32.8}: Let $f$ be a bounded function on $[a, b]$, and let $P = \{a = t_0 < t_1 < \dots < t_n = b\}$ be a partition of $[a, b]$. A \textbf{Riemann sum} of $f$ associated with the partition $P$ is a sum of the form $$\sum_{k = 1}^n f(x_k)(t_k - t_{k - 1}),$$ where $x_k \in [t_{k - 1}, t_k]$ for $k = 1, 2, \dots, n$. \\ \\
+In the above definition, $x_k$ is arbitrary, so there are infinitely many valid vices of $x_k$. \\ \\
+The function $f$ is \textbf{Riemann integrable} on $[a, b]$ if there exists a number $r$ with the following property. For each $\epsilon > 0$ there exists $\delta > 0$ such that $$|S - r| < \epsilon$$ for every Riemann sum $S$ of $f$ associated with a partition $P$ having $\Mesh(P) < \delta$. The number $r$ is the \textbf{Riemann integral} of $f$ on $[a, b]$ and will be provisionally written as $\mathcal{R}\int_a^b f$. \\ \\
+\textbf{Theorem 32.9}: A bounded function $f$ on $[a, b]$ is Riemann integrable if and only if it is [Darboux] integrable, in which case the values of the integrals agree. \\ \\
+\textbf{Corollary 32.9}: Let $f$ be a bounded Riemann integrable function on $[a, b]$. Suppose $(S_n)$ is a sequence of Riemann sums, with corresponding partitions $P_n$, satisfying $\lim_n \Mesh(P_n) = 0$. Then the sequence $(S_n)$ converges to $\int_a^b f.$
+\section*{Rudin's Principles of Mathematical Analysis}
+\subsubsection*{Uniform Convergence and Integration}
+\textbf{Theorem 7.16}: Let $(a_n)$ be monotonically increasing on $[a, b]$. Suppose $f_n$ on $[a, b]$ for $n = 1, 2, 3, \dots$, and suppose $f_n \rightarrow f$ uniformly on $[a, b]$. Then $f$ exists on $[a, b]$, and $$\int_a^b f(x) dx = \lim_{n \rightarrow \infty} \int_a^b f_n(x) dx.$$
+\subsubsection*{Uniform Convergence and Differentiation}
+\textbf{Theorem 17.7}: Suppose $(f_n)$ is a sequence of differentiable functions on $[a, b]$ such that $(f_n(x_0))$ converges for some point $x_0,$ on $[a, b]$. If $(f_n')$ converges uniformly on $[a, b]$, then $(f_n)$ converges uniformly on $[a, b]$, to a function $f$, and $$f'(x) = \lim_{n \rightarrow \infty} f_n'(x)$$ \\ \\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
