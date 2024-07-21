@@ -1,0 +1,522 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{relsize}
+\usepackage{titlesec}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xcolor}
+\usepackage{enumerate}
+\usepackage[T1]{fontenc}
+\usepackage{esint}
+\usepackage{titling}
+\usepackage{changepage}
+\usepackage{mathrsfs}
+\usepackage{biblatex}
+\usepackage{float}
+\usepackage{soul,color,xcolor}
+\usepackage{esvect}
+
+\usepackage[margin=1.0in]{geometry}
+
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\C}{\mathbb{C}}
+\DeclareMathOperator{\F}{\mathbb{F}}
+\DeclareMathOperator{\PP}{\mathbb{P}}
+
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\ang}{ang}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\win}{Win}
+
+\title{Math 185 Notes}
+\author{Henry Yan}
+\date{January 2024}
+
+\begin{document}
+
+\maketitle
+
+\section*{Complex Numbers and Geometry}
+\textbf{Definition - Complex Numbers}: We define complex numbers as \begin{enumerate}
+    \item The underlying set: pairs $(x, y)$ of real numbers
+    \item Addition: $(x, y) + (u, v) = (x + u, y + v)$
+    \item The multiplication operation $\cdot: \C \times \C \rightarrow \C$ is given by $(x, y)(u, v) = (xu - yv, xv + yu)$
+\end{enumerate} $ $ \\
+\textbf{Theorem}: Addition is commutative, associative, and $\R$-linear. Multiplication is commutative, associative, and distributive for addition. \\ \\
+\textbf{Notations and Definitions - Complex Conjugate}: \begin{enumerate}
+    \item $0$ stands for $(0, 0)$.
+    \item $1$ stands for $(1, 0)$.
+    \item $\R$ can be identified with $\R \times 0 \subset \C$
+    \item $i$ stands for $(0, 1).$
+    \item By definition, $(x, y) = x + iy$, where $i = \sqrt{-1}$.
+    \item For $z = x + iy$, $x = \re(z)$ and $y = \im(z)$.
+    \item Define the \textit{complex conjugate} $\overline{z} := x - iy.$
+\end{enumerate} $ $ \\
+\textbf{Proposition}: \begin{enumerate}
+    \item $\re(\overline{z}w)$ is the (real) dot product of the vectors $z = (x, y)$ and $w = (u, v)$ in $\R^2$. 
+    \item $\im(\overline{z}w)$ is the cross product of the same.
+    \item $z\overline{z}$ is always real, and is the square of the length of $z$, i.e. $z\overline{z} = |z|^2 = x^2 + y^2$
+\end{enumerate} $ $ \\
+\textbf{Definition - Modulus, Argument}: The \textit{modulus} $|z| = \sqrt{x^2 + y^2}$ of $z = (x, y)$ is the length of $z$. The argument of $z$ is the angle formed with the $x$-axis, not define for $z = 0$. \\ \\
+\textbf{Corollary}: Every nonzero complex number is invertible for multiplication, i.e., $$z \cdot \frac{\overline{z}}{|z|^2} = 1.$$ \\
+\textit{Polar representation} of complex numbers $z = (x, y) = x + iy = r(\cos{\theta} + i\sin{\theta})$. \\ \\
+Multiplication in the polar representation is then $$(\cos{\theta_1} + i\sin{\theta_1}) \cdot (\cos{\theta_2} + i\sin{\theta_2}) = \cos(\theta_1 + \theta_2) + i\sin(\theta_1 + \theta_2)$$ \\
+\textbf{Triangle Inequality:} $|z + w| \leq |z| + |w|$. \\ \\
+\textbf{Parallelogram Law:} $|z_1 + z_2|^2 + |z_1 - z_2|^2 = 2(|z_1|^2 + |z_2|^2)$. \\ \\
+Define a function $\exp: \C \rightarrow \C$ for $z = x + iy$ by $$\exp(z) = e^z = e^x(\cos{y} + i \sin y).$$ Then $|\exp(z)| = e^{\re(z)}$, $\ang(\exp z) = \im(z)$. \\ \\
+If $z = re^{i \theta}$, then $|z| = r$, and $\ang(z) = \theta$. $|z^n| = |z|^n$, $\ang(z^n) = n \ang(z)$.  \\ \\
+\textbf{Theorem}: $\exp(z + w) = \exp(z) \cdot \exp(w)$. \\ \\
+\textbf{Definition - $n$-th Roots}: The \textit{$n$-th roots of unity} of a complex number $z = re^{i\theta}$ are the complex solutions of the equation $w^n = z.$ The $n$ roots all have modulus $r^{1/n}$ and arguments being one of $$\frac{\theta}{n}, \frac{\theta + 2\pi}{n}, \dots, \frac{\theta + 2(n - 1)\pi}{n}$$ \\ \\
+\textbf{De Moivre's Formula}: $(\cos\theta + i \sin\theta)^n = \cos(n\theta) + i \sin(n\theta)$. \\ \\
+\textbf{Definition - $n$th Roots of Unity}: Set $e_n = e^{2\pi/ni}$. Then the $n$th roots of unity are the solutions to the equation $x^n = 1$ and are $e_n^0 = 1, e_n, e_n^2, \dots, e_n^{n - 1}$. \\ \\
+\textbf{Proposition}: From the above definition, we have that $x^n - 1 = (x - 1)(x - e_n)\dots(x - e_n^{n - 1})$. \\ \\
+The primitive roots of unity of some $z^n = 1$ are the roots of unity $z$ such that $z^m \neq 1$, for all positive integers $m$ smaller than $n$. In particular, they are the integers coprime to $n$. \\ \\
+\textbf{Cardano's Formula}: Let $\Delta = q^2 - p^3$, $f(x) = x^3 - 3px - 2q = 0$ has solutions $$(q + \sqrt{q^2 - p^3})^{1/3} + (q - \sqrt{q^2 - p^3})^{1/3}.$$ \\
+\textbf{Proposition}: The equation above has a unique real root if $\Delta \geq 0$. \\ \\
+\textbf{Discussion}: \begin{enumerate}
+    \item Considering some $z \in \C$ as a vector, translation by $\alpha \in \C$ is implemented by addition of $\alpha$, i.e. $z \mapsto z + \alpha$. 
+    \item Rotation by angle $\theta$ (about the origin) is done by multiplication by $e^{i\theta}$, i.e. $z \mapsto ze^{i\theta}$. However, one can note that if we define $p = r\cos\theta, q = r\sin\theta$, then the matrix $\begin{pmatrix}
+        p & -q \\
+        q & p
+    \end{pmatrix}$ defines a rotation by $\theta$ and scaling by $r$ in $\R^2$, as the rotation matrix in 2-dimensions is $\begin{pmatrix}
+        \cos\theta & -\sin\theta \\
+        \sin\theta & \cos\theta
+    \end{pmatrix}$.
+    \item Scaling by $r \in \R$ is done by multiplication by $r$, i.e. $z \mapsto rz$.
+\end{enumerate} $ $ \\
+\textbf{Theorem}: The area of an $n$-gon with vertices $z_1, \dots, z_n$ labeled counter-clockwise is $$\frac{1}{2}\im(\overline{z_1}z_2 + \overline{z_2}z_3 + \dots + \overline{z_{n - 1}}z_n + \overline{z_n}z_1).$$ \\
+\textbf{Two Geometry Theorems}: \begin{enumerate}
+    \item Build squares on the sides of a general quadrilateral. Then the segments joining the centers of opposite squares are mutually orthogonal and have the same length.
+    \item Build equilateral triangles on the sides of a general triangle. Then their centers form an equilateral triangle.
+\end{enumerate} $ $ \\
+\textbf{Definition - Complex Inversion}: A \textit{complex inversion} is a map $z \mapsto 1/z$. Then this maps $\C^\times := \C - \{0\}$ to itself. We also say that a complex inversion interchanges 0 and $\infty$. \\ \\
+An inversion in real geometry is the map $(r, \theta) \mapsto (1/r, \theta)$ in polar coordinates. Then complex inversion is a real inversion with a complex conjugation (the angle is flipped over the $x$-axis). \\ \\
+\textbf{Definition - Clircle}: A clircle is a circle or line. \\ \\
+\textbf{Theorem}: Inversion maps clircles to clircles. \\ \\
+\textbf{Definition - Mobius Transformations (Fractional Linear Maps)}: A \textit{Mobius transformation} $z \mapsto \mu(z) = \frac{az + b}{cz + d}$, where $a, b, c, d \in \C$ are constants such that $ad - bc \neq 0$. \\ \\
+\textbf{Theorem}: \begin{enumerate}
+    \item $\mu$ is a bijection from $\C \setminus \{-d/c\}$ to $\C \setminus \{a/c\}$.
+    \item Composition of maps $\mu \leftrightarrow$ matrix multiplication. If $\mu \leftrightarrow \begin{pmatrix}
+        a & b \\
+        c & d
+    \end{pmatrix}$, $\mu' \leftrightarrow \begin{pmatrix}
+        a' & b' \\
+        c' & d'
+    \end{pmatrix}$, then $\mu \circ \mu' = \begin{pmatrix}
+        a & b \\
+        c & d
+    \end{pmatrix}\begin{pmatrix}
+        a' & b' \\
+        c' & d'
+    \end{pmatrix}$.
+    \item Every Mobius transformation is a composition of rotations, scalings, translations, and inversions.
+\end{enumerate} $ $ \\
+\textbf{Corollary}: Mobius maps take clircles to clircles. \\ \\
+\textbf{Definition - Extended Complex Plane or Riemann Sphere}: The \textit{extended complex plane} or \textit{Riemann sphere} is the set $\hat{\C} := \C \cup \{\infty\}$. It has a topology defined by \begin{enumerate}
+    \item The usual topology in $\C \cong \R^2$.
+    \item Neighborhood of $\infty$ sets containing the exterior of some large disk in $\C$ (and $\infty$.)
+\end{enumerate} $ $ \\
+\textbf{Corollary}: A sequence $z_n$ of complex numbers converge to $\infty \in \hat{\C}$ iff $\lim |z_n| = \infty$ as $n \rightarrow \infty$. \\ \\
+\textbf{Definition - Stereographic Projection, North Pole}: Define a \textit{stereographic projection} by defining $(0, 0, 1) \in \R^3$ as the \textit{North Pole} $N$. Then for every point $s \in S^2$, the 2-dimensional sphere (a hollow sphere embedded in $\R^3$), draw a line connecting $N$ to $s$. The point at height $0, (a, b, 0) \in \R^3$, is the stereographic projection of $s$ onto the complex plane. \\ \\
+It's obvious that the stereographic projection maps the lower hemisphere to the unit disk. \\ \\
+\textbf{Proposition}: Stereographic projection defines a bi-continuous bijection $\hat{\C} \leftrightarrow S^2$ (unit sphere in $\R^3$.) \\ \\
+\textbf{Proposition}: Inversion $z \leftrightarrow 1/z$ corresponds to a rotation of the sphere about the $x$-axis. \\ \\
+\textbf{Corollary}: Mobius transformations define bi-continuous bijective maps $\hat{\C} \rightarrow \hat{\C}$. 
+\section*{Complex Differentiability}
+\textbf{Definition - Differentiable}: Let $I \subset \R$ be an open interval. A function $f: I \rightarrow \R$ is \textit{differentiable} at a point $x_0 \in I$ if $$\lim_{x \rightarrow x_0} \frac{f(x) - f(x_0)}{x - x_0} \text{ exists.}$$ \\
+\textbf{Definition - Differentiable At}: Let $U \subset \R^2$ be an open subset. A function $f: U \rightarrow \R$ is differentiable at $\begin{pmatrix}
+    x_0 \\ y_0
+\end{pmatrix}\in u$ if there exists a linear map $Df: \R^2 \rightarrow \R$ such that $$\frac{\left|\begin{pmatrix}
+    x \\ y
+\end{pmatrix} - \begin{pmatrix}
+    x_0 \\ y_0
+\end{pmatrix} - Df\begin{pmatrix}
+    x - x_0 \\ y - y_0
+\end{pmatrix}\right|}{\left\lVert \begin{pmatrix}
+    x - x_0 \\ y - y_0
+\end{pmatrix} \right\rVert} \rightarrow 0, \text{ as } \begin{pmatrix}
+    x \\ y
+\end{pmatrix} \rightarrow \begin{pmatrix}
+    x_0 \\ y_0
+\end{pmatrix}.$$
+\textbf{Definition - Differential}: $Df$ is the \textit{differential} at $\begin{pmatrix}
+    x_0 \\ y_0
+\end{pmatrix}$. It is the multiplication by the vector $\begin{pmatrix}
+    \frac{\partial f}{\partial x} & \frac{\partial f}{\partial y}
+\end{pmatrix}$. \\ \\
+\textbf{Definition - Jacobian Matrix}: If $f = \begin{pmatrix}
+    u \\ v
+\end{pmatrix}$, $Df$ is the Jacobian matrix $\begin{pmatrix}
+    u_x & u_y \\ v_x & v_y
+\end{pmatrix}$. \\ \\
+The \textbf{differentiability theorem} states that if the partial derivatives $\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}$ are everywhere defines and continuous in $U$, then $f$ is differentiable in $U$. \\ \\
+\textbf{Definition - Complex Differentiable}: $f$ is \textit{complex differentiable} at $z_0 \in U$ if $$\lim_{z \rightarrow z_0} \frac{f(z) - f(z_0)}{z - z_0} \text{ exists.}$$ If this limit exists, we denote it by $f'(z_0).$ \\ \\
+\textbf{Theorem}: If $f, g$ are complex differentiable at $z_0$, so are \begin{enumerate}
+    \item $f + g,$ and $(f + g)'(z_0) = f'(z_0) + g'(z_0)$,
+    \item $f \cdot g,$ and $(f \cdot g)'(z_0) = f'(z_0)g(z_0) + f(z_0)g'(z_0)$,
+    \item $f/g$, when $g'(z_0) \neq 0$, and $(f/g)'(z_0) = \mathlarger{\frac{f'(z_0)g(z_0) - f(z_0)g'(z_0)}{g(z_0)^2}}$.
+\end{enumerate} $ $ \\
+\textbf{Corollary}: We can complex differentiate rational functions $$z \mapsto \frac{P(z)}{Q(z)} (P, Q \text{ polynomials})$$ wherever $Q(z) \neq 0$. \\ \\
+\textbf{Definition - Holomorphic}: $f: U \rightarrow \C$ is \textit{holomorphic} if it's complex-differentiable everywhere in (the open set) $U \subseteq \C$. \\ \\
+\textbf{Proposition}: Let $f$ be complex differentiable at $z_0 = x_0 + i y_0$. Then the map $$\begin{pmatrix}
+    \re{f} \\
+    \im{f}
+\end{pmatrix}: \R^2 \rightarrow \R^2$$ is real-differentiable at $(x_0, y_0)$. \\ \\
+\textbf{Theorem}: $z = x + iy \mapsto f(z) = w = u + iv$ is complex differentiable at $z_0$ iff the map $(x, y) \mapsto (u, v)$ is real-differentiable at $(x_0, y_0)$ and satisfies the Cauchy-Riemann, or CR for short, equations. \\ \\
+\textbf{Definition - Cauchy-Riemann Equations}: The \textit{Cauchy-Riemann equations} are $$u_x = v_y, v_x = -u_y.$$ \\
+\textbf{Definition - Cauchy-Riemann Equations in Polar Coordinates}: The \textit{Cauchy-Riemann equations in polar coordinates} are $$ru_r = v_\theta, u_\theta = -rv_r.$$ \\
+\textbf{Proposition}: The set of holomorphic maps $f: U \rightarrow \C$ is an algebra: \begin{enumerate}
+    \item $f, g$ holomorphic $\implies k \cdot f + l \cdot g$ is also holomorphic. In particular, this shows that the set of holomorphic maps $f: U \rightarrow \C$ forms a vector space.
+    \item $f, g$ holomorphic $\implies f \cdot g$ is also holomorphic.
+    \item $f, g$ holomorphic $\implies f / g$ is also holomorphic, wherever $g \neq 0$.
+\end{enumerate} This algebra is denoted $\mathcal{O}(U)$. \\\ \\
+\textbf{Theorem}: If $f: U \rightarrow \C$ is holomorphic and twice continuously real-differentiable, the $f'$ is also holomorphic. \\ \\
+\textbf{Theorem}: Holomorphic maps are infinitely differentiable. \\ \\
+\textbf{Definition - Harmonic}: A function $\varphi: U \rightarrow \R$ is \textit{harmonic} if it is twice differentiable and $$\Delta \varphi := \frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} \equiv 0 \text{ in } U.$$ \\ \\
+\textbf{Proposition - Harmonic Conjugate Pair}: If $f(z) = u + iv$ is holomorphic and twice continuously differentiable then $u = \re(f)$ and $v = \im(f)$ are harmonic. In this case, $(u, v)$ are called a \textit{harmonic conjugate pair}. \\ \\
+\textbf{Theorem}: If $u$ is harmonic, then a harmonic conjugate $v$ always exists locally (e.g. in any disk). So harmonic functions are, locally, exactly the real parts of holomorphic functions. \\ \\
+\textbf{Definition - Complex Directional Derivatives}: $$\frac{\partial}{\partial z} := \frac{1}{2} \left( \frac{\partial}{\partial x} + i \frac{\partial}{\partial y} \right), \frac{\partial}{\partial \overline{z}} := \frac{1}{2} \left( \frac{\partial}{\partial x} - i \frac{\partial}{\partial y} \right)$$ \\ \\
+\textbf{Properties of Complex Directional Derivatives}: \begin{enumerate}
+    \item $\mathlarger{\frac{\partial}{\partial z}}(z) = 1$,
+    \item $\mathlarger{\frac{\partial}{\partial z}}(\overline{z}) = 0$,
+    \item $\mathlarger{\frac{\partial}{\partial \overline{z}}}(z) = 0$,
+    \item $\mathlarger{\frac{\partial}{\partial \overline{z}}}(\overline{z}) = 1$,
+    \item $\mathlarger{\frac{\partial}{\partial z}}$ and $\mathlarger{\frac{\partial}{\partial \overline{z}}}$ are linear and satisfy the Leibniz rule: $\mathlarger{\frac{\partial}{\partial z}(fg) = \frac{\partial f}{\partial z} \cdot g + \frac{\partial g}{\partial z} \cdot f}$.
+\end{enumerate} $ $ \\
+\textbf{Proposition}: $f$ is holomorphic $\iff$ $\mathlarger{\frac{\partial f}{\partial \overline{z}}} \equiv 0$. \\ \\
+\textbf{Definition - Polynomials}: A \textit{polynomial} function $(x, y) \mapsto P(x, y)$ is a finite summation of the form $$P(x, y) = \sum_{m, n \geq 0} p_{m, n} x^m y^n, \quad p_{m, n} \in \C$$ and is infinitely differentiable on $\R^2$. \\ \\
+\textbf{Lemma}: $P$ is the zero function iff all $p_{m, n} = 0$. \\ \\
+Every polynomial in $(x, y)$ can be uniquely converted to one in $z, \overline{z}$, and conversely $$\sum p_{m, n}x^m y^n = \sum q_{r, s} z^r \overline{z}^s,$$ where $x = \mathlarger{\frac{z + \overline{z}}{2}}$ and $y = \mathlarger{\frac{z - \overline{z}}{2i}}$, or equivalently, $z = x + iy, \overline{z} = x - iy$. \\ \\
+\textbf{Corollary}: A polynomial function $P(x, y)$ is holomorphic iff it's $(z, \overline{z})$ conversion does not involve $\overline{z}.$ \\ \\
+\textbf{Definition - $\cosh, \sinh$}: \begin{align*}
+    \cos(x + iy) = \cos(x)\cosh(y) - i\sin(x)\sinh(y) \\
+    \sin(x + iy) = \sin(x)\cosh(y) + i\cos(x)\sinh(y)
+\end{align*}
+\textbf{Proposition}: $\cos$ and $\sin$ can be written in complex exponential form, \begin{align*}
+    \cos(z) = \frac{e^{iz} + e^{-iz}}{2} \\
+    \sin(z) = \frac{e^{iz} - e^{-iz}}{2i} \\
+    \exp(iz) = \cos(z) + i \sin(z)
+\end{align*} $ $ \\
+\textbf{Definition - Closed Loop}: For $U \subset \C$, a continuous map $f: S' \rightarrow U$ is called a \textit{closed loop} in $U$ if $f$ can be extended to an $F: S' \times [0, 1] \rightarrow U$ with $F|_{S' \times \{0\}} = f, F|_{S' \times \{1\}} = c$, for some constant $c$. \\ \\
+Examples of closed loops include filled rectangles, disks, convex and star shaped sets. A non-example is annulus, the region bounded between two concentric circles. \\ \\
+\textbf{Definition - Simply Connected}: $U \in \C$ is simply connected if \begin{enumerate}
+    \item It is path connected,
+    \item Every closed loop in $U$ can be continuously deformed to a constant loop.
+\end{enumerate} $ $ \\
+\textbf{Theorem}: Let $U \in \C$ be open and bounded. Then $U$ is simply connected iff the complement $\C \setminus U$ is connected. \\ \\
+\textbf{Definition - Branch Cut, Principle Branch}: Roughly speaking, we can make some cuts in the domain to disallow ``problematic'' loops, as the complement should be simply connected. A standard \textit{branch cut} for log is the negative real axis. We can do this by defining $\log(z) = \log(r) + i\theta,$ with $-\pi < \theta < \pi.$ This makes $\log$ a single valued holomorphic function, and this branch is called the \textit{principle branch} of $\log$. \\ \\
+The map $z \mapsto w = z^n$ is $n$-to-one (except at 0). This is because the ``inverse'' map $w \mapsto \sqrt[n]{w}$, or $(r, \theta) \mapsto (r^{1/n}, \text{``}\theta/n\text{''})$. \\ \\
+\textbf{Proposition}: $w \mapsto w^{1/n}$ defines a multi-valued holomorphic map away from $w = 0$ (0 is a branch point). \\ \\
+\textbf{Definition - $z^\alpha$}: For $z, \alpha \in \C$, $z \neq 0$, define $$z^\alpha = \exp(\alpha \log z),$$ which is multi-valued holomorphic in $z$ (unless $\alpha \in \Z$). \\ \\
+\textbf{Definition - $\arccos$}: Define $z = \arccos{w}$ if $\cos(z) = w.$ \\ \\
+\textbf{Proposition}: $\cos z_1 = \cos z_2 \iff \begin{cases}
+    z_1 - z_2 \in 2\pi \Z \\
+    z_1 + z_2 \in 2\pi \Z.
+\end{cases}$ \\
+\textbf{Corollary}: $\cos$ is bijective. \\ \\
+We define $\sin{z} = \cos(z - \pi/2)$. \\ \\
+\textbf{Proposition}: \begin{enumerate}
+    \item $\arccos{w} = -i \ln(w \pm \sqrt{1 - w^2})$
+    \item $\arcsin{w} = -i \ln(iw \pm \sqrt{1 - w^2})$
+    \item $\mathlarger{\arctan{w} = i \ln \left( \sqrt{\frac{1 + iw}{1 - iw}} \right) = \frac{i}{2} \ln \left( \frac{i + w}{i - w} \right)}$.
+\end{enumerate} $ $ \\
+\textbf{Theorem - Function Composition}: For holomorphic functions $f: U \rightarrow \C$ and $g: V \rightarrow \C$, and $f(u) \subset V,$ $g \circ f$ is also holomorphic and $(g \circ f)' = g' \circ f \cdot f'.$ \\ \\
+\textbf{Theorem - Inverse Function}: If $f: U \rightarrow \C$ is holomorphic, $z_0 \in U, f(z_0) = w_0, f'(z_0) \neq 0$, then $f$ is locally invertible, near $z_0$, with holomorphic inverse and $(f^{-1})'(w_0) = 1/f'(z_0).$ \\ \\
+\textbf{Definition - Locally Invertible}: \textit{Locally invertible} means that means that there exist open sets $V, W$, such that $z_0 \in V$ and $w_0 \in W,$ with $f: V \rightarrow W$ bijection and $f^{-1}: W \rightarrow V$ holomorphic. (Note that this is almost trivial if we assume $f$ to have a differentiable inverse, but much more difficult otherwise.)\\ \\
+\textbf{Definition - Conformal}: \textit{Conformal} means angle-preserving. \\ \\
+The real form of the differential of a holomorphic $f: U \rightarrow \C$ is $$\begin{pmatrix}
+    u_x & u_y \\
+    v_x & v_y
+\end{pmatrix} = \begin{pmatrix}
+    p & -q \\
+    q & p 
+\end{pmatrix}$$ where $f' = p + iq.$ \\ \\
+\textbf{Proposition}: A linear map $\R^2 \rightarrow \R^2$ is angle-preserving iff it's matrix has the form above and $(p, q) \neq (0, 0)$. \\ \\
+\textbf{Definition - Conformal}: A differentiable map $f: V \rightarrow \R^2$ is \textit{conformal} if it's locally invertible (with differentiable inverse) and it preserves angles between smooth curves. \\ \\
+\textbf{Theorem}: Conformal maps are precisely the holomorphic maps with nowhere vanishing derivative. \\ \\
+A Möbius map $z \mapsto \frac{az + b}{cz + d}$ is conformal if $z \neq -d/c$. \\ \\
+Exponential map $z \mapsto \exp(z)$ is conformal everywhere. \\ \\
+\textbf{Theorem}: Any harmonic function defined on a simply connected region $U$ has a single-valued harmonic conjugate, unique up to a constant shift ($+C$). \\ \\
+\textbf{Theorem}: If $u(x, y)$ is harmonic in $U \in \C$, then $g(x, y) := u_x - iu_y$ is holomorphic in $U$. \\ \\
+\textbf{Definition - Laplace Equation}: The \textit{Laplace equation} in a region $G$ requires $$\Delta u = u_{xx} + u_{yy} = 0.$$ \\
+\textbf{Theorem}: Let $f: G \rightarrow G'$ be a conformal identification of the regions $G, G'$. Then $\phi: G' \rightarrow \R$ is harmonic iff $\varphi:= \phi \circ f$ is harmonic on $G$. \\ \\
+\textbf{Definition - Series, Sum, Convergent/Divergent}: A \textit{series} is a formal expression $$\sum_{n = 0}^\infty a_n, \sum_{n = A}^\infty a_n, \text{ or } \sum_{n = -\infty}^\infty a_n.$$ The sum of each of these series is $$\lim_{N \rightarrow \infty} \sum_{n = 0}^N a_n, \text{ or } \lim_{N \rightarrow \infty, M \rightarrow \infty} \sum_{n = M}^N a_n.$$ If the sum is finite, then the series is called \textit{convergent}, otherwise it's called \textit{divergent}. \\ \\
+\textbf{Definition - Absolutely Convergent, Conditionally Convergent}: $\sum a_n$ is \textit{absolutely convergent} if $\sum |a_n|$ is convergent. If $\sum a_n$ is convergent but not absolutely convergent, then it is said to be \textit{conditionally convergent}. \\ \\
+\textbf{Basic Properties of Series}: \begin{enumerate}
+    \item $\sum a_n$ converges $\implies a_n \rightarrow 0$ (not $\impliedby$)
+    \item $\sum_{n = 0}^\infty a_n$ converges $\iff \sum_{n = A}^\infty a_n$ converges, for any $A$.
+    \item The sum does not change upon reordering finitely many terms.
+    \item A series of complex numbers converges $\iff$ both it's real and imaginary parts do so.
+    \item $\sum a_n, \sum b_n$ converge $\implies \sum (a_n + b_n)$ converges to their sum.
+    \item If $\sum a_n$ converges absolutely and $|b_n| < |a_n| \implies \sum b_n$ converges absolutely.
+    \item For real sequences $a_n, b_n, c_n$, $a_n \leq b_n \leq c_n,$, and $\sum a_n, \sum c_n$ converges $\implies \sum b_n$ converges and $\sum a_n \leq \sum b_n \leq \sum c_n.$
+    \item Absolute convergence $\implies$ convergence.
+    \item $\sum a_n$ converges absolutely $\implies |\sum_{n = 0}^\infty a_n| \leq \sum_{n = 0}^\infty |a_n|$.
+    \item The sum of an absolutely convergent series does not change upon any reordering of terms (distinction is that one can reorder infinitely many terms).
+\end{enumerate} $ $ \\
+\textbf{Proposition}: If $a_n$ is a decreasing sequence converging to 0, then $\sum_{n = 0}^\infty (-1)^n a_n$ converges. \\ \\
+\textbf{Proposition}: If $\sum a_n$ is conditionally convergent and $a_n$ are real, then reordering can make it sum to any chosen value. \\ \\
+\textbf{Comparison Test}: \begin{enumerate}
+    \item If $\sum a_n$ converges absolutely and $|b_n| < |a_n|$, then $\sum b_n$ converges absolutely.
+    \item $a_n \in \R, \sum a_n = \infty, b_n > a_n \implies \sum b_n = \infty.$
+\end{enumerate} $ $ \\
+\textbf{Proposition - Ratio Test}: \begin{enumerate}
+    \item If $\left| \frac{a_{n + 1}}{a_n}\right| < r < 1$ for large enough $n$, then $\sum a_n$ converges absolutely (the condition that there must exist an $r < 1$ means that we get no information about convergence if $\left| \frac{a_{n + 1}}{a_n}\right| \rightarrow 1$, as $n \rightarrow \infty$).
+    \item If $\left| \frac{a_{n + 1}}{a_n}\right| \geq 1$ for large enough $n$, then $\sum a_n$ diverges.
+\end{enumerate} $ $ \\
+\textbf{Proposition - Integral Test}: Let $f: \R_+ \rightarrow \R$ be decreasing for large $x,$ then $\sum_{n = 1}^\infty f(n)$ converges if $\int_{M}^\infty f(x)dx$ is finite, diverges otherwise. $M$ is any convenient finite margin past which $f$ is decreasing. \\ \\
+If $f$ is decreasing for $x \geq M$, then $$\int_{M + 1}^\infty f(x)dx \leq \sum_{n = M + 1}^\infty f(n) \leq \int_{M}^\infty f(x)dx.$$ \\
+\textbf{Definition - Pointwise, Uniformly}: Let $f_n: D \rightarrow \C$ be a collection of functions, we say that \begin{enumerate}
+    \item $f_n \rightarrow f$ \textit{pointwise} if $\forall x \in D, f_n(x) \rightarrow f(x)$.
+    \item $f_n \rightarrow f$ \textit{uniformly} if $\sup_{x \in D} |f_n(x) - f(x)| \rightarrow 0.$
+\end{enumerate} $ $ \\
+\textbf{Theorem}: If each $f_n$ is continuous and $f_n \rightarrow f$ uniformly then $f$ is continuous. \\ \\
+\textbf{Proposition}: If $f_n: [a, b] \rightarrow \R$ is integrable and $f_n \rightarrow f$ uniformly, then $f$ is integrable and $\int_a^x f_n(t)dt \rightarrow \int_a^x f(t)dt$ uniformly in $x$. \\ \\
+\textbf{Corollary}: $f_n$ continuously differentiable on $D \subset \R^2$, $f_n' \rightarrow g$ uniformly, and $f_n \rightarrow f$, then $f_n \rightarrow f$ uniformly, $f$ is continuously differentiable and $f' \rightarrow g$. \\ \\
+\textbf{Corollary}: If in addition, the $f_n$ are holomorphic, then so is $f$. \\ \\
+\textbf{Definition - Laurent Series}: $s(z) = \sum_{n = -\infty}^\infty a_n(z - a)^n$. \\ \\
+\textbf{Theorem}: If $s(z)$ converges for some $z$ with some $|z - a| = R$ then it converges uniformly (and absolutely) in any disk $$|z - a| \leq r, \text{ for } r < R.$$ Additionally, $s(z)$ is holomorphic for $|z - a| < R$ and may be differentiated term by term, to any order. \\ \\
+\textbf{Definition - Region of Convergence}: The region of convergence of a power series is the largest open set in which it converges. \\ \\
+\textbf{Definition - (Complex) Analytic}: $f: D \rightarrow \C$ is called \textit{(complex) analytic} if, near any $a \in D$, it is the sum of a convergent power series centered at $a$. \\ \\
+\textbf{Proposition}: \begin{enumerate}
+    \item Analytic $\implies$ holomorphic.
+    \item The power series is necessarily the Taylor expansion $$f(z) = \sum_{n = 0}^\infty \frac{f^{(n)}(a)}{n!}(z - a)^n.$$
+\end{enumerate} $ $ \\
+\textbf{Theorem - Hadamard}: The radius of convergence of $$\sum_{n = 0}^\infty a_n z^n$$ is $1/\lim{\sup{\sqrt[n]{|a_n|}}},$ where $1/\infty = 0$, and $1/0 = \infty$. \\ \\
+\textbf{Proposition}: If $a(z) := \sum_{n = 0}^\infty a_n z_n$ converges for $|z| < R,$ then $a(z)$ is analytic in that disk. More precisely, it's Taylor series expansion at $z_0$ converges in the disk $$|z - z_0| < R - |z|.$$ \\
+\textbf{Proposition}: If $\sum a_n z^n$ and $\sum b_n z^n$ converge for $|z| < R$ then so does $$\left( \sum a_n z^n \right) \left( \sum b_n z^n \right) = \sum_{p = 0}^\infty \left( \sum_{k = 0}^p a_k b_{p - k} \right) z^p.$$ \\
+\textbf{Proposition}: If $a(z) = \sum a_n z^n$ converges for small $z$ and $a_0 \neq 0$, then $1/a(z)$ is also analytic at $0$ and it's Taylor expansion is algebraically computable as \begin{align*}
+    b(z) = 1/a(z) &= \sum_{n = 0}^\infty b_n z^n, \text{ for} \\
+    a_0 b_0 &= 1 \\
+    a_0 b_1 + a_1 b_0 &= 0 \\
+    a_0 b_2 + a_1 b_1 +  a_2 b_0 &= 0 \\
+    &\vdots
+\end{align*} $ $ \\
+\textbf{Proposition - Function Composition}: Analyticity is preserved by composition. Moreover, coefficients may be computed algebraically. \\ \\
+\textbf{Proposition - Inverse Functions}: If $a(z) = \sum_{n = 1}^\infty a_n z^n$ converges and $a_1 \neq 0,$ then the map $z \mapsto w = a(z)$ is bijective near $0$ and the inverse map also has a convergent Taylor series $$z = b(w) = \sum_{n = 1}^\infty b_n w^n,$$ whose coefficients are algebraically determined. \\ \\
+\textbf{Proposition}: In the disk $|z| < 1$, we have a convergent expansion $$(1 + z)^\alpha = \sum_{n = 0}^\infty {\alpha \choose n} z^n, \text{ where } {\alpha \choose n} := \frac{\alpha(\alpha - 1)\dots (\alpha - n + 1)}{n!}, \text{ for } \alpha \in \C.$$ \\
+\textbf{Proposition}: If $\sum_{n \geq 0} a_n z^n$ converges and $a_0 \neq 0$, then a choice of $a_0^\alpha$ determines the choice of $(\sum_{n \geq 0} a_n z^n)^\alpha$ as a power series convergent for small $z$. \\ \\
+\textbf{Definition - Valency}: The valency of $\sum_{n = 0}^\infty a_n z^n$ at $z = 0$ is the smallest index $k$ with $a_k \neq 0.$ \\ \\
+\textbf{Corollary}: If $a(z)$ has valency $d > 0$ (so $a(z)$ has no constant term) at $z = 0,$ then $a(z) = r(z)^d$, for some power series $r(z)$ of valency 1 at 0. \\ \\
+\textbf{Theorem}: Analytic functions are conformal except at
+isolated points where they multiply angles by their valency. \\ \\
+\textbf{Properties}: \begin{enumerate}
+    \item Power series are guaranteed to define analytic function within their open region of convergence an open disk.
+    \item On the boundary of the disk of convergence the series may or may not converge and the sum may or may not be analytic.
+    \item Analytic functions have convergent Taylor expansions at any point in their domain which may be any open in $\C$.
+\end{enumerate} $ $ \\
+\textbf{Definition - Principle Part}: The sum series of negative powers, $\sum_{n = -\infty}^{-1} a_n z^n$, is the \textit{principle part} of the Laurent series. \\ \\
+\textbf{Proposition}: If $a(z), b(z)$ are convergent Taylor series near $z = 0$ and $b(z)$ not $\equiv 0$, then $a(z)/b(z)$ has a convergent Laurent expansion near 0 with finite principal part. \\ \\
+\textbf{Definition - Pole, Order}: The sum of the series is analytic in a punctured disk centered at 0 and is said to have a \textit{pole} at 0 (of \textit{order} $N$, if $a_{-N} \neq 0$ but $a_{<-N} = 0).$ \\ \\
+\textbf{Theorem}: The maximal open region of convergence of a Laurent series is an annulus $A_r^R$, or the region defined by $r < |z| < R$, where $R$ is the radius of convergence of the Taylor part, and $r$ is the inverse radius of convergence of $\sum_{n = 1}^\infty a_{-n}w^n$, for $w = 1/z$, or the principle part. Note that if $r \geq R,$ then there is no open annulus of convergence. In particular, if $r = R$, then this case is studied by theory of Fourier series. \\
+Convergence is uniform on any closed annulus in $A_r^R$, the series may be differentiated them by term with the same open region of convergence. \\ \\
+\textbf{Definition - Integral of Differential Forms}: For a vector field $\vec{f}$ defined on $D \supset \gamma([a, b])$, \begin{align*}
+    \int_\gamma \vec{f} \cdot d\vec{\gamma} &:= \int_a^b \vec{f}(\gamma(t)) \cdot \frac{d \vec{\gamma}}{dt} dt \\
+    \int_\gamma \vec{f} \times d\vec{\gamma} &:= \int_a^b \vec{f}(\gamma(t)) \times \frac{d \vec{\gamma}}{dt} dt, 
+\end{align*} where $\vec{\gamma} = \begin{pmatrix}
+    \gamma_1 \\ \gamma_2
+\end{pmatrix}, \mathlarger{\frac{d \vec{\gamma}}{dt}} = \begin{pmatrix}
+    \dot{\gamma_1} \\ \dot{\gamma_2}
+\end{pmatrix}$ \\ \\
+\textbf{Theorem}: The values of these integrals are independent of the parameterization of the path $\gamma$. \\ \\
+\textbf{Stokes's Formula}: For $\vec{\nabla} \times \vec{f}$ the curl of $f$, $$\int_\gamma \vec{f} \cdot d\vec{\gamma} = \int \hspace{-0.5em} \int_D (\vec{\nabla} \times \vec{f})dxdy = \int \hspace{-0.5em} \int_D ((f_2)_x - (f_1)_y)dxdy,$$ where $\vec{\nabla} = \begin{pmatrix}
+    \frac{\partial}{\partial x} \\ \frac{\partial}{\partial y}
+\end{pmatrix}$. \\ \\
+\textbf{Green's Formula}: For $\vec{\nabla} \cdot \vec{f}$ the divergence of $f,$ $$\int_\gamma \vec{f} \times d\vec{\gamma} = \int \hspace{-0.5em} \int_D (\vec{\nabla} \cdot \vec{f})dxdy = \int \hspace{-0.5em} \int_D ((f_1)_x + (f_2)_y)dxdy,$$ for $\vec{\nabla}$ defined the same as above. \\ \\
+\textbf{Corollary}: $D, \vec{f}$ as before. Let $a, b \in D$ and $\delta$ a path from $a$ to $b$ in $D$. \begin{enumerate}
+    \item If $(f_2)_x \equiv (f_1)_y$ in $D$, $\int \vec{f} \cdot d \vec{\delta}$ is independent of $\vec{\delta}$. 
+    \item If $(f_1)_x \equiv -(f_2)_y$ in $D$, $\int \vec{f} \times d \vec{\delta}$ is independent of $\vec{\delta}$. 
+\end{enumerate} $ $ \\
+\textbf{Definition - Riemann Sums}: $$\int_\gamma f(z) dz = \lim_{\max|\Delta  z_i| \rightarrow 0} \sum_{i = 0}^{N - 1} f(e_i)(z_{i + 1} - z_i),$$ where $z_0, \dots, z_N$ are points on $\gamma[a, b], z_0 = \gamma(a), z_N = \gamma(b)$, and $e_i \in$ arc of $\gamma$ between $z_{i}$ and $z_{i + 1}$. \\ \\
+\textbf{Definition - Parametric}: $$\int_\gamma f(z)dz = \int_a^b f(z(t)) z'(t) dt,$$ where $z(t) = \gamma(t)$. \\ \\
+\textbf{Theorem}: The definitions of Riemann sums and parametric above agree. In particular, the limit exists and the second integral is independent of the parameterization. \\ \\
+\textbf{Theorem}: Assume that $f$ is the complex derivative of a holomorphic function $F$. Then $$\int_\gamma f(z)dz = F(\gamma(b)) - F(\gamma(a)).$$ \\
+\textbf{Theorem - Complex Stokes + Greens}: $$\oint_\gamma f(z)dz = \int \negthickspace \int_D \frac{\partial f}{\partial \overline{z}} d\overline{z} dz = 2i \int \negthickspace\int_D \frac{\partial f}{\partial \overline{z}} dx dy,$$ as $d\overline{z} dz = 2i dx dy$. \\ \\
+\textbf{Cauchy's Theorem}: If $f$ is holomorphic in a region $R$ containing a simple loop $\gamma$ which bounds a simply connected subregion $D \subset R$, then $$\oint_\gamma f(z)dz = 0.$$ \\ \\
+\textbf{Corollary}: If $f$ is holomorphic in a simply connected region, then $\int_\delta f(z)dz$ depends only on the endpoints of $\delta$. \\ \\
+\textbf{Complex Fundamental Theorem of Calculus (FDT) - Primitive}: The Complex Fundamental Theorem of Calculus states that $$F(z) := \int_a^z f(x) dx$$ is holomorphic and is a \textit{primitive} of $f$, i.e. $F'(z) = f(z)$. \\ \\
+\textbf{Corollary}: In simply connected regions harmonic functions
+are real parts of single valued holomorphic functions iff have single-valued harmonic conjugates. \\ \\
+\textbf{Theorem - Cauchy's Theorem for Multiply Connected Regions}: $$\int_{C_0} f(z)dz = \int_{C_1} f(z)dz + \int_{C_2} f(z)dz$$ with positive orientation on the contours. \\ \\
+\textbf{Theorem - Cauchy's Integral Formula}: Let $f$ be holomorphic in a simply connected region containing a simple contour $C$ and $w$ a point inside $C$. Then $$\oint_C \frac{f(z)}{z - w}dz = 2\pi i f(w).$$ \\
+\textbf{Corollary}: Assume that $C$ is a circle of radius $R$ centered at $w$. Then $f$ has a power series expansion $$f(z) = \sum_{n = 0}^\infty f_n(z - w)^n$$ with radius of convergence $>R$. \\ \\
+\textbf{Corollary - Cauchy's Formula for Derivatives}: $$f^{(n)}(c) = \frac{n!}{2\pi i} \oint \frac{f(z)}{(z - c)^{n + 1}}d\zeta.$$ \\
+\textbf{Theorem}: $f$ holomorphic in a disk $\implies$ $f$ has a convergent Taylor expansion in that disk. \\ \\
+\textbf{Theorem}: $f_n$ holomorphic, $f_n \xrightarrow{u} f$ in a region $R$ $\implies$ $f$ is holomorphic and $f_n' \xrightarrow{u} f'$. \\ \\
+\textbf{Theorem - Maximum Principle}: Let $f$ be holomorphic in a connected region $R$
+together with its boundary $\partial R,$ $R^d := R \cup \partial R.$ Then $\max|f|$ in $R^d$ is achieved on $\partial R$. Moreover, this is strict unless $f$ is constant. \\ \\
+\textbf{Corollary}: Maximum Principle for $\re{f}, \im{f}$. \\ \\
+\textbf{Definition - Entire}: A function holomorphic on all of $\C$ is called an \textit{entire} holomorphic function. \\ \\
+Clearly, entire holomorphic functions have infinite radius of convergence. \\ \\
+\textbf{Theorem - Liouville's Theorem}: A bounded entire holomorphic function is constant. \\ \\
+\textbf{Fundamental Theorem of Algebra}: Every non-constant complex polynomial $$p(z) = p_nz^n + \dots + p_1z + p_0$$ has at least one complex root, where $p_n \neq 0$. \\ \\
+\textbf{Theorem - Euler}: $$\sin(z) = z \prod_{n = 1}^\infty \left( 1 - \frac{z^2}{n^2 \pi^2} \right)$$ \\
+Expanding, one gets $$\sin(z) = z \left( 1 - \frac{z^2}{\pi^2} \sum_{n = 1}^\infty \frac{1}{n^2} + \frac{z^4}{\pi^4} \sum_{m < n}^\infty \frac{1}{m^2n^2} + \dots \right).$$ Then comparing with the Taylor series expansion of $\sin$, we find that $\sum_{n = 1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$, $\sum_{n = 1}^\infty \frac{1}{n^4} = \frac{\pi^4}{90}$, and one can find $$\sum_{n = 1}^\infty \frac{1}{n^{2k}} = \pi^{2k} q,$$ for some rational $q$. \\ \\
+\textbf{Definition - Punctured Disk, Isolated Singularity}:  A holomorphic function defined on a nonempty \textit{punctured disk} $\Delta_{a, r}^\times := \{z \in \C| 0 < |z - a| < r\}$ is said to have an \textit{isolated singularity} at $z = a$. \\ \\
+\textbf{3 Kinds of Isolated Singularities - Removable Singularities, Poles, Essential Singularities}: \begin{enumerate}
+    \item \textit{Removable} singularities occur when $f$ may be defined at $z = a$, e.g. $f(z) = z^2/z, \sin(z)/z$.
+    \item \textit{Pole}: There exists an integer $n \geq 0$ such that $(z - a)^nf(z)$ has a removable singularity at $z = a$. The smallest such $n$ is the order of the \textit{pole}. Examples include $f(z) = 1/z$, then $zf(z) = 1$ has removable singularity.
+    \item \textit{Essential singularities} are singularities that are neither removable nor poles, e.g. $\exp(1/z)$, $\sin(1/z)$ at $z = 0$.
+\end{enumerate} $ $ \\
+\textbf{Proposition - Meromorphic}: A ratio $r(z) = f(z)/g(z)$ of holomorphic functions (where $g$ is not identically 0) has only removable singularities and poles. Such a function is called \textit{meromorphic}. \\ \\
+\textbf{Riemann's Removable Singularity Theorem}: If $f(t)$ is bounded on the punctured disk $\Delta_{a, r}^\times$ then the singularity at $a$ is removable. Conversely if the singularity is removable, then $f$ must be bounded in some disk around $a$. \\ \\
+\textbf{Laurent Expansion Theorem}: Any holomorphic function $f$ in $\Delta_{a, r}^\times$ has a Laurent series expansion convergent in $\Delta_{a, r}^\times$. The principle part is \begin{enumerate}
+    \item zero $\iff$ singularity is removable,
+    \item finite and nonzero $\iff f$ has a pole at $a$,
+    \item infinite $\iff f$ has an essential singularity at $a$.
+\end{enumerate} $ $ \\
+\textbf{Definition - Residue}:  The coefficient $a_{-1}$ (for $(z - a)^{-1}$) is called the \textit{residue} of $f$ at $a$. In particular, for a meromorphic function $f$ and an isolated singularity $a$, $$\Res_{z = a} f = \frac{1}{2\pi i}\oint_\gamma f(z)dz,$$ where $\gamma$ is a small positively oriented circle around $a$ not including any other singularities on or inside the curve. \\ \\
+\textbf{Residue at a Pole}: Let $f$ have a pole $z = a$ of order $n$, then $h(z) := (z - a)^nf(z)$ is holomorphic at $a$. Then $$\Res_{z = a} f = \frac{1}{(n - 1)!} h^{(n - 1)}(a).$$ $\Res_{z = a} f$ is also the $(n - 1)$st Taylor coefficient of $h$ at $a$. \\ \\
+\textbf{Residue Theorem}: Let $C$ be a simple closed contour, $f$ holomorphic on and inside $C$, except for isolated singularities inside $C$. Then $$\oint_C f(z)dz = 2\pi i \cdot \sum_{a \text{ inside } C} \Res_{z = a} f.$$ \\
+A punctured disk is a special (degenerate) case of an annulus, $$\Delta(a; r, R) = \{z \in \C| r < |z - a| < R\}.$$ \\
+\textbf{Proposition}: A function $f$ holomorphic on $\Delta(a; r, R)$ has a Laurent expansion $$f(z) = \sum_{n = -\infty}^\infty f_n (z - a)^n$$ uniformly convergent compact subsets of $\Delta(a; r, R)$. \\
+An important (surprising?) consequence of this proposition is that some function $f$ can have several distinct Laurent expansions centered at the same point with disjoint open annuli of convergence, separated by singularities. \\ \\
+\textbf{Proposition}: The integral $\oint_C f(z)dz$ for a simple closed curve within the annulus of convergence winding once around the center $a$, is $2\pi i f_{-1}.$ \\ \\
+\textbf{Definition - Multiplicity}: Define the \textit{multiplicity} of a zero at $a$ to be the lowest exponent in the Taylor series of $f$ (aka valency). In particular, if some root $a$ has multiplicity $k$, then the Taylor series expansion of $f$ contains terms only $a_k(z - a)^k$ and higher, where $a_k \neq 0$. \\ \\
+\textbf{Theorem - Argument Principle}: Let $f$ be holomorphic inside and on a simple closed contour $C$, where $f \neq 0$ on $C$, then $$\frac{1}{2\pi i} \oint_C \frac{f'(z)}{f(z)}dz = \# \text{ of 0's of } f \text{ inside } C, \text{ counted with multiplicity.}$$ However, if $f$ has poles inside $C$, then $$\frac{1}{2\pi i} \oint_C \frac{f'(z)}{f(z)}dz = \# \text{ of 0's - $\#$ of poles of } f \text{ inside } C, \text{ counted with multiplicity.}$$ Additionally, note that $$\frac{f'(z)}{f(z)} = \frac{d}{dz} [\log{f(z)}]$$ \\
+\textbf{Theorem - Rouche's Theorem}: Let $f, g$ be holomorphic on and inside the simple closed contour $C$. Assume that $|f(z) - g(z)| < |f(z)|$ on $C$. Then $f$ and $g$ have the same number of zeroes inside $C$. \\ \\
+\textbf{Definition - Winding Number}: Let $C \subset \C$ be a piecewise differentiable closed curve $\varphi: [A, B] \rightarrow C$ a parameterization, $a \in \C$ not on $C$. Then the \textit{winding number} of $C$ around $a$ is $$\win(C; a) = \frac{1}{2\pi} \int_A^B \frac{d}{dt} \ang(\varphi(t) - a)dt.$$ \\
+\textbf{Proposition}: $\win(C, a)$ is invariant under deformation of $C, a$ as long as $a$ does not cross $C$. \\ \\
+\textbf{Theorem - Argument Principle Again}: Let $C$ be a simple closed contour, $f$ holomorphic on and inside $C$ such that $f \neq 0$ on $C$. Then $$\# \text{ of solutions } [f(z) = w] \text{ inside } C = \win(f(C), w).$$ Therefore, if $f(C)$ is also a simple closed contour ($f$ maps $C$ bijective onto $f(c)$), then $f$ maps the interior of $C$ bijectively to that of $f(C)$. \\ \\
+\textbf{Definition - Möbius Transformations (recap)}: Define a \textit{Möbius transformation} $\mu: z \mapsto \mu(z) = \mathlarger{\frac{az + b}{cz + d}},$ for $a, b, c, d \in \C$ and $ad - bc \neq 0$. \\ \\
+\textbf{Definition - $\PP^1, \hat{\C}$}: Define $\PP^1 = \hat{\C} = \C \cup \{\infty\}$, which compactifies $\C$, as now sequences diverging to infinity are now actually converging to $\infty$. \\ \\
+\textbf{Analysis recap and general Möbius map facts}: \begin{enumerate}
+    \item A sequence $z_n \in \C$ \textit{converges to $\infty$} iff $|z_n| \rightarrow \infty$.
+    \item A \textit{neighborhood} of $\infty$ is a subset of $\hat{\C}$ containing $\infty$ and the extension of some large disk.
+    \item $\hat{\C}$ can be identified with the unit sphere in $\R^3$ by stereographic projection.
+    \item Möbius maps become bijective, bi-continuous maps $\hat{\C} \rightarrow \hat{\C}$, where division by 0 is infinity and vice versa. In particular, the Möbius map $z \mapsto 1/z$ interchanges 0 and $\infty$.
+\end{enumerate} $ $ \\
+\textbf{Definition - Holomorphic map}: A map $f: U \rightarrow \hat{\C}$, where $U \subset \C$ is open and connected, is a \textit{holomorphic map} if \begin{enumerate}[(i).]
+    \item it is holomorphic at all $u \in U$ where $f(u) \neq \infty$;
+    \item whenever $f(u_0) = \infty$, the function $g := 1/f$ has a removable singularity at $u_0$, by setting $g(u_0) = 0$, or else $f \equiv \infty$ on $U$.
+\end{enumerate} Additionally, condition (ii) implies that $f$ is  continuous. \textit{Riemann's removable singularity theorem} implies that, conversely, $f: U \rightarrow \hat{\C}$ is holomorphic when \begin{enumerate}
+    \item (i) implies,
+    \item the points $u$ with $f(u) = \infty$ are isolated in $U$,
+    \item $f$ is continuous, or $f \equiv \infty$.
+\end{enumerate} $ $ \\
+\textbf{Theorem}: The holomorphic maps $f: U \rightarrow \hat{\C}$ are precisely the meromorphic functions $f: U \rightarrow \C$ (plus the constant map $f \equiv \infty$), where $f(u) = \infty$ whenever $f$ has a pole at $u$. \\ \\
+\textbf{Definition - Holomorphic}: A map $f: V \rightarrow \hat{\C}$, for $V \subset \hat{\C}$ an open connected neighbourhood of $\infty$ is \textit{holomorphic} iff \begin{enumerate}
+    \item it is holomorphic on $V \setminus \{\infty\}$;
+    \item $g(z) := f(1/z)$ is a holomorphic map to $\hat{\C}$ near $z = 0$ ($\iff g$ is meromorphic near 0). 
+\end{enumerate} $ $ \\
+\textbf{Theorem}: \begin{enumerate}
+    \item A holomorphic map $\PP^1 \rightarrow \PP^1$ is rational (a fraction of polynomials) (or $\equiv \infty$)
+    \item A bijective holomorphic map $\PP^1 \rightarrow \PP^1$ is a Möbius map.
+\end{enumerate} $ $ \\
+\textbf{Theorem}: A holomorphic function $f: \PP^1 \rightarrow \C$ is constant. \\ \\
+\textbf{Möbius maps as matrices}: A Möbius map $z \mapsto w = \mathlarger{\frac{az + b}{cz + d}}$ can be represented as a left matrix multiplication by $\begin{pmatrix}
+    a & b \\
+    c & d
+\end{pmatrix}$. Then inverse Möbius transformations are given by the inverse matrix, and composition of Möbius transformations are accomplished via matrix multiplication. Two matrices define the same Möbius map if they are scalar multiple of one another. \\ \\
+\textbf{Theorem}: Let $s: P \leftrightarrow z(P)$ denote a bijective, bi-continuous map (specifically, stereographic projection) between unit sphere $S^2 \subset \R^3$ and the extended complex plane. Let $N = (0, 0, 1)$ denote the North pole; $s(N) = \infty$. \begin{enumerate}
+    \item Then $s$ is a conformal map.
+    \item $s$ takes circles on the sphere to clircles on the plane. In particular, \begin{enumerate}
+        \item Circles through $N$ $\leftrightarrow$ lines in $\hat{\C}$.
+        \item Circles avoiding $N$ $\leftrightarrow$ circles in $\C$.
+        \item Big circles through $N$ $\leftrightarrow$ lines through 0.
+        \item Parallels $\leftrightarrow$ circles centered at 0
+    \end{enumerate}
+    \item Rigid notations of the sphere $\leftrightarrow$ special Möbius maps $z \mapsto \mathlarger{\frac{uz + v}{-\overline{v}z + \overline{u}}}$
+    \item The arc length distance between two points $z, w \in \hat{\C}$ on the sphere is $$2\arctan \left| \frac{z - w}{1 + \overline{z}w} \right| = 2\arccos \frac{1 + \overline{z}w}{\sqrt{(1 + |z|)^2(1 + |w|^2)}}$$
+\end{enumerate} $ $ \\
+\textbf{Proposition}: $z \mapsto \mathlarger{\frac{az + b}{cz + d}}$ maps the upper half plane (UHP) onto itself $\iff$ we can choose $a, b, c, d$ real and $ad - bc > 0$. \\ \\
+\textbf{Definition - Elliptic, Hyperbolic, Loxodrome, Parabolic}: \begin{enumerate}
+    \item \textit{Elliptic} means Möbius conjugate to a rotation.
+    \item \textit{Hyperbolic} means conjugate to a scaling.
+    \item \textit{Loxodrome} means conjugate to a complex scaling.
+    \item \textit{Parabolic} means conjugate to a translation.
+\end{enumerate} $ $ \\
+\textbf{Definition - Biholomorphic}: A \textit{biholomorphic} function is a bijective holomorphic function whose inverse is also holomorphic. \\ \\
+\textbf{Definition - Möbius conjugate}: We say that $S$ and $T$ are \textit{Möbius conjugate} if $$S = \mu^{-1} \circ T \circ \mu$$ for some Möbius map $\mu$. \\ \\
+\textbf{Theorem}: Given two triples $(z_1, z_2, z_3)$ and $(w_1, w_2, w_3)$ of pairwise distinct points $\hat{\C}$, there is a unique Möbius map $\mu$ with $\mu(z_i) = w_i$. \\ \\
+\textbf{Definition - Cross-ratio}: The \textit{cross-ratio} $[z_0: z_1: z_2: z_3]$ of four pairwise distinct points in $\hat{\C}$ is the complex number $\mathlarger{\frac{z_0 - z_2}{z_0 - z_3} \bigg/ \frac{z_1 - z_2}{z_1 - z_3}},$ where we declare $\mathlarger{\frac{\infty - z_2}{\infty - z_3}}$ = 1. \\ \\
+\textbf{Theorem}: The cross-ratio is preserved by any Möbius map. \\ \\
+\textbf{Properties of the cross-ratio}: \begin{enumerate}
+    \item $[z: 1: 0: \infty] = z$
+    \item Cross-ratios can take any complex values except $0, 1, \infty$ (these values only appear when some points in the cross-ratio coincide)
+    \item The cross-ratio depends on the order of the points
+    \item Cross-ratio $r \in \R \iff$ the 4 points lie on the same clircle.
+\end{enumerate} $ $ \\
+\textbf{Definition - Fixed Point}: A point $z$ is a \textit{fixed point} of $\mu$ if $\mu(z) = z$. \\ \\
+\textbf{Proposition}: A Möbius map $T \neq Id$ has one or two fixed points \begin{enumerate}
+    \item Parabolic maps have 1 fixed point;
+    \item Elliptic, hyperbolic, and loxodrome maps have 2 fixed points.
+\end{enumerate} Note that we can consider $\infty$ a fixed point. \\ \\
+\textbf{Proposition}: $T(z) = \mathlarger{\frac{az + b}{cz + d}}$ has a single fixed point $\iff$ the matrix $\begin{pmatrix}
+    a & b \\
+    c & d
+\end{pmatrix}$ has a repeated eigenvalue. \\ \\
+\textbf{Theorem - Schwartz Lemma}: Let $f: D \rightarrow \C$ be holomorphic, $f(0) = 0$, and $|f| \leq 1$ on $D$. Then $|f(z)| \leq |z|$ for all $z \in D$, $|f'(0)| \leq 1$, and if equality holds for any $z$, then $f(z) = az, |a| = 1$. \\ \\
+\textbf{Corollary}: Any bijective holomorphic function $f: D \rightarrow D$ with $f(0) = 0$ is a rotation. \\ \\
+\textbf{Theorem}: Any biholomorphic map $D \rightarrow D$ is a Möbius map of the form $$z \mapsto \frac{uz + v}{\overline{v}z + \overline{u}}, |u|^2 - |v|^2 > 0.$$ Any biholomorphic map UHP $\rightarrow$ UHP is Möbius of the form $$z \mapsto \frac{az + b}{cz + d}, \text{ for } a, b, c, d \in \R, \text{ and } ad - bc > 0.$$ \\
+\textbf{Remark}: Note that two Möbius maps of the form $\begin{pmatrix}
+    a & b \\
+    c & d
+\end{pmatrix}$ and $\begin{pmatrix}
+    u & v \\
+    \overline{v} & \overline{u}
+\end{pmatrix}$ are related by $$M^{-1} \cdot \begin{pmatrix}
+    a & b \\
+    c & d
+\end{pmatrix} \cdot M = \begin{pmatrix}
+    u & v \\
+    \overline{v} & \overline{u}
+\end{pmatrix},$$ for $M = \begin{pmatrix}
+    -i & 1 \\
+    1 & -i
+\end{pmatrix}$ and $M^{-1} = \mathlarger{\frac{1}{2}} \begin{pmatrix}
+    i & 1 \\
+    1 & i
+\end{pmatrix}$ corresponding to $$\mu: z \mapsto w = \frac{1 - iz}{z - i} \quad \left( \text{equivalently } z = \frac{1 + iw}{w + i} \right).$$ \\
+\textbf{Definition - Laplace Equation}: The \textit{Laplace equation} in a region $R \subset \C$ is $$\Delta \varphi = 0,$$ and it's solutions are harmonic functions. Recall that a harmonic function is the real part of some holomorphic function. \\ \\
+\textbf{Definition - Dirichlet Problem}: The \textit{Dirichlet problem}, in a (usually bounded) region $R$, asks for a harmonic functions $\varphi$ in $R$ with prescribed boundary value $\varphi|_{\partial R}$. \\ \\
+\textbf{Theorem}: When $R$ is the unit disk $D$, the Dirichlet problem has a unique, explicit solution. \\ \\
+\textbf{Theorem}: Let $u$ be piecewise continuous on the unit circle. Then, $$\varphi(re^{i\theta}) := \frac{1}{2\pi} (1 - r^2) \int_0^{2\pi} \frac{u(e^{i\alpha})}{1 + r^2 - 2r\cos(\theta - \alpha)} d\alpha$$ is a harmonic extension of $u$ to the unit disk, in that \begin{enumerate}
+    \item it is harmonic inside $D$,
+    \item it has limit $= u$ at points of continuity of $u$ on $C$,
+    \item it interpolates linearly between one-sided limit of $u$ at jump discontinuities, and
+    \item $\varphi$ is unique with these properties.
+\end{enumerate} We now define \textit{linear interpolation}. For some constant $\delta$ such that $\pi/2 \leq \ang \delta \leq \pi/2,$ then $$\lim_{\epsilon \rightarrow 0^+} \varphi(re^{i\theta} - \epsilon \delta) = \frac{u(\theta_-) + u(\theta_+)}{2} + \frac{\ang \delta}{\pi}(u(\theta_+) - u(\theta_-)).$$ \\
+\textbf{Definition - Poisson Kernel}: The function $$k(r, \alpha) = \frac{1}{2\pi} \frac{1 - r^2}{1 + r^2 - 2r\cos(\alpha)}$$ is called the \textit{Poisson kernel} for $D$. In particular, the above theorem can be rewritten as $$\varphi(re^{i\theta}) := \int_0^{2\pi} 
+k(r, \theta - \alpha)u(e^{i\alpha}) d\alpha.$$ Additionally, $$k(r, \alpha) = \frac{1}{2\pi} \sum_{n = -\infty}^\infty r^{|n|} e^{in\theta} = \frac{1}{2\pi} \left( \frac{1}{1 - z} + \frac{\overline{z}}{1 - \overline{z}} \right),$$ where $z = re^{i\theta}$. Another important factorization is $$\frac{1 - r^2}{1 + r^2 - 2r\cos(\alpha)} = \frac{1}{1 - z \xi^{-1}} + \frac{\overline{z} \xi}{1 - \overline{z}\xi},$$ where $z = re^{i\theta}, \xi = e^{i\alpha} \, (\xi^{-1} = \overline{\xi})$. \\ \\
+\textbf{Theorem}: Let $u(x)$ be a bounded, piecewise continuous real function on $\R$. Then $$\varphi(x, y) = \frac{1}{\pi} \int_{-\infty}^\infty u(\xi) \frac{y}{(x - \xi)^2 + y^2} d\xi$$ is a bounded, harmonic function on the upper-half plane with boundary value $u$ whenever $u$ is continuous (otherwise, interpolating between left and right limit of $u$ depending on angle of approach). Then this is the unique bounded function with these properties (though there may be other such unbounded functions). \\ \\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
