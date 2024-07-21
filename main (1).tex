@@ -1,0 +1,639 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{relsize}
+\usepackage{titlesec}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{titling}
+\usepackage{changepage}
+\usepackage{biblatex}
+\usepackage{float}
+\usepackage{soul,color,xcolor}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\Range}{range}
+\DeclareMathOperator{\Dim}{dim}
+
+\usepackage[margin=1.0in]{geometry}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Example}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{defin}{Definition}[section]
+\newtheorem{cor}{Corollary}[section]
+
+\title{Math 110 (Linear Algebra Done Right) Notes}
+\author{Henry Yan}
+\date{July 2021}
+
+\begin{document}
+
+\maketitle
+
+\section*{Notes}
+Algorithmic proofs only works for finite objects. 
+\section*{Complex Numbers}
+Let $\lambda = a + bi = r(\cos\theta + i\sin\theta) = re^{i\theta} \in \mathbb{C}.$ Then $|\lambda|^2 = \lambda \overline{\lambda}$.
+\section*{Notation}
+$F$ will stand for $\mathbb{R}$ or $\mathbb{C}$. But in most cases, $F$ can be any field, so for almost any definition, theorem, or proof presented in the book to be true in ``\textbf{F}'', it will likely be true for any field. \\ \\
+$F^S$ denotes the set of functions from $S$ to $F$.
+\section{Vector Spaces}
+${\mathbb{R}}^2 = \{(x, y)|x, y \in \mathbb{R}\}$ is a vector space, in particular, it is a plane of real numbers. ${\mathbb{R}}^3$ is another example of a vector space. \\ \\
+Given some non-negative integer $n$, a \textbf{list} of length $n$ (often called an $n$-tuple) is an ordered collection of, basically, anything separated by commas and surrounded by parenthesis. Note that a list must be of finite length, and that a list of length 0 will be $()$. \\ \\
+Given some list $(x_1, x_2, \dots, x_n)$, for $j \in \{1, 2, \dots n\}$, we say $x_j$ is the $j$th coordinate of the list above. \\ \\
+Lists can differ in 2 ways, the length of the list or the content of the coordinates. Note that a list differs from a set as order and repetitions matter for a list but don't for a set. \\ \\
+We often let $0$ denote the list of length $n$ for which all the coordinates are $0$, where $n$ can be determined from context. \\ \\
+A \textbf{vector} can be thought of as an arrow from the origin to some point. Vector addition, geometrically, can be understood as placing the end of one arrow at the tip of another (generalizes very intuitively to higher dimensions - more additions), the sum of the two vectors is called the \textbf{resultant vector}. \\ \\
+A set $V$ together with the operations $+: V \times V \rightarrow V$ and $\cdot : F \times V \rightarrow V$ is a \textbf{vector space} if the following conditions are met: \footnote{Note that by definition, $V$ is closed under addition and scalar multiplication.}
+\begin{enumerate}
+\item Commutativity - $u + v = v + u, \forall u, v \in V$;
+\item Associativity - $(u+v)+w =u+(v+w), (ab)v =a(bv) \forall u,v,w \in V, a, b \in F$;
+\item Additive Identity - $0 \in V$ such that $v + 0 = v, \forall v \in V$;
+\item Additive Inverse - For $v \in V, \exists w \in V$ such that $v + w = 0$; 
+\item Multiplicative Identity - $\exists 1 \in F$, such that $1v =v, \forall v \in V$;
+\item Distributive Properties - $a(u + v) = au + av, (a + b)u = au + bu, \forall a, b \in F, u, v \in V.$
+\end{enumerate}
+More precisely, when we need to specify a set for where the constants $a, b$ come from in the above definition, we say that $V$ is a vector space over $F$, or an $F$-space, (or whatever the set $a, b$ are in is). A result of the above definition is that a vector space forms an Abelian group under addition, though with more structure as it also has conditions regarding scalar multiplication. \\ \\
+A vector space over $\mathbb{R}$ is often called a \textbf{real vector space}, and a vector space over $\mathbb{C}$ is often called a \textbf{complex vector space}. \\ \\
+$F^n$ is vector space over $F$. The simplest vector space contains only 1 point, 0; in other words, $\{0\}$ is a vector space. The largest vector space is $F^{\infty}$ over $F$.
+\begin{defin}
+A function $p: F \rightarrow F$ is a \textbf{polynomial} with coefficients in $F$ if $\exists a_0, \dots a_n \in F$ such that $p(z) = a_n z^n + a_{n - 1}z^{n - 1} + \dots + a_0, \forall z \in F$.
+\end{defin}
+\noindent We define $P(F)$ to be the set of all polynomials with coefficients in $F$. Addition in $P(F)$ is defined as you would expect, $(p + q)(z) = p(z) + q(z), z \in F$. Scalar multiplication on $P(F)$ is defined as $(ap)(z) = ap(z)$, for $a \in F, p \in P(F)$. It follows that $P(F)$ is a vector space, which comes to show that a vector space doesn't need to consist of lists, it can also take the form of other algebraic objects, such as polynomials. \\ \\
+As a result of vector spaces being a group, many group theoretic properties carry over, such as the uniqueness of the additive identity and additive inverse. \\ \\
+\textbf{*NOTE}: From here onward, it will be understood that $V$ will denote a vector space over $F$. \\ \\
+A subset $U$ of $V$ is called a \textbf{subspace}, sometimes called a \textbf{linear subspace}, of $V$ if $U$ is also a vector space. For example, $\{(x_1, x_2, 0) | x_1, x_2 \in F\}$ is a subspace of $F^3$. Conditions for a subspace are as follows: \begin{enumerate}
+    \item Additive Identity: $0 \in U$;
+    \item Closed Under Addition: $u, v \in U \implies u + v \in U$;
+    \item Closed Under Scalar Multiplication: $a \in F, u \in U \implies au \in U$
+\end{enumerate}
+For any vector space $V$, the smallest subspace of $V$ is $\{0\}$, empty set doesn't work since the subspace needs to contain the additive identity, and the largest subspace of $V$ is $V$ itself. \\ \\
+The only subspaces of ${\mathbb{R}}^2$ are $\{0\}, \mathbb{R}^2$, and each of the lines in $\mathbb{R}^2$ through the origin. Similarly, the only subspaces of ${\mathbb{R}}^3$ are $\{0\}, \mathbb{R}^3$, each of the lines in $\mathbb{R}^3$ through the origin, and each of the planes in $\mathbb{R}^3$ through the origin. \\ \\
+Let $U_1, \dots, U_m$ be subspaces of $V$. We define the \textbf{sum} of $U_1, \dots, U_m$ to be $U_1 + \dots + U_m = \{u_1+ \dots + u_m | u_1 \in U_1,...,u_m \in U_m\}$. $U_1 + \dots + U_m$ is a subspace of $V$. \\ In the case that $V = U_1 + \dots + U_m$ and every vector in $V$ can be uniquely represented by $u_1 + \dots + u_m, u_i \in U_i$, we say that $V$ is the \textbf{direct sum} of $U_1, \dots, U_m$, using the notation of $U_1 \oplus \dots \oplus U_m$. 
+\begin{ex}
+Let $U = \{(x,y,0) \in F^3 |x,y \in F \}, W = \{(0,0,z)\in F^3 |z \in F \}$. Then $F^3 = U \oplus W$.
+\end{ex}
+\noindent \textbf{Proposition 1.8}: Suppose that $U_1, \dots, U_n$ are subspaces of $V$. Then $V = U_1 \oplus \dots \oplus U_n$ if and only if both the following conditions hold: \begin{enumerate}
+    \item $V = U_1 + \dots + U_n$;
+    \item The only way to write $0$ as a sum of $u_1 + \dots +u_n, u_i \in U_i$, is by taking $u_i = 0, \forall i$.
+\end{enumerate}
+\textbf{Proposition 1.9}: Suppose that $U$ and $W$ are subspaces of $V$ . Then $V = U \oplus W$ if and only if $V = U + W$ and $U \cap W = \{0\}$.
+\section{Finite-Dimensional Vector Spaces}
+A \textbf{linear combination} of a list $(v_1, \dots, v_m)$ of vectors in $V$ is a finite-sum (resulting vector) of the form $a_1v_1 + \dots + a_mv_m, a_i \in F$. By definition, a list $S$ of vectors in a vector space is closed under linear combination. \\ \\
+The set of all linear combinations of is called the \textbf{span} of $(v_1, \dots, v_m)$, which we denote by $\Span(v_1, \dots, v_m) = \{a_1v_1 + \dots + a_mv_m | a_1, \dots, a_m \in F\}$. \\ \\
+It is easy to show that the span of any list of vectors in $V$ is a subspace of $V$. We consider that the span of the empty list () equals $\{0\}$, since the empty list is not a subspace of $V$. \\ \\
+Any vector in a vector space can be written as a linear combination of the vectors in that vector space. Thus, $\Span(v_1, \dots, v_m)$ contains $v_1, \dots, v_m$. Conversely, because vector spaces are closed under scalar multiplication, $V$ contains $\Span(v_1, \dots, v_m)$. It follows that $\Span(v_1, \dots, v_m)$ is the smallest subspace of $V$ containing each of $v_1, \dots, v_m$. \\ \\
+If $\Span(v_1, \dots, v_m) = V$, we say that $(v_1, \dots, v_m)$ \textbf{spans} $V$. \\ \\
+A vector space is \textbf{finite-dimensional} if some list (by definition list implies finite) of vectors in it spans the space. Another way of defining this would be to say that a vector space is finite-dimensional if it is spanned by finitely many vectors. For example, $F^n, n \in \mathbb{N}$ is finite-dimensional because $$((1, 0, \dots, 0), (0, 1, \dots, 0), \dots, (0, 0, \dots, 1))$$ spans $F^n$. \\ \\
+By convention, the zero polynomial is said to have degree $-\infty$. \\ \\
+We define $P_m(F)$ to be the set of all polynomials with degree at most $m$, with coefficients in $F$. Clearly, $P_m(F)$ is a subspace of $P(F)$. $P_m(F)$ is spanned by $(1, z, \dots, z^m)$. \\ \\
+A vector space that is not finite-dimensional is \textbf{infinite-dimensional}. An example of an infinite-dimensional vector space is $P(F)$. This is easy to see by an extremal principle proof; consider any list of elements of $P(F)$, then consider the highest degree, $m$, polynomial in the list of elements. Then the highest degree polynomial that we can make as a linear combination of elements of the list is $m$. Clearly, this list cannot span $P(F)$. Thus, $P(F)$ is infinite-dimensional. \\ \\
+A list $(v_1 , \dots, v_m)$ of vectors in $V$ is called \textbf{linearly independent} if the only choice of $a_1, \dots,a_m \in F$ that makes $a_1v_1 + \dots + a_mv_m = 0$ is $a_i = 0, 1 \leq i \leq m$. \\ \\
+Note that a direct consequence of a list of vectors in $V$ being linearly independent is that every vector $v \in \Span(v_1 , \dots, v_m)$ can be written uniquely as a linear combinations of vectors in $(v_1 , \dots, v_m)$. \begin{proof}
+Assume for the sake of contradiction that $v = a_1v_1 + \dots + a_mv_m = a_1'v_1 + \dots + a_m'v_m$. Subtracting, we get that $0 = (a_1 - a_1')v_1 + \dots + (a_m - a_m')v_m$. By definition of linearly independence, $a_i = a_i', 1 \leq i \leq m$.
+\end{proof}
+\begin{ex}
+$(1, z, \dots , z^m)$ is linearly independent in $P(F)$. This is easy to see because for \begin{align}
+a_0 + a_1z + \dots + a_mz^m = 0
+\end{align} where at least 1 of the $a_i$'s aren't equal to 0, then (1) is satisfied for at most $m$ values of $z$. Clearly this implies that $a_i = 0, 0 \leq i \leq m$. By definition, $(1, z, \dots , z^m)$ is linearly independent.
+\end{ex} $ $ \\
+A list of vectors is called \textbf{linearly dependent} if it is not linearly independent. The easiest way to prove that a list of vectors is linearly dependent is by that there are 2 or more ways of representing the zero vector as a linear combination. \\ \\
+We consider the empty list, $()$, to be linearly independent.
+\begin{ex}
+$((2, 3, 1), (1, -1, 2), (7, 3, 8))$ is linearly dependent because \\ $2(2, 3, 1) + 3(1, -1, 2) + (-1)(7, 3, 8) = (0, 0, 0)$.
+\end{ex}
+\begin{ex}
+Any list of vectors containing the zero vector is linearly dependent. \footnote{Hint: Consider the coefficient in front of the zero vector.}
+\end{ex}
+\noindent \textbf{Proposition:} A subset $\{v_1 , \dots, v_m\} \subseteq V$ is linearly independent iff none of the vectors is a linear combination of the other. \\ \\
+\noindent \textbf{Linear Dependence Lemma:} If $(v_1 , \dots, v_m)$ is linearly dependent in $V$ and $v_i \neq 0,1 \leq i \leq m$, then there exists $j \in \{1, \dots, m\} \setminus \{i\}$ such that the following hold: \begin{enumerate}
+    \item $v_j \in \Span(v_1, \dots, v_{j-1})$;
+    \item if the $j$th term is removed from $(v_1, \dots, v_m)$, the span of the remaining list equals $\Span(v_1, \dots, v_m)$.
+\end{enumerate}
+The intuition for this lemma is that if you consider the farthest right vector (vector with the greatest index, $j$) with a non-zero coefficient, then $v_j \in \Span(v_1, \dots, v_{j-1})$ as all the coefficients with indexes greater than $j$ are 0. $$0 = a_1v_1 + \dots + a_jv_j + a_{j + 1}v_{j + 1} \dots + a_mv_m$$ $$\implies 0 = a_1v_1 + \dots + a_jv_j \implies v_j = -\frac{a_1}{a_j}v_1 - \dots -\frac{a_{j - 1}}{a_j}v_{j - 1}$$
+\textbf{Theorem 2.6:} In a finite-dimensional vector space, the length of every linearly independent list of vectors is less than or equal to the length of every spanning list of vectors. \\ \\
+\textbf{Corollary 2.6.1:} Theorem 2.6 implies that if the length of a list of vector $V$ is greater than the length of a spanning list of vectors, then $V$ must be linearly dependent. \\ \\
+\textbf{Proposition 2.7:} Every subspace of a finite-dimensional vector space is finite-dimensional. \\ \\
+A \textbf{basis} is a set of vectors $B \subseteq V$ that is both linearly independent and spans $V$. \\ \\
+Grammar: Plural of bases (pronounced bay-seas) is basis. By theorem 2.6, a bases can only be 1 size, where it is spanning, but still linearly independent. So a bases must be the largest linearly independent list, while being the smallest spanning list. \\ \\
+The \textbf{standard basis} of $F^3$ is $\{(1, 0, 0), (0, 1, 0), (0, 0, 1)\}$. This generalizes very intuitive to higher dimensions of $F$. Similarly, $\{1, z, \dots, z^m\}$ is a basis of $P_m(F)$. However, $V = \{(1, 0, 0, \dots), (0, 1, 0, \dots), \dots\}$ is not a bases of $F^\infty$ as the vector $(1, 1, 1, \dots)$ cannot be formed by a linear combination of vectors in $V$ as a linear combination is, by definition, a finite sum. Yet, $\{1, z, z^2, \dots\}$ is a basis of $P(F)$, as a polynomial, by definition 1.1, is a finite sum of monomials. Note that a consequence of this definition is that a power series is not a polynomial, as power series are infinite. \\ \\
+\textbf{Proposition 2.8:} A list $B = \{v_1, \dots, v_n\}$ is a basis of $V$ iff every $v \in V$ can be uniquely written in the form $v = a_1v_1 + \dots + a_nv_n, a_i \in F$.
+\begin{defin}
+If $B = \{v_1, \dots, v_n\}$ is a basis of $V$ and $v \in V$, then $\exists$ scalars $a_1, \dots, a_n \in F$ s.t. $$v = a_1v_1 + \dots + a_n v_n$$ This representation is unique and the scalars are called the \textbf{coordinates} of $v$ with respect to the basis $B$.
+\end{defin}
+\noindent Definition 2.1 gives us a coordinate system to define a vector space. \\ \\
+\textbf{Theorem 2.10:} Every spanning list in a vector space can be reduced to a basis of the vector space. \\ \\
+\textbf{Corollary 2.10.1:} Every finite-dimensional vector space has a basis. \\ \\
+\textbf{Theorem 2.12:} Every linearly independent list in a vector space can be expanded to a basis of the vector space. \\ \\
+\textbf{Proposition 2.13:} Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$. Then there is a subspace $W$ of $V$ such that $V = U \oplus W$. \\ \\
+\textbf{Theorem 2.14:} Any two bases of a finite-dimensional vector space have the same length. 
+\begin{proof}
+We use the result that the length of any spanning list is $\geq$ than the length of any linearly independent list. \\ \\
+Consider the bases $B_1$ and $B_2$ of $V$. By definition, a bases is both linearly independent and spanning, so $|B_1| \geq |B_2|$ and $|B_2| \geq |B_1| \implies |B_1| = |B_2|$
+\end{proof}
+\noindent The \textbf{dimension} of a vector space is the number of vectors in a bases and is denoted $\Dim V$.
+\begin{ex}
+$\{1, z, z^2, \dots, z^m\}$ is a basis of $P_z(F)$. So $\Dim P_z(F) = m + 1$.
+\end{ex}
+\noindent \textbf{*NOTE.} The dimension of a vector space depends on the field $F$. $\mathbb{C}$ is a 1 dimensional vector space over $\mathbb{C}$. But $\mathbb{C}$ is a 2 dimensional vector space over $\mathbb{R}$ (where the list of vectors is $(1, i)$, for example). \\ \\
+More intuitively, dimension should be thought of as the size of a vector space. \\ \\
+\textbf{Proposition 2.15:} If $V$ is finite-dimensional and $U$ is a subspace of $V$, then $\Dim U \leq \Dim V$. \\ \\
+\textbf{Proposition 2.16:} If $V$ is finite-dimensional, then every spanning list of vectors in $V$ with length $\Dim V$ is a basis of $V$. \\ \\
+\textbf{Proposition 2.17:} If $V$ is finite-dimensional, then every linearly independent list of vectors in $V$ with length $\Dim V$ is a basis of $V$. \\ \\
+\textbf{Theorem 2.18:} $\Dim(U_1 + U_2) = \Dim U_1 + \Dim U_2 - \Dim(U_1 \cap U_2)$ (exact same form as Principle of Inclusion Exclusion)\\ \\
+\textbf{Corollary 2.18.1:} $\Dim(U_1 \oplus U_2) = \Dim U_1 + \Dim U_2$ \\ \\
+\textbf{Proposition 2.19:} Suppose $V$ is finite-dimensional and $U_1, \dots, U_m$ are subspaces of $V$ such that $$V = U_1 + \dots + U_m$$ and $$\Dim V =\Dim U_1 + \dots + \Dim U_m,$$ then $V = U_1 \oplus \dots \oplus U_m.$
+\section{Linear Maps}
+When working with linear maps, we often replace the longhand of a function, $T(v)$, with $Tv$. \\ \\
+A linear map from vector spaces $V$ to $W$ is a function $T: V \rightarrow W$ with the following properties:
+\begin{enumerate}
+\item Additivity - $T(u + v) = Tu + Tv, \forall u, v \in V$;
+\item Homogeneity - $T(av) = a(Tv), \forall a \in F, v \in V$.
+\end{enumerate} $ $ \\
+The set of all linear maps from $V$ to $W$, denoted by $\mathcal{L}(V, W)$, is a vector space. The following shorthand is also used: $\mathcal{L}(V) = \mathcal{L}(V, V).$ \\ \\
+\textbf{Addition and Scalar Multiplication on $\mathcal{L}(V, W)$}: For $S, T \in \mathcal{L}(V, W), v \in V, a \in F$ $$(S + T)(v) = Sv + Tv, (aT)(v) = a(Tv)$$ \\
+Zero function: $0 \in \mathcal{L}(V, W)$ is defined by: $$0(v) = 0v = 0.$$ The 0 on the left side of the above equation is the function 0, but the 0 on the right side of the equation is the additive identity 0. \\ \\
+The \textbf{identity map}: Denoted by $I$, the identity map is the function on some vector space that takes each element to itself. $I \in \mathcal{L}(V, W)$ is defined by $$Iv = v.$$ For $T \in \mathcal{L}(V, W),$ $$TI = IT = T,$$ where the first $I$ is the identity operator on $V$ and the second $I$ is the identity operator on $W$, as $(TI)v = T(Iv)$, so $I$ is operating on $v \in V$. \\ \\
+\textbf{Product of Linear Maps}: If $S \in \mathcal{L}(V, W)$ and $T \in \mathcal{L}(U, V)$, then $ST \in \mathcal{L}(U, W)$, where $ST$ is the standard function concatenation, being $(ST)(v) = S(Tv) = S \circ T(v)$. \\ \\
+\textbf{3.4} (\textit{linear map lemma}): Suppose $v_1, \dots, v_n$ is a basis of $V$ and $w_1, \dots, w_n \in W,$ then there exists a unique linear map $T: V \rightarrow W$ such that $$Tv_k = w_k,$$ for each $k = 1, \dots, n$. \\ \\
+For $T \in \mathcal{L}(V, W),$ the \textbf{null space} of $T$, denoted $\Null{T}$, is the subset of $V$ consisting of those vectors that $T$ maps to $0$: $$\Null{T} = \{v \in V: Tv = 0\}.$$ In basic words, the null space of a function is the set of inputs that will produce an output of 0. \\ \\
+\textbf{Proposition 3.1}: If $T \in \mathcal{L}(V, W)$, then $\Null T$ is a subspace of $V$.
+\begin{proof} Using additivity, $T(0) = T(0 + 0) = T(0) + T(0)$, which implies that $T(0) = 0, 0 \in \Null{T}$. \\ \\
+For $u, v \in \Null{T}, T(u + v) = T(u) + T(v) = 0 + 0 = 0,$ hence $u + v \in \Null{T}$ ($\Null{T}$ is closed under addition). \\ \\
+If $a \in F$ and $u \in \Null{T}, T(au) = a(Tu) = a(0) = 0$, hence $au \in \Null{T}$, so $T$ is closed under scalar multiplication. \\ \\
+We have shown that $T$ contains 0 and is closed under addition and scalar multiplication, so we have shown that $\Null{T}$ is a subspace of $V$.
+\end{proof} $ $ \\
+A linear map $T: V \rightarrow W$ is said to be \textbf{injective} if whenever $u, v \in V$ and $Tu = Tv, u = v$. \\ \\
+\textbf{Proposition 3.2}: Let $T \in \mathcal{L}(V, W)$, $T$ is injective iff $\Null{T} = \{0\}$. \\ \\
+For $T \in \mathcal{L}(V, W)$, the \textbf{range} of $T$, denoted $\Range{T}$, is the subset of $W$ consisting of those vectors that are of the form $Tv$ for some $v \in V$: $$\Range{T} = \{Tv: v \in V\}.$$ $ $ \\
+\textbf{Proposition 3.3}: If $T \in \mathcal{L}(V, W)$, then $\Range{T}$ is a subspace of $W$. \\ \\
+A linear map $T: V \rightarrow W$ is called \textbf{surjective} if it's range equals $W$. In math terms, $\Range{T} = W$. \\ \\
+\textbf{Theorem 3.4} (\textit{fundamental theorem of linear maps}): If $V$ is finite-dimensional and $T \in \mathcal{L}(V, W)$, then $\Range{T}$ is a finite-dimensional subspace of $W$ and $$\Dim{V} = \Dim{\Null{T}} + \Dim{\Range{T}}.$$ $ $ \\
+\textbf{Corollary 3.5}: If $V$ and $W$ are finite-dimensional vector spaces such that $\Dim{V} > \Dim{W}$, then no linear map from $V$ to $W$ is injective. \\ \\
+$\Dim{W} \geq \Dim{\Range{T}}$ \\ \\
+\textbf{Corollary 3.6}: If $V$ and $W$ are finite-dimensional vector spaces such that $\Dim{V} < \Dim{W}$, then no linear map from $V$ to $W$ is surjective. \\ \\
+\textbf{Homogeneous} means that the constant term on the right side of each equation equals 0. \\ \\
+\textbf{3.24}: A homogeneous system of linear equations in which there are more variables than equations must have non-zero solutions. \\ \\ 
+\textbf{3.26}: An \textbf{inhomogeneous} system of linear equations in which there are more equations than variables has no solution for some choice of the constant terms.
+\subsection*{Matrices of a Linear Map}
+An $m$ by $n$ \textbf{matrix} $A$ is a rectangular array of elements of $F$ with $m$ rows and $n$ columns. $A_{j, k}$ is the element in the $j$th row and $k$th column position of $A$. \\ \\
+When determining the matrix of a linear map, the image of each basis vector is placed in order of the basis vectors, left to right. \\ \\
+The \textbf{column and row rank} of a matrix $A$ is the dimension of the span of the columns and rows of $A$, respectively. The rank of a matrix $A$ is the column rank of $A$. \\ \\
+\textbf{3.117} (dimension of $\Range{T}$ equals column rank of $\mathcal{M}(T)$): For $T \in \mathcal{L}(V, W)$, then $\Dim{\Range{T}}$ equals the column rank of $\mathcal{M}(T)$. \\ \\
+\textbf{3.118}: The column rank of $A$ equals the row rank of $A$. \\ \\
+\textbf{Definition}: Matrix of a linear map, $\mathcal{M}(T)$ \\
+Suppose $T \in \mathcal{L}(V, W)$ and $v_1, \dots, v_n$ is a basis of $V$ and $w_1, \dots, w_m$ is a basis of $W$. The matrix of $T$ with respect to these bases is the $m$ by $n$ matrix $\mathcal{M}(T)$ whose entries $A_{j, k}$ are defined by $$Tv_k = A_{1, k}w_1 + \dots + A_{m, k}w_m$$
+If the bases are  not clear from context, then we write $\mathcal{M}(T, (v_1, \dots, v_n), (w_1, \dots, w_m))$. \\ \\
+Another way to write this is $$Tv_k = \sum_{j = 1}^m A_{j, k}w_j$$ \\
+\textbf{Notation}: Let $F^{m, n}$ be the set of all $m$ by $n$ matrices with entries in $F$. \\ \\
+$\Dim{F^{m, n}} = mn$, where $F^{m, n}$ is a vector space. \\ \\
+Consider linear maps $T: U \rightarrow V$ and $S: V \rightarrow W$, and let $v_1, \dots, v_n$ be a basis of $V$, $w_1, \dots, w_m$ be a basis of $W$, and $u_1, \dots, u_p$ be a basis of $U$. Let $\mathcal{M}(S) = A$ and $\mathcal{M}(T) = C$. Then $\mathcal{M}(ST)$ is the $m$ by $p$ matrix whose entry in row $j$, column $k$, is $$(AC)_{j, k} = \sum_{r = 1}^nA_{j, r} C_{r, k}.$$ In simpler words, the entry in row $j$, column $k$, of $AC$ is computed by taking row $j$ of $A$, column $k$ of $C$, and summing the product of the corresponding entries. \\ \\
+\textbf{3.41} (The matrix of the product of linear maps): If $T \in \mathcal{L}(U, V)$ and $S \in \mathcal{L}(V, W)$, then $\mathcal{M}(ST) = \mathcal{M}(S)\mathcal{M}(T)$. \\ \\
+\textbf{3.33} (matrix of the sum of linear maps): Suppose $S, T \in \mathcal{L}(V, W)$, then $\mathcal{M}(S + T) = \mathcal{M}(S) + \mathcal{M}(T)$ \\ \\
+\textbf{3.36} (the matrix of a scalar times a linear map): Suppose $\lambda \in F$ and $T \in \mathcal{L}(V, W)$, then $\mathcal{M}(\lambda T) = \lambda \mathcal{M}(T)$. \\ \\
+\textbf{Notation}: Suppose A is an $m$ by $n$ matrix. \begin{enumerate}
+    \item $A_{j, \cdot}$ denotes the 1 by $n$ matrix consisting of row $j$ of $A$, for $j = 1, \dots, m$.
+    \item $A_{\cdot, k}$ denotes the $m$ by 1 matrix consisting of column $k$ of $A$, for $k = 1, \dots, n$.
+\end{enumerate} $ $ \\
+\textbf{3.44} (Entry of matrix product equals row times column): Suppose $A$ is an $m$ by $n$ matrix and $C$ is an $n$ by $p$ matrix. Then $$(AC)_{j, k} = A_{j, \cdot}C_{\cdot, k}$$ for $1 \leq j \leq m$ and $1 \leq k \leq p$. \\ \\
+\textbf{3.45} (Column of matrix product equals matrix times column): Suppose $A$ is an $m$ by $n$ matrix and $C$ is an $n$ by $p$ matrix. Then $$(AC)_{\cdot, k} = AC{\cdot, k}$$ for $1 \leq k \leq p$. \\ \\
+\textbf{Row of matrix product equals row times matrix}: Suppose $A$ is an $m$ by $n$ matrix and $C$ is an $n$ by $p$ matrix. Then $$(AC)_{j, \cdot} = A_{j, \cdot}C$$ for $1 \leq j \leq m$. \\ \\
+\textbf{3.47}: \textbf{Linear combination of columns}: Suppose $A$ is an $m$ by $n$ matrix and $c = \begin{pmatrix}
+c_1 \\
+\vdots \\
+c_n
+\end{pmatrix}$ is an $n$ by 1 matrix. Then $$Ac = c_1A_{\cdot, 1} + \dots + c_nA_{\cdot, n}.$$ $ $ \\
+\textbf{Linear combination of rows}: Suppose $a = (a_1 \dots a_n)$ is a 1 by $n$ matrix and $c$ is an $n$ by $p$ matrix. Then $$aC = a_1C_{1, \cdot} + \dots + a_nC_{n, \cdot}.$$
+\subsection*{Invertibility and Isomorphic Vector Spaces}
+A linear map $T \in \mathcal{L}(V, W)$ is called \textbf{invertible} if there exists a linear map $S \in \mathcal{L}(W, V)$ such that $ST$ equals the identity map on $V$ and $TS$ equals the identity map on $W$. \\ \\
+A linear map $S \in \mathcal{L}(W, V)$ satisfying $ST = I$ and $TS = I$ is called an \textbf{inverse} of $T$. \\ \\
+An invertible inverse map $T$ has a unique inverse $T^{-1} = S$. If $T \in \mathcal{L}(V, W)$, then $T^{-1} \in \mathcal{L}(W, V)$. \\ \\
+*** A linear map is invertible iff it is bijective. \\ \\
+For linear maps $S \in \mathcal{L}(V, W)$ and $T = \mathcal{L}(W, V)$, where $W, V$ are the same dimension, $ST = I \iff TS = I$.
+\subsection*{Isomorphism}
+An \textbf{isomorphism} is an invertible linear map. An isomorphism can be thought of as a relabeling of basis vectors, and thus the vector space. \\ \\
+Two vector spaces are called \textbf{isomorphic} if there is an isomorphism from one vector space onto the other one. \\ \\
+\textbf{3.59}: Two finite-dimensional vector spaces over $F$ are isomorphic iff they have the same dimension. \\ \\
+\textbf{3.60}: Suppose $v_1, \dots, v_n$ is a basis of $V$ and $w_1, \dots, w_m$ is a basis of $W$, then $\mathcal{M}$ is an isomorphism between $\mathcal{L}(V, W)$ and $F^{m, n}$. \\ \\
+\textbf{3.61}: $\Dim{\mathcal{L}(V, W)} = (\Dim{V})(\Dim{W})$. \\ \\
+\textbf{Definition 3.62}: matrix of a vector, $\mathcal{M}(u)$ \\
+Suppose $u \in V$ and $v_1, \dots, v_n$ is a basis of $V$. The matrix of $u$ with respect to this basis is the $n$-by-1 matrix $$\mathcal{M}(u) = \begin{pmatrix}
+c_1 \\
+\vdots \\ 
+c_n
+\end{pmatrix},$$ where $c_1, \dots, c_n$ are scalars such that $u = c_1v_1 + \dots + c_nv_n$. \\ \\
+\textbf{3.64}: $\mathcal{M}(T)_{\cdot, k} = \mathcal{M}(Tv_k)$. \\ \\
+\textbf{Linear maps act like matrix multiplication}: Suppose $T \in \mathcal{L}(V, W)$ and $u \in V$. Suppose $v_1, \dots, v_n$ is a basis of $V$ and $w_1, \dots, w_m$ is a basis of $W$, then $$\mathcal{M}(Tu) = \mathcal{M}(T)\mathcal{M}(u).$$ \\
+$\mathcal{L}(V)$ is called an \textbf{operator}. \\ \\
+\textbf{Injectivity is equivalent to surjectivity in finite dimensions}: Suppose $V$ is finite-dimensional and $T \in \mathcal{L}(V)$, then the following are equivalent \begin{enumerate} 
+\item $T$ is invertible;
+\item $T$ is injective;
+\item $T$ is surjective.
+\end{enumerate} $ $ \\
+\textbf{3D Problem 10}: Suppose $V$ is finite-dimensional and $S, T \in \mathcal{L}(V)$. Then $ST$ is invertible iff $S$ and $T$ are invertible.
+\subsection*{Dual Space and Annihilators}
+A \textbf{linear functional} on $V$ is a linear map from $V$ to $F$. In other words, a linear functional is an element of $\mathcal{L}(V, F)$. \\ \\
+The \textbf{dual space} of $V$, denoted $V'$, is the vector space of all linear functionals on $V$. In other words, $V' = \mathcal{L}(V, F)$. \\ \\
+\textbf{Theorem}: $\Dim{V'} = \Dim{V}$ \\ \\
+If $v_1, \dots, v_n$ is a basis of $V$, then the \textbf{dual basis} of $v_1, \dots, v_n$ is the list $\varphi_1, \dots, \varphi_n$ of elements in $V'$, where each $\varphi_i$ is the linear functional on $V$ such that $$\varphi_i(v_k) = \begin{cases} 1 \text{ if } k = i \\
+0 \text{ if } k \neq i
+\end{cases}$$ \\
+\textbf{3.94}: Suppose $v_1, \dots, v_n$ is a basis of $V$ and $\varphi_1, \dots, \varphi_n$ is the corresponding dual basis, then $$v = \varphi_1(v)v_1 + \dots + \varphi_n(v)v_n$$ for every $v \in V$. \\ \\
+\textbf{3.96}: The dual basis is a basis of the dual space. In other words, the dual basis of a specific basis of $V$ is a basis of $V'$. \\ \\
+If $T \in \mathcal{L}(V, W)$, then the \textbf{dual map} of $T$ is the linear map $T' \in \mathcal{L}(W', V')$, defined by $T'(\varphi) = \varphi \circ T$, for all $\varphi \in W'$. \\ \\
+Properties of dual maps: \begin{enumerate}
+\item $(S + T)' = S' + T'$, for all $S, T \in \mathcal{L}(V, W)$
+\item $(\lambda T)' = \lambda T'$, for all $\lambda \in F$ and $T \in \mathcal{L}(V, W)$
+\item $(ST)' = T'S'$, for all $T \in \mathcal{L}(U, V)$ and $S \in \mathcal{L}(V, W)$
+\end{enumerate} $ $ \\
+For $U \subset V$, the \textbf{annihilator} of $U$, denoted $U^0$, is defined by \\
+$$U^0 = \{\varphi \in V': \varphi(u) = 0, \forall u \in U\}.$$ \\
+$U^0$ is a subspace of $V'$. \\ \\
+\textbf{3.104}: Suppose $V$ is finite-dimensional, then $\Dim{U} + \Dim{U^0} = \Dim{V}$. \\ \\
+\textbf{3.107} (the null space of $T'$): \begin{enumerate}
+    \item $\Null{T'} = (\Range{T})^0$;
+    \item $\Range{T'} = (\Null{T})^0$.
+\end{enumerate} $ $ \\
+Let $T \in \mathcal{L}(V, W)$, then \begin{enumerate}
+\item $T$ is surjective iff $T'$ is injective.
+\item $T$ is injective iff $T'$ is surjective.
+\end{enumerate} $ $ \\
+$\Dim{\Range{T}} = \Dim{\Range{T'}}$ \\ \\
+The \textbf{transpose} of a matrix $A$, denoted $A^t$, is the matrix obtained from $A$ by interchanging the rows and columns. Visually, this is flipping the matrix across the diagonal of square matrix inside $A$. In mathematical terms, $(A^t)_{j, k} = A_{k, j}$ \\ \\
+$\mathcal{M}(T') = (\mathcal{M}(T))^t$. \\ \\
+The \textbf{row rank} of a matrix $A$ is the dimension of the span of the rows of $A$ in $F^{1, n}$. \\ \\
+The \textbf{column rank} of a matrix $A$ is the dimension of the span of the columns of $A$ in $F^{m, 1}$. \\ \\
+Let $T \in \mathcal{L}(V, W)$. Then $\Dim{\Range{T}}$ equals the column rank of $\mathcal{M}(T)$. \\ \\
+For $A \in F^{m, n}$, the row rank of $A$ equals the column rank of $A$.
+\section*{Eigenvalues and Eigenvectors}
+Suppose $T \in \mathcal{L}(W)$. A subspace $U$ of $W$ is called \textbf{invariant} under $T$ if, for every $u \in U, Tu \in U$. \\ \\
+Suppose $T \in \mathcal{L}(W)$. A number $\lambda \in F$ is called an \textbf{eigenvalue} of $T$ if there exists $v \in W$ such that $v \neq 0$ and $Tv = \lambda v$. \\ \\
+The idea of an eigenvalue is that $\Span{v}$ is a one-dimensional subspace of $W$ invariant under $T$, where $v$ is an eigenvector of $T$. \\ \\
+\textbf{5.7} - (equivalent conditions to be an eigenvalue): Suppose $T \in \mathcal{L}(V)$ and $\lambda \in F$, then the following are equivalent: \begin{enumerate}
+\item $\lambda$ is an eigenvalue of $T$;
+\item $T - \lambda I$ is not injective;
+\item $T - \lambda I$ is not surjective;
+\item $T - \lambda I$ is not invertible.
+\end{enumerate} $ $ \\
+Suppose $T \in \mathcal{L}(V)$ and $\lambda \in F$ is an eigenvalue of $T$. A vector $v \in V$ is called an \textbf{eigenvector} of $T$ corresponding to $\lambda$ if $v \neq 0$ and $Tv = \lambda v$. \\ \\
+\textbf{5.11} - (linearly independent eigenvectors): Suppose $T \in \mathcal{L}(V)$. Then every list of eigenvectors of $T$ corresponding to distinct eigenvalues of $T$ is linearly independent. \\ \\
+\textbf{5.12}: Each operator on $V$ has at most $\Dim(V)$ distinct eigenvalues. \\ \\
+Suppose $T \in \mathcal{L}(V)$ and $m$ is a positive integer. \begin{enumerate}
+    \item $T^m$ is $T$ being applied $m$ times.
+    \item $T^0$ is the identity operator $I$ on $V$.
+    \item If $T$ is invertible with inverse $T^{-1}$, then $T^{-m}$ is defined by $T^{-m} = (T^{-1})^m$.
+\end{enumerate} $ $ \\
+Let $p(z) = a_mz^m + \dots + a_1z + a_0 \in \mathcal{P}(F)$ and $T \in \mathcal{L}(V)$, then the operator $p(T)$ is defined by $p(T) = a_mT^m + \dots + a_1T + a_0$. \\ \\
+\textbf{5.17} - (multiplicative properties): Suppose $p, q \in \mathbb{P}(F)$ and $T \in \mathcal{L}(W),$ then \begin{enumerate}
+    \item $(pq)(T) = p(T)q(T)$
+    \item $p(T)q(T) = q(T)p(T)$
+\end{enumerate} $ $ \\
+\textbf{5.18} - (null space and range of $p(T)$ are invariant under $T$): Suppose $p \in \mathbb{P}(F)$ and $T \in \mathcal{L}(V)$. Then $\Null{p(T)}$ and $\Range{p(T)}$ are invariant under $T$. \\ \\
+\textbf{5.19} (operators on complex vector spaces have an eigenvalue): Every operator on a finite-dimensional, nonzero, complex vector space has an
+eigenvalue. \\ \\
+A \textbf{monic polynomial} is a polynomial whose highest-degree coefficient equals 1. \\ \\
+\textbf{5.22} - (existence, uniqueness, and degree of minimal polynomial): Suppose $T \in \mathcal{L}(V)$. Then there exists a unique monic polynomial $p \in \mathbb{P}(F)$ of smallest degree such that $p(T) = 0$. Furthermore, $\deg{p} \leq \deg{V}$. \\ \\
+Suppose $T \in \mathcal{L}(V)$. Then the \textbf{minimal polynomial} of $T$ is the unique monic polynomial $p \in P(F)$ of smallest degree such that $p(T) = 0$. \\ \\
+To compute the minimal polynomial of an operator $T \in \mathcal{L}(V)$, the smallest positive integer $m$ such that the equation $$c_0I + c_1T + \dots + c_{m - 1}T^{m - 1} = -T^m$$is the degree of the minimal polynomial. \\ \\
+\textbf{5.27} - (eigenvalues are the zeros of the minimal polynomial): Suppose $T \in \mathcal{L}(V)$, \begin{enumerate}
+    \item The zeros of the minimal polynomial of $T$ are the eigenvalues of $T$.
+    \item If $V$ is a complex vector space, then the minimal polynomial of $T$ has the form $$(z - \lambda_1)\dots(z - \lambda_m),$$ where $\lambda_1, \dots, \lambda_m$ is the list of all the eigenvalues of $T$, possibly with repetitions.
+\end{enumerate} $ $ \\
+\textbf{5.29}: Suppose $q \in \mathbb{P}(F)$ and $T \in \mathcal{L}(V)$. Then $q(T) = 0$ iff $q$ is a polynomial multiple of the minimal polynomial of $T$. \\ \\
+\textbf{5.31} - (minimal polynomial of a restriction operator): Suppose $T \in \mathcal{L}(V)$ and $U$ is a subspace of $V$ that is invariant under $T$. Then the  minimal polynomial of $T$ is a polynomial multiple of the minimal polynomial
+of $T|_U$. \\ \\
+\textbf{5.32}: $T$ is not invertible $\iff$ the constant term of the minimal polynomial of $T$ is 0. \\ \\
+\textbf{5.33}: Every operator on a finite-dimensional nonzero vector space has an invariant subspace with dimension 1 or dimension 2. \\ \\
+\textbf{5.34}: Every operator on an odd-dimensional vector space has an eigenvalue. \\ \\
+Suppose $T \in \mathcal{L}(V)$ and $v_1, \dots, v_n$ is a basis of $V$, then $\mathcal{M}(T) = \begin{pmatrix}
+A_{1, 1} \dots A_{1, n} \\
+\vdots  \\
+A_{n, 1} \dots A_{n, n}
+\end{pmatrix}$ denotes the $n \times n$ \textbf{matrix of $T$} with respect to the basis. The entries $A_{j, k}$ are defined by $Tv_k = A_{1, k}v_1 + \dots + A_{n, k}v_n$. If the basis is not clear, then the notation $\mathcal{M}(T, (v_1, \dots, v_n))$. If no basis is specified, the standard basis can be assumed. \\ \\
+The \textbf{diagonal} of a square matrix consists of the entries on the line from the upper left corner to the bottom right corner. \\ \\
+A square matrix is called \textbf{upper triangular} if all the entries below the diagonal equal 0. \\ \\
+\textbf{5.39} - (conditions for upper-triangular matrix): Suppose $T \in \mathcal{L}(V)$ and $v_1, \dots, v_n$ is a basis of $V$, then the following are equivalent: \begin{enumerate}
+    \item the matrix of $T$ with respect to $v_1, \dots, v_n$ is upper triangular;
+    \item $\Span(v_1, \dots, v_k)$ is invariant under $T$ for each $k = 1, \dots, n$;
+    \item $Tv_k \in \Span(v_1, \dots, v_k)$ for each $k = 1, \dots, n$.
+\end{enumerate} $ $ \\
+\textbf{5.40} - (equation satisfied by operator with upper-triangular matrix): Suppose $T \in \mathcal{L}(V)$ and $V$ has a basis with respect to $T$ has an upper triangular matrix with diagonal entries $\lambda_1, \dots, \lambda_n$. Then $$(T - \lambda_1 I) \dots (T - \lambda_n I) = 0.$$ \\
+\textbf{5.41} - (determination of eigenvalues from upper-triangular matrix): Suppose $T \in \mathcal{L}(V)$ has an upper-triangular matrix with respect to some basis
+of $V$. Then the eigenvalues of $T$ are precisely the entries on the diagonal of
+that upper-triangular matrix. \\ \\
+\textbf{5.44} - (necessary and sufficient condition to have an upper-triangular matrix): Suppose $T \in \mathcal{L}(V)$. Then $T$ has an upper-triangular matrix with respect
+to some basis of $V$ if and only if the minimal polynomial of $T$ equals $(z - \lambda_1) \dots (z - \lambda_m)$ for some $\lambda_1, \dots, \lambda_m \in F$. \\ \\
+\textbf{5.47} - (if $F = \mathbb{C}$, then every operator on $V$ has an upper-triangular matrix): Suppose $T \in \mathcal{L}(V)$. \begin{enumerate}
+    \item If $F = \mathbb{C}$, then $T$ has an upper triangular matrix with respect to some basis of $V$. 
+    \item If $F = \mathbb{R}$, then $T$ has an upper-triangular matrix with respect to some basis
+of $V$ if and only if every zero of the minimal polynomial of $T$, thought of as a polynomial with complex coefficients, is real.
+\end{enumerate} $ $ \\
+A \textbf{diagonal matrix} is a square matrix that is 0 everywhere except possibly on the diagonal. \\ \\
+An operator on $V$ is called \textbf{diagonalizable} if the operator has a diagonal matrix
+with respect to some basis of $V$. \\ \\
+Suppose $T \in \mathcal{L}(V)$ and $\lambda \in F$. The \textbf{eigenspace} of $T$ corresponding to $\lambda$ is the subspace $E(\lambda, T)$ of $W$ defined by $$E(\lambda, T) = \Null(T - \lambda I).$$ In other words, $E(\lambda, T)$ is the set of all eigenvectors of $T$ corresponding to $\lambda$, along with the 0 vector. \\ \\
+\textbf{5.54}: Suppose $T \in \mathcal{L}(V)$ and $\lambda_1, \dots, \lambda_m$ are distinct eigenvalues of $T$. Then $$E(\lambda_1, T) + \dots + E(\lambda_m, T)$$ is a direct sum. Furthermore, $$\Dim{E(\lambda_1, T)} + \dots + \Dim{E(\lambda_m, T)} \leq \Dim{V}.$$ \\
+\textbf{5.55} - (conditions equivalent to diagonalizability): Suppose $T \in \mathcal{L}(V)$. Let $\lambda_1, \dots, \lambda_m$ be the distinct eigenvalues of $T$. Then the following are equivalent. \begin{enumerate}
+    \item $T$ is diagonalizable
+    \item $V$ has a basis consisting of eigenvectors of $T$
+    \item $V = E(\lambda_1, T) \oplus \dots \oplus E(\lambda_m, T)$
+    \item $\Dim{V} = \Dim{E(\lambda_1, T)} + \dots + \Dim{E(\lambda_m, T)}$
+\end{enumerate} $ $ \\
+\textbf{5.58} - (enough eigenvalues implies diagonalizability): Suppose $T \in \mathcal{L}(V)$ has $\Dim{V}$ distinct eigenvalues. Then $T$ is diagonalizable. \\ \\
+\textbf{5.62} - (necessary and sufficient condition for diagonalizability): Suppose $T \in \mathcal{L}(V)$. Then $T$ is diagonalizable iff the minimal polynomial of $T$ equals $(z - \lambda_1) \dots (z - \lambda_m)$ for some list of distinct numbers $\lambda_1, \dots, \lambda_m \in F$. \\ \\
+\textbf{5.65} - (restriction of diagonalizable to invariant subspace is diagonalizable): Suppose $T \in \mathcal{L}(V)$ is diagonalizable and $U$ is a subspace of $V$ that is invariant under $T$. Then $T|_U$ is a diagonalizable operator on $U$. \\ \\
+Two operators $S$ and $T$ on the same vector space \textbf{commute} if $ST = TS$. \\ \\
+\textbf{5.69} - (commuting operators correspond to commuting matrices) \\ \\
+\textbf{5.70} - (eigenspace is invariant under commuting operator): Suppose $S, T \in \mathcal{L}(V)$ commute and $\lambda \in F$. Then $E(\lambda, S)$ is invariant under $T$. \\ \\
+\textbf{5.71}: Two diagonalizable operators on the same vector space have diagonal matrices
+with respect to the same basis if and only if the two operators commute. \\ \\
+\textbf{5.73}: Every pair of commuting operators on a finite-dimensional, nonzero, complex
+vector space has a common eigenvector. \\ \\
+\textbf{5.75}: Suppose $V$ is a complex vector space and $S, T$ are commuting operators on $V$. Then there is a basis of $V$ with respect to which both $S$ and $T$ have upper triangular matrices. \\ \\
+\textbf{5.76} - (eigenvalues of sum and product of commuting operators): Suppose $V$ is a complex vector space and $S, T$ are commuting operators on $V$. Then \begin{enumerate}
+    \item every eigenvalue of $S + T$ is an eigenvalue of $S$ plus an eigenvalue of $T$
+    \item every eigenvalue of $ST$ is an eigenvalue of $S$ times an eigenvalue of $T$.
+\end{enumerate}
+\section*{Inner Product Spaces}
+For $x, y \in \mathbb{R}^n$, the \textbf{dot product} of $x$ and $y$, denoted $x \cdot y$ is defined by $$x \cdot y = x_1y_1 + \dots + x_ny_n,$$ where $x = (x_1, \dots, x_n), y = (y_1, \dots, y_n)$. \\ \\
+Dot product properties: For $x, y \in \mathbb{R}^n$, \begin{enumerate}
+    \item $x \cdot x \geq 0$,
+    \item $x \cdot x = 0$ iff $x = 0$,
+    \item $x \cdot y = y \cdot x$.
+\end{enumerate} $ $ \\
+For $z = (z_1, \dots, z_n) \in \mathbb{C}^n$, we define the \textbf{norm} of $$||z|| = \sqrt{|z_1|^2 + \dots + |z_n|^2}.$$ \\
+\textbf{The Euclidean inner product} of vector $w = (w_1, \dots, w_n) \in \mathbb{F}^n$ with $z = (z_1, \dots, z_n) \in \mathbb{F}^n$ is $$\langle w, z \rangle = w_1 \overline{z_1} + \dots + w_n \overline{z_n}.$$ \\
+\textbf{NOTATION ***} For $\lambda \in \mathbb{C}$, the notation $\lambda \geq 0$ means $\lambda$ is real and non-negative. \\ \\
+An \textbf{inner product} on $W$ is a function that takes each ordered pair $(v, w)$ of elements of $W$ to a number $\langle v, w \rangle \in F$ and has the following properties: \begin{enumerate}
+    \item $\langle w, w \rangle \geq 0$,
+    \item $\langle w, w \rangle = 0$ iff $w = 0$,
+    \item $\langle u + v, w \rangle = \langle u, w \rangle + \langle v, w \rangle$,
+    \item $\langle \lambda v, w \rangle = \lambda \langle v, w \rangle$ for $\lambda \in F$,
+    \item $\langle v, w \rangle = \overline{\langle w, v \rangle}$.
+\end{enumerate} $ $ \\
+An \textbf{inner product space} is a vector space $W$ along with an inner product on $W$. \\ \\
+\textbf{***} For the rest of this chapter, $V$ and $W$ denote inner product spaces over $F$ and $V$ is finite-dimensional. \\ \\
+\textbf{6.6} - (basic properties of an inner product): Let $v, w \in W$, then \begin{enumerate}
+    \item For each fixed $w$, the function that takes $v$ to $\langle v, w \rangle$ is a linear map from $W$ to $F$,
+    \item $\langle 0, w \rangle = 0$,
+    \item $\langle w, 0 \rangle = 0$,
+    \item $\langle u, v + w \rangle = \langle u, v \rangle + \langle u, w \rangle$,
+    \item $\langle v, \lambda w \rangle = \overline{\lambda}\langle v, w \rangle$.
+\end{enumerate} $ $ \\
+For $w \in W$, the \textbf{norm} of $w$, denoted $||w||$, is defined by $$||w|| = \sqrt{\langle w, w \rangle}.$$ \\
+\textbf{6.9} - (basic properties of the norm): Suppose $w \in W$ and $\lambda \in F$, \begin{enumerate}
+    \item $||w|| = 0$ iff $w = 0$,
+    \item $||\lambda w|| = |\lambda| \hspace{1mm} ||w||$.
+\end{enumerate} $ $ \\
+Two vectors $v, w \in W$ are called \textbf{orthogonal} if $\langle v, w \rangle = 0$. \\ \\
+$\vec{0}$ is orthogonal to everything, it is also the only vector orthogonal to itself. \\ \\
+\textbf{6.12} - (Pythagorean theorem): If $v, w \in W$ are orthogonal, then $||v + w||^2 = ||v||^2 + ||w||^2$. \\ \\
+\textbf{6.13} - (an orthogonal decomposition): Suppose $v, w \in W$ and $w \neq 0$, set $$c = \frac{\langle v, w \rangle}{||w||^2}, u = v - \frac{\langle v, w \rangle}{||w||^2}w.$$ Then $\langle u, w \rangle = 0$, and $v = cw + u$. \\ \\
+\textbf{6.14} - (Cauchy–Schwarz inequality): Suppose $v, w \in W$. Then $$|\langle v, w\rangle| \leq ||v|| \hspace{1mm} ||w||,$$ where equality occurs iff one of $v, w$ is a scalar multiple of the other. \\ \\
+\textbf{6.17} - (triangle inequality): Suppose $v, w \in W$. Then $$||v + w|| \leq ||v|| + ||w||,$$ where equality occurs iff one of $v, w$ is a non-negative real multiple of the other. \\ \\
+\textbf{6.21} - (parallelogram equality): Suppose $v, w \in W$. Then $$||v + w||^2 + ||v - w||^2 = 2(||v||^2 + ||w||^2).$$ \\
+A list of vectors is called \textbf{orthonormal} if each vector in the list has norm 1 and is orthogonal to all the other vectors in the list. \\ \\
+In other words, a list $e_1, \dots, e_m$ of vectors in $W$ is \textbf{orthonormal} if $$\langle e_j, e_k \rangle = \begin{cases} 1 \text{, if } j = k, \\
+0 \text{, if } j \neq k.
+\end{cases}$$ \\
+\textbf{6.24} - (norm of an orthonormal linear combination): Suppose $e_1, \dots, e_m$ is an orthonormal list of vectors in $W$, then $$||a_1e_1 + \dots + a_me_m||^2 = |a_1|^2 + \dots + |a_m|^2,$$ for all $a_i \in F.$ \\ \\
+\textbf{6.25} - (orthonormal lists are linearly independent) \\ \\
+\textbf{6.26} - (Bessel’s inequality): Suppose $e_1, \dots, e_m$ is an orthonormal list of vectors in $W$. If $w \in W$, then $$|\langle w, e_1 \rangle|^2 + \dots + |\langle w, e_m \rangle|^2 \leq ||w||^2.$$ \\
+An \textbf{orthonormal basis} of $V$ is an orthonormal list of vectors in $V$ that is also a basis of $V$. \\ \\
+\textbf{6.28}: Every orthonormal list of vectors in $V$ with length $\Dim{V}$ is an orthonormal basis of $V$. \\ \\
+\textbf{6.30} - (writing a vector as linear combination of orthonormal basis): Suppose $e_1, \dots, e_m$ is an orthonormal basis of $V$ and $v, w \in V$, then \begin{enumerate}
+    \item $v = \langle v, e_1 \rangle e_1 + \dots + \langle v, e_n \rangle e_n$, 
+    \item $||v||^2 = |\langle v, e_1 \rangle|^2 + \dots + |\langle v, e_n \rangle|^2$, 
+    \item $\langle v, w \rangle = \langle v, e_1 \rangle \overline{\langle w, e_1 \rangle} + \dots + \langle v, e_n \rangle \overline{\langle w, e_n \rangle}$.
+\end{enumerate} $ $ \\
+\textbf{6.32} - (Gram–Schmidt procedure): Suppose $w_1, \dots, w_m$ is a linearly independent list of vectors in $W$. Let $f_1 = w_1$. For $k = 2, \dots, m$, define $f_k$ inductively by $$f_k = w_k - \frac{\langle w_k, f_1 \rangle}{||f_1||^2}f_1 - \dots - \frac{\langle w_k, f_{k - 1} \rangle}{||f_{k - 1}||^2}f_{k - 1}.$$ For each $k = 1, \dots, m$, let $e_k = \mathlarger{\frac{f_k}{||f_k||}}$. Then $e_1, \dots, e_m$ is an orthonormal list of vectors in $W$ such that $\Span(w_1, \dots, w_k) = \Span(e_1, \dots, e_k)$, for $k = 1, \dots, m$. \\ \\
+\textbf{6.35} - (existence of orthonormal basis) \\ \\
+\textbf{6.36}: Every orthonormal list of vectors in $V$ can be extended to an orthonormal basis of $V$. \\ \\
+\textbf{6.38} - (upper-triangular matrix with respect to orthonormal basis): Suppose $T \in \mathcal{L}(V)$, then $T$ has an upper-triangular matrix with respect to some orthonormal basis of $V$ iff the minimal polynomial of $T$ equals $(z - \lambda_1) \dots (z - \lambda_m)$, for some $\lambda_1, \dots, \lambda_m \in F$. \\ \\
+\textbf{6.39} - (Schur’s theorem): Every operator on a finite-dimensional complex inner product space has an upper-triangular matrix with respect to some orthonormal basis.
+\subsection*{Linear Functionals on Inner Product Spaces}
+A \textbf{linear functional} on $W$ is a linear map from $W$ to $F$. \\ \\
+The \textbf{dual space} of $W$, denoted $W'$, is the vector space of all linear functionals on $W$. In other words, $W' = \mathcal{L}(W, F)$. \\ \\
+\textbf{6.43} - (Riesz representation theorem): Suppose $\varphi$ is a linear functional on $V$. Then there is a unique vector $w \in V$ such that $$\varphi(v) = \langle v, w \rangle,$$ for every $v \in V.$
+\subsection*{Orthogonal Complements and Minimization Problems}
+If $U$ is a subset of $W$ then the \textbf{orthogonal complement} of $U$ denoted $U^{\perp}$, is the set of all vectors in $W$ that are orthogonal to every vector in $U$: $$U^{\perp} = \{w \in W: \langle u, w \rangle = 0, \text{ for every } u \in U\}$$ \\
+\textbf{6.49} - (properties of orthogonal complement): \begin{enumerate}
+    \item If $U$ is a subset of $W$, then $U^{\perp}$ is a subspace of $W$,
+    \item $\{0\}^{\perp} = W$,
+    \item $W^{\perp} = \{0\}$,
+    \item If $U$ is a subset of $W$, then $U \cap U^{\perp} \subset \{0\}$,
+    \item If $G$ and $H$ are subsets of $W$ and $G \subset H$, then $H^{\perp} \subset G^{\perp}$.
+\end{enumerate} $ $ \\
+\textbf{6.50} - (direct sum of a subspace and its orthogonal complement): Suppose $U$ is a finite-dimensional subspace of $V$, then $$V = U \oplus U^{\perp}.$$ \\
+\textbf{6.53} - (dimension of orthogonal complement): Suppose $U$ is a subspace of $V$, then $$\Dim{U^{\perp}} = \Dim{V} - \Dim{U}.$$ \\
+\textbf{6.54} - (orthogonal complement of the orthogonal complement): Suppose $U$ is a finite-dimensional subspace of $W$, then $$U = (U^{\perp})^{\perp}.$$ \\
+\textbf{6.56}: Suppose $U$ is a finite-dimensional subspace of $W$, then $$U^{\perp} = \{0\} \iff U = W.$$ \\
+Suppose $U$ is a finite-dimensional subspace of $W.$ The \textbf{orthogonal projection}
+of $W$ onto $U$ is the operator $P_U \in \mathcal{L}(W)$ defined as follows: For $w \in W$, write $w = u + v$, where $u \in U$ and $v \in U^{\perp}$. Then $P_U w = u$. \\ \\
+\textbf{6.59} - (properties of orthogonal projection $P_U$): Suppose $U$ is a finite-dimensional subspace of $W$ and $w \in W$. Then, for every $u \in U$ and $v \in U^{\perp}$, \begin{enumerate}
+    \item $P_U \in \mathcal{L}(W)$;
+    \item $P_U u = u$;
+    \item $P_U v = 0$;
+    \item $\Range{P_U} = U$;
+    \item $\Null{P_U} = U^{\perp}$;
+    \item $w - P_U w \in U^{\perp}$;
+    \item ${P_U}^2 = P_U$;
+    \item $||P_U w|| \leq ||w||$;
+    \item if $e_1, \dots, e_m$ is an orthonormal basis of $U$, then $$P_U w = \langle w, e_1 \rangle e_1 + \dots + \langle w, e_m \rangle e_m.$$
+\end{enumerate} $ $ \\
+\textbf{6.60} - (Riesz representation theorem): For $v \in V$, define $\varphi_v \in V'$ by $$\varphi_v(u) = \langle u, v \rangle$$ for $u \in V$. Then $v \rightarrow \varphi_v$ is a one-to-one function from $V$ onto $V'$. \\ \\
+\textbf{6.63} - (minimizing distance to a subspace): Suppose $U$ is a finite-dimensional subspace of $W$, $w \in W$ and $u \in U$. Then $$||w - P_U w|| \leq ||w - u||,$$ where equality occurs iff $u = P_U w$. \\ \\
+\textbf{6.69} - (restriction of a linear map to obtain a one-to-one and onto map): Suppose $T \in \mathcal{L}(V, W)$. Then $T|_{(\Null{T})^{\perp}}$ is a one-to-one map of $(\Null{T})^{\perp}$ onto $\Range{T}$. \\ \\
+Suppose $T \in \mathcal{L}(V, W)$. The \textbf{pseudoinverse}, or \textbf{Moore-Penrose inverse}, $T^\dagger \in \mathcal{L}(W, V)$ of $T$ is the linear map from $W$ to $V$ defined by $T^\dagger w = (T|_{(\Null{T})^\perp})^{-1}P_{\Range{T}}w$, for some $w \in W$. \\ \\
+If $w \in (\Range{T})^\perp$, then $T^\dagger w = 0$. If $w \in \Range{T}$, then $T^\dagger w$ is the unique element of $(\Null{T})^\perp$ such that $T(T^\dagger w) = w$. \\ \\
+\textbf{6.71} - (algebraic properties of the pseudoinverse): Suppose $T \in \mathcal{L}(V, W)$, \begin{enumerate}
+    \item If $T$ is invertible, then $T^\dagger = T^{-1}$.
+    \item $T^\dagger T = P_{(\Null{T})^\perp} = $ the orthogonal projection of $V$ onto $(\Null{T})^\perp$.
+    \item $TT^\dagger = P_{\Range{T}} = $ the orthogonal projection of $W$ onto $\Range{T}$.
+\end{enumerate} $ $ \\
+Result $\# 2$ above implies that if $T$ is injective, then $T^\dagger T$ is the identity operator on $V$. Result $\#$3 above implies that if $T$ is surjective, then $TT^\dagger$ is the identity operator on $W$. \\ \\
+\textbf{6.72} - (pseudoinverse provides best approximate solution or best solution): Suppose $T \in \mathcal{L}(V, W)$ and $b \in W$. \begin{enumerate}
+    \item If $x \in V$, then $$||T(T^\dagger b) - b)|| \leq ||Tx - b||,$$ with equality iff $x \in T^\dagger b + \Null{T}$.
+    \item If $x \in T^\dagger b + \Null{T}$, then $$||T^\dagger b|| \leq ||x||,$$ with equality iff $x = T^\dagger b$.
+\end{enumerate}
+\section*{Operators on Inner Product Spaces}
+Suppose $T \in \mathcal{L}(V, W)$. The \textbf{adjoint} of $T$ is the function $T^*: W \rightarrow V$ such that $$\langle Tv, w \rangle = \langle v, T^* w \rangle,$$ for every $v \in V$ and every $w \in W$. \\ \\
+In other words, $u = T^* w$ is the unique vector in $V$ such that $\langle Tv, w \rangle = \langle v, u \rangle$ for every $v \in V.$ \\ \\
+Suppose $T \in \mathcal{L}(V, W)$, then $T^* \in \mathcal{L}(W, V)$. \\ \\
+\textbf{7.5} - (properties of the adjoint): Suppose $T \in \mathcal{L}(V, W)$, then \begin{enumerate}
+    \item $(S + T)^* = S^* + T^*$ for all $S \in \mathcal{L}(V, W)$;
+    \item $(\lambda T)^* = \overline{\lambda} T^*$;
+    \item $(T^*)^* = T$;
+    \item $(ST)^* = T^* S^*$ for all $S \in \mathcal{L}(W, U)$, where $U$ is an inner product space over $F$;
+    \item $I^* = I$, for the identity operator $I$ on $V$;
+    \item If $T$ is invertible, then $T^*$ is inevitable and $(T^*)^{-1} = (T^{-1})^*$.
+\end{enumerate} $ $ \\
+\textbf{7.6} - (null space and range of $T^*$): Suppose $T \in \mathcal{L}(V, W)$, then \begin{enumerate}
+    \item $\Null{T^*} = (\Range{T})^\perp$
+    \item $\Range{T^*} = (\Null{T})^\perp$
+    \item $\Null{T} = (\Range{T^*})^\perp$
+    \item $\Range{T} = (\Null{T^*})^\perp$
+\end{enumerate} $ $ \\
+The \textbf{conjugate transpose} of an $m$-by-$n$ matrix $A$ is the $n$-by-$m$ matrix $A^*$ obtained by interchanging the rows and columns and then taking the complex conjugate of each entry. In other words, $(A^*)_{j, k} = \overline{A_{k, j}}$. \\ \\
+\textbf{7.9} - (matrix of $T^*$ equals conjugate transpose of matrix of $T$): Let $T \in \mathcal{L}(V, W)$. Suppose $e_1, \dots, e_n$ is an orthonormal basis of $V$ and $f_1, \dots, f_m$ is an orthonormal basis of $W$. Then $M(T^*, (f_1, \dots, f_m), (e_1, \dots, e_n))$ is the conjugate transpose of $M(T, (e_1, \dots, e_n), (f_1, \dots, f_m))$. In other words, $$M(T^*) = (M(T))^*.$$ \\
+An operator $T \in \mathcal{L}(V)$ is called \textbf{self-adjoint} if $T = T^*$. In other words, $T \in \mathcal{L}(V)$ is self-adjoint iff $$\langle Tv, w \rangle = \langle v, Tw \rangle,$$ for al $v, w \in V$. \\ \\
+*** \textbf{7.12} - (eigenvalues of self-adjoint operators are real). \\ \\
+\textbf{7.13} - ($Tv$ is orthogonal to $v$ for all $v \iff T = 0$ (assuming $F = \mathbb{C}$)): Suppose $V$ is a complex inner product space and $T \in \mathcal{L}(V)$, then $$\langle Tv, v \rangle = 0, \text{ for every } v \in V \iff T = 0.$$ \\
+\textbf{7.14} - ($\langle Tv, v \rangle$ is real for all $v \iff T$ is self-adjoint (assuming $F = \mathbb{C}$)): Suppose $V$ is a complex inner product space and $T \in \mathcal{L}(V)$, then $$T \text{ is self-adjoint} \iff \langle Tv, v \rangle \in \mathbb{R} \text{ for every } v \in V.$$ \\
+\textbf{7.16} - ($T$ self-adjoint and $\langle Tv, v \rangle = 0$ for all $V \iff T = 0$ (this is true over $\mathbb{R}$ as well, not just $\mathbb{C}$)): Suppose $T$ is a self-adjoint operator on $V,$ then $$\langle Tv, v \rangle = 0 \text{ for every } v \in V \iff T = 0.$$ \\
+\textbf{*** Important Factorization}: $$\langle Tv, w \rangle = \frac{\langle T(u + v), u + v \rangle - \langle T(u - v), u - v \rangle}{4}.$$ \\
+An operator on an inner product space is called \textbf{normal} if it commutes with it's adjoint. In other words, $T \in \mathcal{L}(V)$ is normal if $TT^* = T^*T$. \\ \\
+\textbf{7.20} - ($T$ is normal $\iff ||Tv|| = ||T^* v||$ for all $v$) \\ \\
+\textbf{7.21} - (range, null space, and eigenvectors of a normal operator): Suppose $T \in \mathcal{L}(V)$ is normal, then \begin{enumerate}
+    \item $\Null{T} = \Null{T^*}$;
+    \item $\Range{T} = \Range{T^*}$;
+    \item $V = \Null{T} \oplus \Range{T}$;
+    \item $T - \lambda I$ is normal for every $\lambda \in F$;
+    \item $Tv = \lambda v$ iff $T^* v = \overline{\lambda} v$, for $v \in V$ and $\lambda \in F$.
+\end{enumerate} $ $ \\
+Part 5 of the above result, 7.21, implies that a normal operator and it's adjoint have the same eigenvectors and same eigenvalues (up to complex conjugates). The correspondence between eigenvalues and eigenvectors are the same between a normal operator and it's adjoint. \\ \\
+\textbf{7.22} - (orthogonal eigenvectors for normal operators): Suppose $T \in \mathcal{L}(V)$ is normal. Then eigenvectors of $T$ corresponding to distinct eigenvalues are orthogonal.  \\ \\
+\textbf{7.23} - ($T$ is normal $\iff$ the real and imaginary parts of $T$ commute): Suppose $F = \mathbb{C}$ and $T \in \mathcal{L}(V)$. Then $T$ is normal iff there exist commuting self-adjoint operators $Q$ and $S$ such that $T = Q + iS$. \\ \\
+\textbf{7.26} - (invertible quadratic expressions): Suppose $T \in \mathcal{L}(V)$ is self-adjoint and $b, c \in \mathbb{R}$ are such that $b^2 < 4c$. Then $$T^2 + bT + cI$$ is an invertible operator. \\ \\
+\textbf{7.27} - (minimal polynomial of self-adjoint operator): Suppose $T \in \mathcal{L}(V)$ is self-adjoint. Then the minimal polynomial of $T$ equals $(z - \lambda_1)\dots(z - \lambda_m)$ for some $\lambda_1, \dots, \lambda_m \in \mathbb{R}$. \\ \\
+\textbf{7.29} - (real spectral theorem): Suppose $F = \mathbb{R}$ and $T \in \mathcal{L}(V)$, then the following are equivalent \begin{enumerate}
+    \item $T$ is self-adjoint.
+    \item $T$ has a diagonal matrix with respect to some orthonormal basis of $V$.
+    \item $V$ has an orthonormal basis consisting of eigenvectors of $T$.
+\end{enumerate} $ $ \\
+\textbf{7.31} - (complex spectral theorem): Suppose $F = \mathbb{C}$ and $T \in \mathcal{L}(V)$, then the following are equivalent \begin{enumerate}
+    \item $T$ is normal.
+    \item $T$ has a diagonal matrix with respect to some orthonormal basis of $V$.
+    \item $V$ has an orthonormal basis consisting of eigenvectors of $T$.
+\end{enumerate} $ $ \\
+An operator $T \in \mathcal{L}(V)$ is called \textbf{positive} if $T$ is self-adjoint and $$\langle Tv, v \rangle \geq 0,$$ for all $v \in V$. \\ \\
+An operator $R$ is called a \textbf{square root} of an operator $T$ if $R^2 = T$. \\ \\
+\textbf{7.38} - (characterization of positive operators): Let $T \in \mathcal{L}(V)$. Then the following are equivalent: \begin{enumerate}
+    \item $T$ is a positive operator
+    \item $T$ is self-adjoint and all eigenvalues of $T$ are non-negative
+    \item with respect to some orthonormal basis of $V$ the matrix of $T$ is a diagonal matrix with only non-negative numbers on the diagonal
+    \item $T$ has a positive square root
+    \item $T$ has a self-adjoint square root
+    \item $T = R^*R$ for some $R \in \mathcal{L}(V)$
+\end{enumerate} $ $ \\
+\textbf{7.39} - (Every positive operator on $V$ has a unique positive square root) \\ \\
+\textbf{***}: For some positive operator $T, \sqrt{T}$ denotes the unique positive square root of $T$. \\ \\
+\textbf{7.43} - ($T$ positive and $\langle Tv, v \rangle = 0 \implies Tv = 0$) \\ \\
+A linear map $S \in \mathcal{L}(V, W)$ is called an \textbf{isometry} if $$||Sv|| = ||v||$$ for every $v \in V$. In other words, a linear map is an isometry if it preserves norms. \\ \\
+\textbf{7.49} - (characterization of isometries): Let $S \in \mathcal{L}(V, W)$. Suppose $e_1, \dots, e_n$ is an orthonormal basis of $V$ and $f_1, \dots, f_m$ is an orthonormal basis of $W$. Then the following are equivalent: \begin{enumerate}
+    \item $S$ is an isometry
+    \item $S^*S = I$
+    \item $\langle Su, Sv \rangle = \langle u, v \rangle$ for all $u, v \in V$
+    \item $Se_1, \dots, Se_n$ is an orthonormal list in $W$
+    \item The columns of $M(S, (e_1, \dots, e_n), (f_1, \dots, f_m))$ form an orthonormal list in $F^m$ with respect to the Euclidean inner product.
+\end{enumerate} $ $ \\
+An operator $S \in \mathcal{L}(V)$ is called \textbf{unitary} if $S$ is an invertible isometry. \\ \\
+\textbf{7.53} - (characterization of unitary operators): Let $S \in \mathcal{L}(V)$. Suppose $e_1, \dots, e_n$ is an orthonormal basis of $V$. Then the following are equivalent: \begin{enumerate}
+    \item $S$ is a unitary operator
+    \item $S^*S = SS^* = I$
+    \item $S$ is invertible and $S^{-1} = S^*$
+    \item $Se_1, \dots, Se_n$ is an orthonormal basis of $V$
+    \item The rows of $M(S, (e_1, \dots, e_n))$ form an orthonormal list of $F^n$ with respect to the Euclidean inner product.
+    \item $S^*$ is a unitary operator
+\end{enumerate} $ $ \\
+Analogy: A complex number $z$ can be thought of as corresponding to an operator $S \in \mathcal{L}(V)$, and $\overline{z}$ corresponding to $S^*$. If $z$ is real, then $S = S^*$, as we know. Similarly, the non-negative numbers correspond to positive operators. The values of $|z| = 1$ corresponds to isometries, as $S^*S = I$.  \\ \\
+\textbf{7.54} - (eigenvalues of unitary operators have absolute value 1) \\ \\
+\textbf{7.55} - (description of unitary operators on complex inner product spaces): Suppose $F = \mathbb{C}$ and $S \in \mathcal{L}(V)$. Then the following are equivalent: \begin{enumerate}
+    \item $S$ is a unitary operator
+    \item There is an orthonormal basis of $V$ consisting of eigenvectors of $S$ whose corresponding eigenvalues all have absolute value 1.
+\end{enumerate} $ $ \\
+An $n$-by-$n$ matrix is called \textbf{unitary} if it's columns (or rows) form an orthonormal basis in $F^n$. \\ \\
+\textbf{7.57} - (characterizations of unitary matrices): Suppose $Q$ is an $n$-by-$n$ matrix. Then the following are equivalent: \begin{enumerate}
+    \item $Q$ is a unitary matrix.
+    \item The rows of $Q$ form an orthonormal list in $F^n$.
+    \item $||Qv|| = ||v||$ for every $v \in F^n$.
+    \item $Q^*Q = QQ^* = I$, where $I$ is the $n$-by-$n$ identity matrix with 1's on the diagonal and 0's elsewhere.
+\end{enumerate} $ $ \\
+\textbf{7.58} - ($QR$ factorization): Suppose $A$ is a square matrix with linearly independent columns. Then there exist unique matrices $Q$ and $R$ such that $Q$ is unitary, $R$ is upper triangular with all positive entries on its diagonal, and $$A = QR.$$ \\
+\textbf{7.61} - (properties of $T^*T$): Suppose $T \in \mathcal{L}(V, W)$. Then \begin{enumerate}
+    \item $T^*T$ is a positive operator on $V$;
+    \item $\Null{T^*T} = \Null{T}$;
+    \item $\Range{T^*T} = \Range{T^*}$;
+    \item $\Dim{\Range{T}} = \Dim{\Range{T^*}} = \Dim{\Range{T^*T}}$.
+\end{enumerate} $ $ \\
+Suppose $T \in \mathcal{L}(V, W)$. The \textbf{singular values} of $T$ are the non-negative square roots of the eigenvalues of $T^*T$ listed in decreasing order, each included as many times as the dimension of the corresponding eigenspace of $T^*T$. \\ \\
+\textbf{5.54} - (sum of eigenspaces is a direct sum): Suppose $T \in \mathcal{L}(V)$ and $\lambda_1, \dots, \lambda_m$ are distinct eigenvalues of $T$. Then $$E(\lambda_1, T) + \dots + E(\lambda_m, T)$$ is a direct sum. Furthermore, $$\Dim{E(\lambda_1, T)} + \dots + \Dim{E(\lambda_m, T)} \leq \Dim{V}.$$ \\
+\textbf{7.65} - (role of positive singular values): Suppose $T \in \mathcal{L}(V, W)$. Then \begin{enumerate}
+    \item $T$ is injective $\iff 0$ is not a singular value of $T$;
+    \item the number of positive singular values of $T$ equals $\Dim{\Range{T}}$;
+    \item $T$ is surjective $\iff$ number of positive singular values of $T$ equals $\Dim{W}$.
+\end{enumerate} $ $ \\
+\textbf{7.66} - (isometries characterized by having all singular values equal 1): Suppose that $S \in \mathcal{L}(V, W)$. Then $S$ is an isometry $\iff$ all the singular values of $S$ equal 1. \\ \\
+\textbf{7.67} - (singular value decomposition): Suppose $T \in \mathcal{L}(V, W)$ and the positive singular values of $T$ are $s_1, \dots, s_m$. Then there exist orthonormal lists $e_1, \dots, e_m$ in $V$ and $f_1, \dots, f_m$ in $W$ such that $$Tv = s_1 \langle v, e_1 \rangle f_1 + \dots + s_m \langle v, e_m \rangle f_m$$ for every $v \in V$. \\ \\
+The defintion of a diagonal matrix extends very intuitively to non-square matrices. \\ \\
+\textbf{7.72} - (singular value decomposition of adjoint and pseudoinverse): Suppose $T \in \mathcal{L}(V, W)$ and the positive singular values of $T$ are $s_1, \dots, s_m$. Suppose $e_1, \dots, e_m$ and $f_1, \dots, f_m$ are orthonormal lists in $V$ and $W$, respectively, such that $$Tv = s_1 \langle v, e_1 \rangle f_1 + \dots + s_m \langle v, e_m \rangle f_m$$ for every $v \in V$. Then $$T^*w = s_1 \langle w, f_1 \rangle e_1 + \dots + s_m \langle w, f_m \rangle e_m$$ and $$T^\dagger w = \frac{\langle w, f_1 \rangle}{s_1} e_1 + \dots + \frac{\langle w, f_m \rangle}{s_m} e_m$$ \\
+\textbf{7.77} - (matrix version of singular value decomposition): Suppose $A$ is an $M$-by-$N$ matrix. Then there exist an $M$-by-$N$ diagonal matrix $D$ with non-negative entries, an $M$-by-$M$ unitary matrix $Q_1$, and an $N$-by-$N$ unitary matrix $Q_2$ such that $$A = Q_1 D Q_2.$$
+\section*{Operators on Complex Vector Spaces}
+\textbf{8.1} - (sequence of increasing null spaces): Suppose $T \in \mathcal{L}(V)$. Then $$\{0\} = \Null{T^0} \subset \Null{T^1} \subset \dots.$$ \\
+\textbf{8.2} - (equality in the sequence of null spaces): Suppose $T \in \mathcal{L}(V)$ and $m$ is a non-negative integer such that $\Null{T^m} = \Null{T^{m + 1}}$. Then $$\Null{T^m} = \Null{T^{m + 1}} = \Null{T^{m + 2}} = \dots.$$ \\
+\textbf{8.3} - (null spaces stop growing): Suppose $T \in \mathcal{L}(V)$. Then $$\Null{T^{\Dim{V}}} = \Null{T^{\Dim{V} + 1}} = \dots.$$ \\
+\textbf{8.4} - ($V$ is the direct sum of $\Null{T^{\Dim{V}}}$ and $\Range{T^{\Dim{V}}}$): Suppose $T \in \mathcal{L}(V)$. Then $$V = \Null{T^{\Dim{V}}} \oplus \Range{T^{\Dim{V}}}.$$ \\
+Suppose $T \in \mathcal{L}(V)$ and $\lambda$ is an eigenvalue of $T$. A vector $v \in V$ is called a \textbf{generalized eigenvector} of $T$ corresponding to $\lambda$ if $v \neq 0$ and $$(T - \lambda I)^k v = 0,$$ for some positive integer $k \in \mathbb{N}$. \\
+Note that every eigenvector of $T$ is a generalized eigenvector, simply considering the $k = 1$ case in the above equation. \\ \\
+A nonzero vector $v \in V$ is a \textbf{generalized eigenvector} of $T$ corresponding to $\lambda$ if and only if $$(T - \lambda I)^{\Dim{V}} v = 0.$$ \\
+\textbf{8.9} - (a basis of generalized eigenvectors): Suppose $F = \mathbb{C}$ and $T \in \mathcal{L}(V)$. Then there is a basis of $V$ consisting of generalized eigenvectors of $T$. \\
+However, if $F = \mathbb{R}$ and $\Dim{V} > 1$, then not all operators on $V$ have the property that there exists a basis of $V$ consisting of generalized eigenvectors of the operator. \\ \\
+\textbf{8.11} - (generalized eigenvector corresponds to a unique eigenvalue): Suppose $T \in \mathcal{L}(V)$, then each generalized eigenvector of $T$ corresponds to only one eigenvalue of $T$. \\ \\
+\textbf{8.12} - (linearly independent generalized eigenvectors): Suppose $T \in \mathcal{L}(V)$. Then every list of generalized eigenvectors of $T$ corresponding to distinct eigenvalues of $T$ is linearly independent. \\ \\
+An operator is called \textbf{nilpotent} if some power of it equals 0. \\ \\
+\textbf{8.16} - (nilpotent operator raised to dimension of domain is 0): Suppose $T \in \mathcal{L}(V)$ is nilpotent. Then $T^{\Dim{V}} = 0$. \\ \\
+\textbf{8.17} - (eigenvalues of nilpotent operator): Suppose $T \in \mathcal{L}(V)$. \begin{enumerate}
+    \item If $T$ is nilpotent, then  0 is an eigenvalue of $T$ and $T$ has no other eigenvalues.
+    \item If $F = \mathbb{C}$ and 0 is the only eigenvalue of $T$, then $T$ is nilpotent.
+\end{enumerate} $ $ \\
+\textbf{8.18} - (minimal polynomial and upper-triangular matrix of nilpotent operator): Suppose $T \in \mathcal{L}(V)$, then the following are equivalent \begin{enumerate}
+    \item $T$ is nilpotent.
+    \item The minimal polynomial of $T$ is $z^m$ for some positive integer $m$.
+    \item There is a basis of $V$ with respect to which the matrix of $T$ is upper-triangular with all 0's on the diagonal.
+\end{enumerate} $ $ \\
+Suppose $T \in \mathcal{L}(V)$ and $\lambda \in F$. The \textbf{generalized eigenspace} of $T$ corresponding to $\lambda$, denoted $G(\lambda, T)$, is defined to be the set of all generalized eigenvectors of $T$ corresponding to $\lambda$, along with the 0 vector. \\ \\
+\textbf{8.20} - (description of generalized eigenspaces): Suppose $T \in \mathcal{L}(V)$ and $\lambda_k \in F$. Then $$G(\lambda_k, T) = \Null{(T - \lambda_k I)^{\Dim{V}}}.$$ \\
+\textbf{8.22} - (generalized eigenspace decomposition): Suppose $F = \mathbb{C}$ and $T \in \mathcal{L}(V)$. Let $\lambda_1, \dots, \lambda_m$ be distinct eigenvalues of $T$. Then \begin{enumerate}
+    \item $V = G(\lambda_1, T) \oplus \dots \oplus G(\lambda_m, T)$;
+    \item Each $G(\lambda_k, T)$ is invariant under $T$;
+    \item Each $(T - \lambda_k I)|_{G(\lambda_k, T)}$ is nilpotent.
+\end{enumerate} $ $ \\
+Suppose $T \in \mathcal{L}(V)$, the \textbf{multiplicity}, or algebraic multiplicity, of an eigenvalue $\lambda$ of $T$ is defined to be the dimension of the corresponding generalized eigenspace $G(\lambda, T)$. In other words, the multiplicity of an eigenvalue $\lambda$ of $T$ equals $$\Dim{\Null{(T - \lambda I)^{\Dim{V}}}}.$$ \\
+The \textbf{geometric multiplicity} of an eigenvalue is the number of eigenvectors it has (not generalized eigenvectors, just normal eigenvectors!) \\ \\
+\textbf{8.26} - (sum of the multiplicities equals $\Dim{V}$) \\ \\
+Suppose $F = \mathbb{C}$ and $T \in \mathcal{L}(V)$. Let $\lambda_1, \dots, \lambda_m$ denote the distinct eigenvalues of $T$, with multiplicities $d_1, \dots, d_m,$ respectively. Then $$(z - \lambda_1)^{d_1} \dots (z - \lambda_m)^{d_m}$$ is called the \textbf{characteristic polynomial} of $T$. \\ \\
+\textbf{8.29} - (degree and zeros of characteristic polynomial): Suppose $F = \mathbb{C}$ and $T \in \mathcal{L}(V)$. Then \begin{enumerate}
+    \item the characteristic polynomial of $T$ has degree $\Dim{V}$;
+    \item the zeros of the characteristic polynomial of $T$ are the eigenvalues of $T$.
+\end{enumerate} $ $ \\
+\textbf{8.30} - (Cayley–Hamilton theorem): Suppose $F = \mathbb{C}$ and $T \in \mathcal{L}(V)$. Let $q$ denote the characteristic polynomial of $T$. Then $q(T) = 0$. \\ \\
+\textbf{8.31} - (characteristic polynomial is a multiple of minimal polynomial) \\ \\
+8.31 implies that if the minimal polynomial of an operator $T$ has degree $\Dim{V}$, then the characteristic polynomial of $T$ is the same as the minimal polynomial of $T$. \\ \\
+A \textbf{block diagonal matrix} is a diagonal square matrix with square matrices (not necessarily the same size) on the diagonal (a number can be thought of as a $1 \times 1$ square matrix). \\ \\
+\textbf{8.36} - (identity plus nilpotent has a square root): Suppose $T \in \mathcal{L}(V)$ is nilpotent. Then $I + T$ has a square root. \\ \\
+\textbf{8.38} - (over $\mathbb{C}$, invertible operators have square roots): Suppose $V$ is a complex vector space and $T \in \mathcal{L}(V)$ is invertible. Then $T$ has a square root. \\ \\
+\textbf{8.41} - (basis corresponding to nilpotent operator): Suppose $T \in \mathcal{L}(V)$ is nilpotent. Then there exist vectors $v_1, \dots, v_n \in V$ and non-negative integers $m_1, \dots, m_n$ such that \begin{enumerate}
+    \item $T^{m_1}v_1, \dots, Tv_1, v_1, \dots, T^{m_n}v_n, \dots, Tv_n, v_n$ is a basis of $V$;
+    \item $T^{m_1 + 1}v_1 = \dots = T^{m_n + 1}v_n = 0$.
+\end{enumerate} $ $ \\
+Suppose $T \in \mathcal{L}(V)$. A basis of $V$ is called a \textbf{Jordan basis} for $T$ if with respect to this basis $T$ has a block diagonal matrix, where each matrix on the diagonal is an upper-triangular matrix with the eigenvalue corresponding to that inner matrix on the main diagonal, and all 1's on the diagonal right above that. (rest are 0's). \\ \\
+\textbf{8.46} - (Jordan form): Suppose $F = \mathbb{C}$ and $T \in \mathcal{L}(V)$. Then there is a basis of $V$ that is a Jordan basis for $T$. \\ \\
+
+
+
+
+
+
+
+
+
+
+\end{document}j
