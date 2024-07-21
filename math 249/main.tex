@@ -1,0 +1,318 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{relsize}
+\usepackage{titlesec}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{xcolor}
+\usepackage{enumerate}
+\usepackage[T1]{fontenc}
+\usepackage{titling}
+\usepackage{changepage}
+\usepackage{mathrsfs}
+\usepackage{biblatex}
+\usepackage{float}
+\usepackage{soul,color,xcolor}
+\usepackage{esvect}
+
+\usepackage[margin=1.0in]{geometry}
+
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\C}{\mathbb{C}}
+\DeclareMathOperator{\F}{\mathbb{F}}
+\newcommand{\species}[1]{\underline{\underline{#1}}}
+
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\aut}{Aut}
+\DeclareMathOperator{\inn}{Inn}
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\syl}{Syl}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Stab}{Stab}
+
+\DeclareMathOperator{\des}{des}
+\DeclareMathOperator{\maj}{maj}
+\DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\trace}{tr}
+\DeclareMathOperator{\inv}{inv}
+
+\def\acts{\curvearrowright}
+
+\newcommand{\angbinom}[2]{\genfrac{\langle}{\rangle}{0pt}{}{#1}{#2}}
+
+\title{Math 249 Notes}
+\author{Henry Yan}
+\date{March 2024}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Notation}
+Let $\langle x^n \rangle f(x)$ denote the coefficient of $x^n$ in $f(x)$.
+\subsection*{Lectures 1-6}
+\textbf{Definition - Multinomial Coefficient}: Define the \textit{multinomial coefficient} $\mathlarger{\binom{n}{r_1, \dots, r_k}}$ to be the number of permutations of $1^{r_1} \dots k^{r_k}$. \\ \\
+Then consider the $S_n \acts \{\text{permutations of }1^{r_1} \dots k^{r_k}\}$, then $\Stab(1^{r_1} \dots k^{r_k}) = S_{r_1} \times \dots \times S_{r_k},$ and so $\Stab(1^{r_1} \dots k^{r_k}) = r_1! \dots r_k!$. Hence, by the Orbit-Stabilizer theorem, the number of orbits (permutations) of $1^{r_1} \dots k^{r_k}$ is $\binom{n}{r_1, \dots, r_k} = \mathlarger{\frac{n!}{r_1! \dots r_k!}}$. \\ \\
+\textbf{Theorem - Multinomial Theorem}: For intermediates $x_1, \dots, x_k$, $$(x_1 + x_2 + \dots + x_k)^n = \sum_{r_1, \dots, r_k} \binom{n}{r_1, \dots, r_k} x_1^{r_1} \dots x_1^{r_1} \dots x_k^{r_k}.$$ \\
+\textbf{Definition - Multiset (Coefficient)}: A \textit{multiset} is a set with repetition. Define the \textit{multiset coefficient} $\mathlarger{\angbinom{n}{k} = {n + k - 1 \choose n}}$ to be the number of $k$-element multi-subsets of $[n]$. \\ \\
+Alternatively, the multiset coefficient $\mathlarger{\angbinom{n}{k}}$ can be understood as the number of weak compositions of $n$ into $k$ parts, i.e. the number of sequences $(x_1, \dots, x_k), x_i \geq 0$ such that $x_1 + \dots + x_k = n$. This is equivalent to placing unlabelled balls into labelled boxes. \\ \\
+\textbf{Definition - Stirling Numbers of the 2nd Kind}: Define \textit{Stirling numbers of the 2nd kind} $S(n, k)$ to be the number of partitions of $[n]$ into $k$ non-empty subsets. An important property of Stirling numbers is $$S(n, k) = kS(n - 1, k) + S(n - 1, k - 1).$$ \\
+The exponential generating functions for Sterling numbers of the second kind is $$\sum_n S(n, k) \frac{x^n}{n!} = \frac{(e^x - 1)^k}{k!}.$$ Using this, we can derive the closed form $$S(n, k) = \frac{1}{k!} \sum_{i = 0}^k (-1)^{k - i} {k \choose i} i^n.$$ \\
+\textbf{Definition - (Signless) Stirling Numbers of the 1st Kind}: Define $$\sum_k s(n, k) x^k = (x)_n = x(x - 1) \dots (x - n + 1),$$ where $s(n, k)$ are Stirling numbers of the 1st kind. Similarly, $$\sum_k (-1)^{n - k} s(n, k) x^k = x(x + 1) \dots (x + n - 1).$$ Define the \textit{signless Stirling numbers of the first kind} to be $c(n, k) = (-1)^{n - k} s(n, k) = |s(n, k)|$. Then $$c(n, k) = (n - 1)c(n - 1, k) + c(n - 1, k - 1).$$ Additionally, signless Stirling numbers of the 1st kind, $c(n, k)$, count the number of permutations $\sigma \in S_n$ with $k$ cycles. \\ \\
+\textbf{Generating Function for Integer Partitions}: The ordinary generating function for integer partitions is $$\sum_n p(n)x^n = \prod_{i = 1}^\infty \frac{1}{1 - x^i},$$ where $p(n)$ denotes the number of integer partitions of $n$. \\ \\
+\textbf{Partition Identities}: \begin{enumerate}
+    \item The number of partitions with odd parts $p_o(n)$ is equal to the number of partitions with distinct parts $p_d(n)$. \\ \\
+    An explicit bijection for showing this identity is \begin{enumerate}
+        \item \textbf{Distinct $\rightarrow$ odd}: Turn each distinct part $r = 2^k l$ (where $l$ is odd) into $2^k$ copies of $l$. Then the resulting partition is necessarily composed only of odd parts.
+        \item \textbf{Odd $\rightarrow$ Distinct}: Group like parts together, then if a partition has $m$ parts of size $l$ ($l$ odd), write $m$ in terms of its binary expansion $m = 2^{k_1} + \dots + 2^{k_j},$ then $ml = 2^{k_1}l + \dots + 2^{k_j}l$, which are all distinct.
+    \end{enumerate}
+    \item Let $p(n, k)$ be the number of partitions of $n$ into $k$ non-zero parts, then $$\sum_{n, k} p(n, k) q^k x^n = \prod_{i = 1}^\infty \frac{1}{1 - qx^i} = \sum_k \frac{q^k x^k}{(1 - x)\dots(1 - x^k)}.$$
+\end{enumerate} $ $ \\
+\textbf{Rogers-Ramanujan Identities}: \begin{align}
+    \prod_{i \equiv 1, 4 \hspace{-0.5em} \pmod{5}} \frac{1}{1 - x^i} = \sum_{k = 0}^\infty \frac{x^{k^2}}{(1 - x) \dots (1 - x^k)} \\
+    \prod_{i \equiv 2, 3 \hspace{-0.5em} \pmod{5}} \frac{1}{1 - x^i} = \sum_{k = 0}^\infty \frac{x^{k(k + 1)}}{(1 - x) \dots (1 - x^k)}
+\end{align} \\
+\textbf{Definition - $q$-analog}: We define the $q$-analog $$\binom{n}{r_1, \dots, r_k}_q = \sum_{w \sim 1^{r_1} \dots k^{r_k}} q^{\inv(w)},$$ where $\inv(w) = \#\{ (i, j)| i < j \text{ and } w(i) > w(j)\}$. Then $$\binom{n}{k}_q = \sum_{w \sim 0^k 1^{n - k}} q^{\inv(w)}.$$ Alternatively, this can be understood as boundary paths of a partition contained inside a box (from the top-left to bottom-right corner), where a line across is a 0 and a line down is a 1. Then $$\binom{n}{k}_q = \sum_{\substack{{l(\lambda) \leq k} \\ {\lambda_1 \leq n - k}}} q^{\inv(w)}.$$ More explicitly, $$\binom{n}{r_1, \dots, r_k}_q = \frac{[n]_q!}{[r_1]_q! \dots [r_k]_q!},$$ where $[n]_q! = [n]_q [n - 1]_q \dots [1]_q$ and $[n]_q = \frac{1 - q^n}{1 - q} = 1 + q + q^2 + \dots + q^{n - 1}.$ \\ \\
+\textbf{Lemma}: For permutations $w$ of $1, 2, \dots, n$ (or any word with $n$ distinct totally ordered letters), $$\sum_w q^{\inv(w)} = [n]_q!.$$ \\
+\textbf{Definition - Grassmannian}: Define the \textit{Grassmannian} $G_k^n(\F_q)$ as the set of $k$-subspaces ($k$-dimensional) of $\F^n$. This is equivalent (bijective) to reduced $k \times n$ echelon matrices (leading, aka left-most, entry in each row is a 1, and 0's in the column above each 1). Then the number of free entries of each reduced echelon matrix is equal to $\inv(w), w \in S_n$, where we consider a sequence of 1-indexed pivot columns $\{2, 4, 7, 9\}$, where $k = 4, n = 9$, as $w = 010100101$. Then $${n \choose k}_q = |G_k^n(\F_q)|,$$ for $q$ the order of the finite field $\F$. \\ \\
+Consider $k + 1$ flags $0 = V_0 \subset V_1 \subset \dots \subset V_k = \F_q^n$, where $\dim V_i/V_{i - 1} = r_i$, then $$\# \text{ of flags } = {n \choose r_1}_q {n - r_1 \choose r_2}_q \dots = {n \choose r_1, r_2, \dots, r_k}_q.$$ \\
+\textbf{$q$-Binomial Theorem(s)}: \begin{enumerate}
+    \item $$\sum_{k = 0}^n q^{k \choose 2} {n \choose k}_q x^k = (1 + x)(1 + qx) \dots (1 + q^{n - 1}x)$$
+    \item $$\sum_{k = 0}^\infty {n + k - 1 \choose n}_q x^k = \frac{1}{(1 - x)(1 - qx) \dots (1 - q^{n - 1}x)}$$
+\end{enumerate}
+\subsection*{Lectures 7-15 (Species and Plethystic Evaluation)}
+Note that the notes about species are incomplete, as the notes are taken on the document titled ``Species and Tree-like Structures Notes.'' \\ \\
+\textbf{Definition - Species}: A species is essentially a functor $\species{E}: I \rightarrow I$, where $I = (\text{finite sets, bijections})$. In words, a species is a ``structure'' (generally combinatorial in nature) that can be assigned to any finite set. \\ \\
+\textbf{Examples of species}: Some common examples of species that we will use include: \begin{enumerate}
+    \item $\species{\pi}(S)$ = \{partitions of $S$\};
+    \item $\species{L}(S)$ = \{linear orderings of $S$\};
+    \item $\species{P}(S)$ = \{permutations of $S$\}, i.e. bijective maps $S \rightarrow S$;
+    \item $\species{T}(S)$ = \{labeled trees with vertex set $S$\};
+    \item $\species{B}(S)$ = \{subsets of $S$\};
+    \item $\species{M}_A(S)$ = \{maps $S \rightarrow A$\};
+    \item $\species{O}(S)$ = \{ordered, rooted trees with labels $[n]$\}, for $|S| = n$;
+    \item $\species{x}_J(S) = \begin{cases}
+        \{\cdot\}, \text{ if } |S| \in J, \\
+        \emptyset, \text{ otherwise}
+    \end{cases}$, for some $J \subseteq \N$. This is the indicator species.
+    \item $1 = \species{x}_{\{0\}}(S) = \begin{cases}
+        \{\cdot\}, \text{ if } S = \emptyset, \\
+        \emptyset, \text{ otherwise}
+    \end{cases}$
+    \item $x = \species{x}_{\{1\}}(S) = \begin{cases}
+        \{\cdot\}, \text{ if } |S| = 1, \\
+        \emptyset, \text{ otherwise}
+    \end{cases}$
+    \item $\species{C}(S)$ = \{cyclic orderings (single cycle permutations) of $S$\};
+    \item $\species{E}(S)$ = $\{\cdot\}$, the trivial species on $S$, which has exactly 1 structure on every set (including the null set);
+\end{enumerate} $ $ \\
+\textbf{Definition - $c_n(p_1, p_2, \dots)$}: We define $$c_n(p_1, p_2, \dots) = \sum_{\sigma \in S_n} \prod_k p_k^{\# k-\text{cycles}},$$ where $\species{c}_p$ is the species of cycles, with $k$-cycles weighted by $p_k$. Similarly, define $$C(x; p) = \sum_k p_k \frac{x^k}{k}.$$ \\
+\textbf{Definition - $z_\lambda$}: For some partition $\lambda,$ define $$z_\lambda = \prod_k r_k! k^{r_k},$$ if $\lambda = (1^{r_1}, 2^{r_2}, \dots)$. Another way to understand this is that $z_\lambda$ is the size of the centralizer of a permutation of cycle type $\lambda$. \\ \\
+\textbf{Definition - $\Omega(p; x)$}: Define $$\Omega(p; x) = \sum_n c_n(p) \frac{x^n}{n!} = \exp \left( \sum_{k = 1}^\infty p_k \frac{x_k}{k} \right).$$ As a shorthand, define $$\Omega(p) = \Omega(p; 1) = \exp \left( \sum_{k = 1}^\infty \frac{p_k}{k} \right) = \sum_\lambda \frac{p_\lambda}{z_\lambda}.$$ Then $$\Omega[X + Y] = \Omega[X] \, \Omega[Y] \text{ and } \Omega[-X] = \Omega[X]^{-1}.$$ Additionally, for $X = x_1 + x_2 + \dots$, $$\Omega[X] = \prod_i \frac{1}{1 - x_i}.$$ Additionally, we define $XY$ by element-wise multiplication, for $Y = y_1 + y_2 + \dots$. \\ \\
+\textbf{Definition - Isomorphism of Species}: We say species $\species{F}, \species{G}$ are \textit{isomorphic}, i.e. $\species{F} \cong \species{G}$ to mean $\species{F}(S) \cong \species{G}(S)$ for all sets $S$, or that there exists a natural isomorphism of $\species{F}, \species{G}$ as functors. \\ \\
+\textbf{Definition - Exponential generating function for $\species{F}$}: We define the exponential generating function for $\species{F}$ as $$F(x) = \sum_n |\species{F}([S])|\frac{x^n}{n!},$$ where $|S| = n$, for each $n$ in the summation. \\ \\
+\textbf{Theorem - Cayley's Theorem}: Let $c_T(i)$ denote the number of children of $i$ in tree $T$. Then \textit{Cayley's theorem} states that $$\sum_{T \in \species{T}([n])} \prod x_i^{c_T(i)} = (x_1 + \dots + x_n)^{n - 1}.$$ \\
+\textbf{Corollary}: \begin{enumerate}
+    \item (Number of trees $T \in \species{T}([n])$ with given $c_T(i) = d_i$, for all $i$) = $\mathlarger{{n - 1 \choose d_1, \dots, d_n}},$
+    \item \begin{align*}
+        \sum_n \sum_{T \in \species{T}([n])} \prod_i \mu_{c_T(i)} \frac{x^n}{n!} &= \sum_n \sum_{d_1 + \dots + d_n = n - 1} {n - 1 \choose d_1, \dots, d_n} \mu_{d_1} \dots \mu_{d_n} \frac{x^n}{n!} \\
+        &= \sum_n \frac{1}{n} \langle z^{n - 1} \rangle H(z)^n x^n \\
+        &= \sum_n \left\langle \frac{z^{n - 1}}{(n - 1)!} \right\rangle H(z)^n \frac{x^n}{n!},
+    \end{align*} where $H(z) = \mathlarger{\sum_{k = 0}^\infty h_k \frac{z^k}{k!}}$. 
+\end{enumerate}
+\textbf{Theorem - Lagrange Inversion}: The \textit{Lagrange inversion formula} is (where $f(x)^{\langle -1 \rangle}$ denotes the inverse of $f$)\begin{align*}
+    \left( \frac{x}{H(x)} \right)^{\langle -1 \rangle} &= \sum_n \left( \frac{1}{n} \langle z^{n - 1}\rangle H(z)^n \right) x^n \\
+    &= \sum_n \left( \left\langle \frac{z^{n - 1}}{(n - 1)!} \right\rangle H(z)^n \right) \frac{x^n}{n!},
+\end{align*} for any formal power series $H(x)$ with invertible constant term $H(0)$. \\ \\
+\textbf{Definition - Catalan Number}: Let the $n$th \textit{Catalan number}, \begin{align*}
+    C_n &= \text{the number of unlabelled binary trees on } n \text{ nodes} \\
+    &= \text{the number of unlabelled ordered rooted trees on } n + 1 \text{ nodes} \\
+    &= \text{the number of unlabelled ordered forests on } n \text{ nodes}.
+\end{align*} A closed form for Catalan numbers is $$C_n = \frac{1}{n + 1}{2n \choose n}.$$ \\
+\textbf{Definition - $Z_F$}: Define $$Z_F(p_1, p_2, \dots) = \sum_n \frac{1}{n!} \sum_{\sigma \in S_n} |F([n])^\sigma| p_{\tau(\sigma)},$$ where the partition $\tau(\sigma)$ is the cycle shape of the permutation $\sigma$. Some properties of this function include that \begin{enumerate}
+    \item $Z_F(x, 0, \dots) = F(x)$,
+    \item $Z_F(x, x^2, \dots)$ is the ordinary generation function for unlabelled $F$-structures, i.e. this is the type generating series of $F$,
+    \item $Z_{F + G} = Z_F + Z_G$.
+\end{enumerate}
+\textbf{Definition - Plethystic Evaluation}: Define the \textit{plethystic evaluation} $z[A] = z|_{p_k \mapsto p_k[A]}$, where $p_k[A] = A|_{a \mapsto a^k}$ for all variables $a \in A$. \\ \\
+\textbf{Definition - Decorated $F$-Structures}: Let $\mathcal{A}$ be a set with weight monomials $x_a (a \in \mathcal{A})$ in variables $x$, then $$A(x) = \sum_{a \in \mathcal{A}} x.$$ \\
+\textbf{Definition - $\mathcal{A}$-Decorated Species}: Given a species $F$, an \textit{$\mathcal{A}$-decorated species} $F_\mathcal{A}(S) = F(S) \times \{\text{maps }\alpha: S \rightarrow \mathcal{A}\}$. In words, an $\mathcal{A}$-decorated species $F_\mathcal{A}(S)$ is an $F$-structure on $S$ together with a decoration $\alpha: S \rightarrow A$. \\ \\
+\textbf{Proposition}: $Z_F[A]$ is the ordinary generating function for unlabelled $\mathcal{A}$-decorated $F$-structures, weighted by $\prod_{s \in S} x_{\alpha(s)}$ for decoration $\alpha: S \rightarrow \mathcal{A}$, where $A = A(x) = \sum_{a \in \mathcal{A}} x_a$ is the ordinary generating function for $\mathcal{A}$. \\ \\
+\textbf{Definition - Plethysm}: We define a plethysm to be $$Z(p_1, p_2, \dots) \ast W(p_1, p_2, \dots) = Z|_{p_k \mapsto W(p_k, p_{2k}, \dots)}.$$ Some properties of plethysm are that \begin{enumerate}
+    \item $Z \ast W$ is linear and multiplicative in $Z$,
+    \item $p_k \ast W$ is linear and multiplicative in $W$,
+    \item $p_k \ast p_l = p_{kl}$.
+\end{enumerate} $ $ \\
+\textbf{Lemma}: $(Z \ast W)[A] = Z[W[A]]$, in other words, $\ast$ is associative. \\ \\
+$\Omega[A + B] = \Omega[A]\Omega[B]$ \\ \\
+For species $F, E, T$, if $F = E \circ T$, then $Z_F = Z_E \ast Z_T$. Additionally, for $E$ the trivial species, $Z_E = \Omega$. For species product, $T = x \cdot F$, we have that $Z_T = Z_x \cdot Z_F$. \\ \\
+\textbf{Species generating function examples}: \begin{enumerate}
+    \item $Z_C[x, 0, \dots] = C(x) = \mathlarger{\log{\frac{1}{1 - x}}}$,
+    \item $Z_C[X] = \sum_{n = 1}^\infty x^n$,
+\end{enumerate} $ $ \\
+\textbf{Definition - Composition with Trivial Species}: Composition with the trivial species $E$, for $F = E \circ G$ means that $F$ are disjoint unions of connected components, where $G$ is the species of connected structures. In other words, an $F$ structure is some collection of disjoint unordered $G$ structures on some set. \\ \\
+\textbf{Definition - Plethystic Logarithm}: Define the \textit{Plethystic logarithm} $\Lambda(p_1, p_2, \dots)$ by $$\Omega \ast \Lambda = 1 + p_1,$$ where $\Omega = Z_E$ is the plethystic exponentiation. \\ \\
+\textbf{Definition - Möbius/Inversion}: Define the \textit{Möbius function} $$\mu(n) = \begin{cases}
+    (-1)^r, \text{ if } n = p_1 \dots p_r, \text{ for distinct primes } p_i, 1 \leq i \leq r, \\
+    0, \text{ otherwise.}
+\end{cases}$$ \textit{Möbius inversion} states that $$f(n) = \sum_{d | n} g(d) \iff g(n) = \sum_{d|n} \mu(n/d) f(d).$$ In particular, taking $g(n) = \delta_{1, n}$ $$\delta_{i, j} = \begin{cases}
+    1, \text{ if } i = j, \\
+    0, \text{ if } i \neq j.
+\end{cases},$$ we get $f(n) = 1$. \\ \\
+\textbf{Theorem}: The solution of $\Omega \ast \Lambda = 1 + p_1$ is $$\Lambda = \sum_\ell \frac{\mu(\ell)}{\ell} \log(1 + p_\ell).$$ \\
+\textbf{Definition - Euler's Totient Function}: Define \textit{Euler's totient function} $$\varphi(n) = |\{j \in [n] | \gcd(j, n) = 1\}|.$$ In other words, $\varphi(n)$ is the number of positive integers less than $n$ that are coprime to $n$. By Möbius inversion, $\mathlarger{\frac{\varphi(n)}{n} = \sum_{d|n} \frac{\mu(d)}{d}}$.
+\subsection*{Lectures 16-24 (Symmetric Functions)}
+\textbf{Definition - $\Lambda_R(x_1, \dots, x_n)$}: Denote by $\Lambda_R(x_1, \dots, x_n) = R[x_1, \dots, x_n]^{S_n}$ the ring of symmetric polynomials in $n$ variables, for $R = \R$ or $\Q$. \\ \\
+$\Lambda_R(x) = \oplus_{d \geq 0} \Lambda_R(x)_d$ is graded, where  $\Lambda_R(x)_d = \{f \in \Lambda_R \text{ homogenous of degree } d\}$. \\ \\
+\textbf{Definition - $m_\lambda$}: In $\Lambda_R(x_1, x_2, x_3)$, \begin{enumerate}
+    \item $m_\emptyset = 1$,
+    \item $m_{(1)} = x_1 + x_2 + x_3$,
+    \item $m_{(21)} = x_1^2x_2 + x_1^2x_3 + x_1 x_2^2 + x_1 x_3^2 + x_2^2 x_3 + x_2 x_3^2$.
+\end{enumerate} $ $ \\
+\textbf{Proposition}: $\Lambda_R(x_1, \dots, x_n)_d$ is a free $R$-module with basis $\{m_\lambda| \ell(\lambda) \leq n, |\lambda| = d\}$. \\ \\
+To formalize some notations of symmetric functions in finitely many variables, we note some things. Firstly, in infinitely many variables, any non-constant symmetric polynomial is a formal infinite series, but we can think of it as a polynomial if $f$ has bounded degree. Additionally, $S_\infty$ can be understood as permutations $\N \rightarrow \N$, or the subgroup generated by transpositions, i.e. the union of $S_1 \subset S_2 \subset \dots$ belonging in $S_\infty$. Additionally, $\Lambda_R(x_1, x_2, \dots) \twoheadrightarrow \Lambda_R(x_1, \dots, x_n)$, define by $f(x) \mapsto f(x_1, \dots, x_n, 0, 0, \dots)$ is a surjective $R$-algebra homomorphism, and bijective on $(\Lambda_R)_d$, for $d \leq n$ (though currently not sure how to prove the bijective part). \\ \\
+\textbf{Proposition}: \begin{enumerate}
+    \item In infinitely many variables, $(\Lambda_R)_d$ is a free $R$-module with basis $\{m_\lambda \, | \, |\lambda| = d\}.$
+    \item $\Lambda_R(x_1, x_2, \dots) \rightarrow \Lambda_R(x_1, \dots, x_n)$ is $m_\lambda \rightarrow \begin{cases}
+        m_\lambda, \ell(\lambda) \leq n, \\
+        0, \text{ otherwise}
+    \end{cases}$ Note that what this is saying is the mapping of functions. In particular, for some $\ell(\lambda) \leq n$, $m_\lambda(x_1, x_2, \dots) \mapsto m_\lambda(x_1, \dots, x_n)$.
+\end{enumerate} $ $ \\
+\textbf{Definition - $e_k, h_k, p_k$}: \begin{enumerate}
+    \item Define $$e_k = m_{(1^k)} = \sum_{i_1 < \dots < i_k} x_{i_1} \dots x_{i_k}$$ to be the $k$th \textit{elementary symmetric function}.
+    \item Define $$h_k = \sum_{|\lambda| = k} m_\lambda = \sum_{i_1 \leq \dots \leq i_k} x_{i_1} \dots x_{i_k}$$ to be the $k$th \textit{complete homogenous symmetric function}.
+    \item Define $$p_k = m_{(k)} = x_1^k + x_2^k + \dots$$ to be the $k$th \textit{power sum symmetric function}.
+\end{enumerate} Finally, we define $e_\lambda = e_{\lambda_1} \dots e_{\lambda_\ell}$, for $\ell = \ell(\lambda)$; $h_\lambda$ and $p_\lambda$ are defined similarly. \\ \\
+\textbf{Generating functions for the above basis}: For $e_k$, $$E(t) = \sum e_n t^n = \prod_i (1 + tx_i).$$ For $h_k$, $$H(t) = \sum h_n t^n = \prod_i \frac{1}{1 - tx_i} = E(-t)^{-1}.$$ Finally, for $p_k$, $$P(t) = \frac{d}{dt}\log{\prod_{i \geq 1} (1 - x_it)^{-1}} = \frac{d}{dt}\log{H(t)} = H'(t)/H(t).$$ Additionally, $$\Omega[X] = \prod_i \frac{1}{1 - x_i}, \text{ and } H(t) = \Omega[tX].$$ \\
+\textbf{Proposition}: Clearly, $H(t)E(-t) = 1$, which implies that $h_n - h_{n - 1}e_1 + \dots + (-1)^n e_n = 0.$ \\ \\
+\textbf{Definition - Dominance Partial Ordering on Partitions of $n$}: We say that $\lambda \leq \mu$ if $$|\lambda| = |\mu| \text{ and } \lambda_1 + \dots + \lambda_k \leq \mu_1 + \dots + \mu_k, \forall k \leq \max(\ell(\lambda), \ell(\mu)),$$ where we pad the shorter partition with 0's. Note that this is a partial ordering, as neither of the following two partitions of 6 are greater than another: $(2, 2, 2)$ and $(3, 1, 1, 1)$, as $2 \leq 3$ but $2 + 2 + 2 = 6 \geq 5 = 3 + 1 + 1$. \\ \\
+\textbf{Proposition}: $\leq$ is the transitive closure of the raising operator relation $\lambda \rightarrow \mu$ if $\mu - \lambda = \epsilon_i - \epsilon_j,$ for $i < j$, where $\epsilon_i = (0, \dots, 0, 1, 0, \dots, 0)$ is the $i$th standard basis vector. \\ \\
+\textbf{Corollary}: $\lambda \leq \mu \iff \lambda^* \geq \mu^*$, where $|\lambda| = |\mu|$. \\ \\
+\textbf{Proposition}: $\ell_\lambda = \sum a_{\lambda \mu} m_\mu,$ where $a = \#$ 0-1 matrices with row sum $\lambda$ and column sum $\mu$. \\ \\
+\textbf{Proposition}: $a_{\lambda \mu} \neq 0 \iff \mu \leq \lambda^* (\mu^* \geq \lambda)$, and $a_{\lambda \lambda^*} = 1$. \\ \\
+\textbf{Corollary}: \begin{enumerate}[(a).]
+    \item $\mathlarger{e_\lambda = m_{\lambda^*} + \sum_{\mu < \lambda^*} a_{\lambda \mu} m_\mu}$.
+    \item $\{e_\lambda\}$ is a graded $R$-basis of $\Lambda_R$. Similarly, $\{e_\lambda | \lambda_1 \leq n\}$ is a graded $R$-basis of $\Lambda_R(x_1, \dots, x_n)$. Additionally, $e_k(x_1, \dots, x_n) = 0$ for $k > n$.
+    \item $\Lambda_R \cong R[e_1, e_2, \dots]$ as a graded $R$-algebra, with $\deg e_k = k$.
+    \item There is a unique $R$-algebra homomorphism \begin{align*}
+        w: \Lambda_R &\rightarrow \Lambda_R \\
+        e_k &\mapsto h_k,
+    \end{align*} where $w^2 = id$ (hence $w$ is an isomorphism).
+    \item $\Lambda_R \cong R[h_1, h_2, \dots]$; $\{h_\lambda\}$ is a graded $R$-basis.
+\end{enumerate} $ $ \\
+\textbf{Proposition}: $h_\lambda = \sum b_{\lambda \mu} m_\mu$ where $b_{\lambda \mu} = \#$ of $\N$-matrices with row sums $\lambda$ and column-sums $\mu$. \\ \\
+\textbf{Definition/Corollary - Hall Inner Product}: $$\langle m_\lambda, h_\mu \rangle = \delta_{\lambda, \mu}$$ is symmetric, graded, and is a perfect pairing on each $(\Lambda_R)_d$. \\ \\
+Using the fact that $\Omega = \mathlarger{\sum_\lambda \frac{p_\lambda}{z_\lambda}},$ we know that $h_n = \mathlarger{\sum_{|\lambda| = n} \frac{p_\lambda}{z_\lambda}}$. \\ \\
+\textbf{Corollary}: $\{p_\lambda : |\lambda| = d\}$ is a basis of $(\Lambda_R)_d$ if $\Q \subseteq R$. \\ \\
+\textbf{Corollary}: Any polynomial or power series $Z(p_1, p_2, \dots)$ in variables $p_k$ is determined by the symmetric polynomial of series $Z[X]$, where $x = x_1 + x_2 + \dots$. \\ \\
+\textbf{Definition - $\epsilon$}: Define $$\epsilon f[-x] = wf[X],$$ where $\epsilon f[X] = f(-x_1, -x_2, \dots) = (-1)^d f(x)$ for $f \in \Lambda_d$. \\ \\
+\textbf{Corollary}: \begin{center}
+    $wp_k = \epsilon p_k[-X] = -\epsilon p_k[X] = (-1)^{n - 1} p_k$ \\
+    $wp_\lambda = (-1)^{n - \ell(\lambda)} p_\lambda, \quad |\lambda| = n$,
+\end{center} where $(-1)^{n - \ell(\lambda)}$ is the sign of $\sigma \in S_n$ if $\tau(\sigma) = \lambda$. \\ \\
+\textbf{Proposition - Cauchy Formula, Dual Basis}: Let $\{u_\lambda\}, \{v_\lambda\}$ be graded basis of $\Lambda$. Then $$\langle u_\lambda, v_\mu \rangle = \delta_{\lambda \mu} \iff \Omega[XY] = \sum_\lambda u_\lambda(x) v_\lambda(y),$$ where $\delta_{\lambda \mu}$ is the Kronecker Delta ($= 1$ if $\lambda = \mu$, and 0 otherwise). $\{u_\lambda\}$ is the dual basis of $ \{v_\lambda\}$. This also implies that $\langle f[X], \Omega[XY] \rangle_x = f[Y]$. \\ \\
+\textbf{Theorem}: $$\langle u_\lambda(x) \rangle \Omega[XY] = \langle u_\lambda(x), \Omega[XY] \rangle_X = v_\lambda(y), \text{ i.e. } \Omega[XY] = \sum_\lambda u_\lambda(x) v_\lambda(y).$$ We also have that $\langle p_\lambda, p_\mu \rangle = \delta_{\lambda \mu} z_\lambda$. \\ \\
+\textbf{Corollary}: $\langle wf, wg \rangle = \langle f, g \rangle$. \\ \\
+$\Omega[AX]^\perp g[X] = g[A + X]$. \\ \\
+\textbf{Vandermonde's Identity}: \textit{Vandermonde's Identity} states that $$\Delta (x_1, \dots, x_n) = \prod_{i < j} (x_i - x_j) = \det \begin{pmatrix}
+    x_1^{n - 1} & \dots & x_1 & 1 \\
+    x_2^{n - 1} & \dots & x_2 & 1 \\
+    \vdots & \ddots & \vdots & \vdots \\
+    x_n^{n - 1} & \dots & x_n & 1 \\
+\end{pmatrix}$$ \\
+\textbf{Definition - $a_\mu$}: Define $$a_\mu = \det \begin{pmatrix}
+    x_1^{\mu_1} & \dots & x_1^{\mu_n} \\
+    x_2^{\mu_1} & \dots & x_2^{\mu_n} \\
+    \vdots & \ddots & \vdots \\
+    x_n^{\mu_1} & \dots & x_n^{\mu_n}
+\end{pmatrix} = \sum_{w \in S_n} \epsilon(w) w(x^\mu),$$ where $\mu_1 > \dots > \mu_n$, then $\Delta(x_1, \dots, x_n) = a_p,$ for $p = (n - 1, \dots, 1, 0)$. Note that $a_\mu = 0$ if $\mu$ is not a strictly decreasing partition. \\ \\
+\textbf{Schur Functions}: The \textit{Schur function} $$s_\lambda = s_\lambda(x_1, \dots, x_n) = \frac{a_{\lambda + p}(x)}{a_p(x)} \in \Z[x_1, \dots, x_n]^{S_n} = \Lambda_{\Z}(x_1, \dots, x_n).$$ \\
+$\{a_{\lambda + p}\}$ forms a $\Z$-basis of $\Z[X]^\epsilon = \Delta(x)\Z[X]^{S_n}$, the anti-symmetric polynomials, and thus $\{s_\lambda\}$ forms a basis of $\Lambda (x_1, \dots, x_n)$. \\ \\
+\textbf{Properties of Schur Functions}: \begin{enumerate}
+    \item $s_\lambda(x_1, \dots, x_n, 0 \dots, 0) = \begin{cases}
+        s_\lambda(x_1, \dots, x_n), \text{ if } \ell(\lambda) \leq n, \\
+        0, \text{ if } \ell(\lambda) > n.
+    \end{cases}$
+    \item $s_{(1^k)} (x_1, \dots, x_n) = e_k(x_1, \dots, x_n)$
+    \item $s_{(k)} (x_1, \dots, x_n) = h_k(x_1, \dots, x_n)$
+\end{enumerate} $ $ \\
+\textbf{Corollary/Definition}: There exists a unique Schur function $s_\lambda(x_1, x_2, \dots) \in \Lambda$ such that for all $n$: $$s_\lambda(x_1, \dots, x_n, 0, \dots) = \begin{cases}
+    s_\lambda(x_1, \dots, x_n), \text{ if } \ell(\lambda) \leq n, \\
+    0, \text{ if } \ell(\lambda) > n.
+\end{cases}$$ and $\{s_\lambda\}$ is a graded basis of $\Lambda$. Explicitly, $\langle m_\mu \rangle s_\lambda = \langle x^\mu \rangle s_\lambda(x_1, \dots, x_n)$ for any $n \geq \ell(\mu), \ell(\lambda)$, independent of $n$. \\ \\
+\textbf{Weyl Character Formula}: \begin{align*}
+    s_\lambda(x_1, \dots, x_n) &= \sum_{w \in S_n} \frac{\epsilon(w) w(x^{\lambda + p})}{\Delta(x)} \\
+    &= \sum_{w \in S_n} w \left( \frac{x^{\lambda + p}}{\prod_{i < j} (x_i - x_j)} \right) \\
+    &= \sum_{w \in S_n} w \left( \frac{x^\lambda}{\prod_{i < j} (1 - x_j/x_i)} \right) \\
+    &= x_\lambda (x_1, \dots, x_n) = \trace_{v_\lambda} \begin{pmatrix}
+        x_1 & \dots & 0 \\
+        \vdots & \ddots & \vdots \\
+        0 & \dots & x_n
+    \end{pmatrix} = \sum \dim(v_\lambda)_\mu x^\mu,
+\end{align*} where $v_\lambda$ is the irreducible representation of $GL_n(\C)$ with highest weight $\lambda$. \\ \\
+\textbf{Definition - Pieri Rule, Skew Diagram, Horizontal/Vertical Strips}: A \textit{skew diagram} $\lambda / \mu$ is the difference of partition diagrams. A \textit{horizontal strip} is a skew diagram with no 2 blocks with one above the other. Similarly, a \textit{vertical strip} is a skew diagram with no 2 blocks with one to the right of the other. Then $\lambda / \mu$ is a vertical strip $\iff$ $\lambda - \mu$ is a $0, 1$ vector $\epsilon_I$, which is the sum of all the $e_i$ standard basis vectors, for $i \in I$. But $\lambda = \mu + \epsilon_I$ is only a partition of $\mu_{i - 1} > \mu_i$, or $i = 1$, for all $i \in I$. \\ \\
+\textbf{Definition - Semi-standard Young Tableaux, $K_{\lambda \mu}$}: A semi-standard Young tableaux is a map $T: \lambda / \mu \rightarrow \Z_+$. Additionally, let $K_{\lambda \mu} = |SSYT(\lambda, \mu)|$ denote the number of semi-standard Young tableau's of shape $\lambda$ of digits $1^{\mu_1}, 2^{\mu_2}, \dots$. \\ \\
+\textbf{Proposition}: $$e_k \cdot s_\lambda = \sum_{\substack{{|\mu / \lambda| = k} \\ {\text{vertical strip}}}} s_\mu$$ \\
+\textbf{Corollary}: $$e_\mu = \sum_\lambda K_{\lambda^* \mu} s_\lambda,$$ where $\mu$ does not have to be in decreasing order; $K_{\lambda \mu}$ is constant with respect to permuting $\mu$. \\ \\
+\textbf{Bernstein Operators}: $$B_m f(x_1, \dots, x_{n - 1}) = \sum_{w \in S_n / S_1 \times S_{n - 1}} w \left( \frac{x_1^m f(x_2, \dots, x_n)}{\prod_{j \neq 1} (1 - x_j/x_i)} \right),$$ for some symmetric polynomial $f$. \\ \\
+By the Weyl character formula, $$s_\lambda(x_1, \dots, x_n) = B_{\lambda_1} \dots B_{\lambda_n} (1).$$ \\
+\textbf{Stable Formula}: $$B_m f[X] = \sum_i \frac{x_i^m f[X - x_i]}{\prod_{j \neq i} (1 - x_j/x_i)},$$ for $X = x_1 + \dots + x_n$. \\ \\
+$\langle z^0 \rangle \Omega[X/z] z^m f[X - z] = B_m f[X],$ for $m \geq 0$, then $$B_m = \langle z^{-m} \rangle \Omega[X/z]^\bullet \Omega[-zX]^\perp,$$ using the fact that $f[X + A] = \Omega[AX]^\perp$. \\ \\
+\textbf{Lemma - Dual Pieri Rule}: $\Omega[AX]^\perp \Omega[BX]^\bullet = \Omega[AB] \Omega[BX]^\bullet \Omega[AX]^\perp$. \\ \\
+\textbf{Proposition}: \begin{enumerate}
+    \item $e_k^\perp B_m = B_m e_k^\perp + B_{m - 1}e_{k - 1}^\perp$
+    \item $B_r B_{s + 1} = -B_s B_{r + 1}$ ($ = 0$ if $r = s$)
+\end{enumerate} $ $ \\
+\textbf{Proposition}: $$e_k^\perp s_\lambda = \sum_{\substack{{|\lambda / \mu| = k} \\ {\text{vertical strip}}}} s_\mu$$ \\
+\textbf{Proposition}: Schur functions are orthonormal, i.e. $\langle s_\lambda, s_\mu \rangle = \delta_{\lambda \mu}$. \\ \\
+\textbf{Lemma}: $K_{\lambda \mu} = 0$ if $\mu \not\leq \lambda$; $K_{\lambda \lambda} = 1$. \\ \\
+\textbf{Proposition}: $ws_\lambda = s_{\lambda^*}$. \\ \\
+\textbf{Corollary}: $$s_\lambda = \sum_\mu K_{\lambda \mu} m_\mu = \sum_{T \in SSYT(\lambda)} x^T,$$ where $x^T = \sum_{c \in \lambda} x_{T(c)}$. \\ \\
+\textbf{Corollary}: Pieri rules \begin{align*}
+    h_k s_\lambda = \sum_{\substack{{|\mu / \lambda| = k} \\ {\text{horizontal strip}}}} s_\mu \\
+    h_k^\perp s_\lambda = \sum_{\substack{{|\lambda / \mu| = k} \\ {\text{horizontal strip}}}} s_\mu
+\end{align*} $ $ \\
+\textbf{Corollary}: $h_\mu = \sum_\lambda K_{\lambda \mu} s_\lambda$. \\ \\
+\textbf{Definition - Schur Functor}: For $|\lambda| = d$, $V$ a vector space, the Schur functor $$S_\lambda(V) = V_\lambda = \im \psi,$$ for $\psi: \Lambda^{\lambda_1^*}(V) \otimes \dots \otimes \Lambda^{\lambda_k^*}(V) \mapsto S^{\lambda_1}(V) \otimes \dots \otimes S^{\lambda_\ell}(V).$ \\ \\
+\textbf{Example}: For $V = \C^n$, $S(V) = \C[x_1, \dots, x_n]$, and $S^d(V)$ be the ring of homogenous polynomials of degree $d$, $$S(V) \otimes \dots \otimes S(V) = \C[x] \otimes \dots \otimes \C[x] = \C[x_1^{(1)}, \dots, x_n^{(1)}, \dots, x_1^{(\ell)}, \dots, x_n^{(\ell)}],$$ where $x^{(j)}$ denotes the $j$th tensor factor. \\ \\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
