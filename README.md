@@ -1,12 +1,1 @@
-# Build Your Own World Design Document
-
-**Partner 1:**
-
-**Partner 2:**
-
-## Classes and Data Structures
-
-## Algorithms
-
-## Persistence
-# Course-Notes
+This repository contains select notes from classes I have taken at UC Berkeley.
